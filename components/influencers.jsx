@@ -40,7 +40,7 @@ function Infleuncer({ name }) {
   const navigation = useNavigation();
 
   function navigate() {
-    navigation.navigate("Home", { screen: "Influencer" });
+    navigation.navigate("Influencers", { screen: "Influencer" });
   }
 
   return (

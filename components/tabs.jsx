@@ -4,7 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Brands from "../screens/brands";
 import Categories from "../screens/categories";
 import Infleuncers from "../screens/influencers";
-import Root from "./rootStack";
+import InfluencersStack from "./infStack";
+import Home from "../screens/home";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +19,7 @@ function Tabs() {
             iconName = "home";
           } else if (route.name === "Brands") {
             iconName = "tag-multiple";
-          } else if (route.name === "Infleuncers") {
+          } else if (route.name === "Influencers") {
             iconName = "account-multiple";
           } else {
             iconName = "hexagon-multiple";
@@ -44,9 +45,9 @@ function Tabs() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={Root} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Brands" component={Brands} />
-      <Tab.Screen name="Infleuncers" component={Infleuncers} />
+      <Tab.Screen name="Influencers" component={InfluencersStack} />
       <Tab.Screen name="Categories" component={Categories} />
     </Tab.Navigator>
   );
