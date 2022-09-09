@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   FlatList,
@@ -12,62 +12,40 @@ import Gal from "../assets/gal.jpeg";
 import Bg from "../assets/background.jpg";
 import { useNavigation } from "@react-navigation/native";
 import TopBar from "../components/topbar";
+import { InfluencersContext } from "../context/infContext";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28bas",
-    title: "Gal Gadot",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63ds",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72123",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72d321s",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e213129d72dssd",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29dasd2123",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-14557sdsa1e29d72d321s",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e213adsadsa129d72dssd",
-    title: "Gal Gadot",
-  },
-];
-
-function Infleuncer({ name }) {
+function Infleuncer({ firstName, lastName, picture }) {
   const navigation = useNavigation();
 
   function navigate() {
-    navigation.navigate("Influencer");
+    navigation.navigate("Influencers", {
+      screen: "Influencer",
+      initial: false,
+    });
   }
-
   return (
     <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image source={Gal} style={s.img} />
-      <Text style={s.name}>Gal Gadot</Text>
+      <Image source={{ uri: picture }} style={s.img} />
+      <Text style={s.name}>
+        {firstName} {lastName}
+      </Text>
     </TouchableOpacity>
   );
 }
 
 const Infleuncers = () => {
-  const renderItem = ({ item }) => <Infleuncer name={item.name} />;
+  const { influencers } = useContext(InfluencersContext);
+
+  const renderItem = ({ item }) => (
+    <Infleuncer
+      firstName={item.firstName}
+      lastName={item.lastName}
+      picture={item.picture}
+    />
+  );
   return (
     <View style={s.container}>
       <View>
@@ -75,7 +53,7 @@ const Infleuncers = () => {
       </View>
       <TopBar title="influencers" />
       <FlatList
-        data={DATA}
+        data={influencers}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={3}

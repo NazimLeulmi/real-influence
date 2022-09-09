@@ -3,7 +3,6 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Brands from "../screens/brands";
 import Categories from "../screens/categories";
-import Infleuncers from "../screens/influencers";
 import InfluencersStack from "./infStack";
 import Home from "../screens/home";
 
@@ -43,6 +42,7 @@ function Tabs() {
         tabBarActiveBackgroundColor: "black",
         tabBarStyle: { backgroundColor: "black", height: 45 },
         headerShown: false,
+        unmountOnBlur: false,
       })}
     >
       <Tab.Screen name="Home" component={Home} />

@@ -13,50 +13,37 @@ import { useNavigation } from "@react-navigation/native";
 
 const width = Dimensions.get("window").width;
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "Gal Gadot",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72ds",
-    title: "Gal Gadot",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72dssd",
-    title: "Gal Gadot",
-  },
-];
-
-function Infleuncer({ name }) {
+function Infleuncer({ firstName, lastName, picture }) {
   const navigation = useNavigation();
 
   function navigate() {
-    navigation.navigate("Influencers", { screen: "Influencer" });
+    navigation.navigate("Influencers", {
+      screen: "Influencer",
+      initial: false,
+    });
   }
-
   return (
     <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image source={Gal} style={s.img} />
-      <Text style={s.name}>Gal Gadot</Text>
+      <Image source={{ uri: picture }} style={s.img} />
+      <Text style={s.name}>
+        {firstName} {lastName}
+      </Text>
     </TouchableOpacity>
   );
 }
 
-const Infleuncers = () => {
-  const renderItem = ({ item }) => <Infleuncer name={item.name} />;
+const Infleuncers = ({ data, first }) => {
+  const renderItem = ({ item }) => (
+    <Infleuncer
+      firstName={item.firstName}
+      lastName={item.lastName}
+      picture={item.picture}
+    />
+  );
   return (
     <View style={s.container}>
       <FlatList
-        data={DATA}
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         horizontal={true}
@@ -80,6 +67,7 @@ const s = StyleSheet.create({
     height: 125,
     margin: 5,
     position: "relative",
+    resizeMode: "contain",
   },
   name: {
     fontFamily: "regular",

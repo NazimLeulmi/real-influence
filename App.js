@@ -6,6 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView, StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import DrawerNav from './components/drawer';
+import { InfluencersProvider } from './context/infContext';
+import RootStack from './components/root';
 
 
 function App() {
@@ -40,7 +42,9 @@ function App() {
       <SafeAreaView onLayout={onLayoutRootView} style={{ flex: 1, backgroundColor: "black" }}>
         <StatusBar barStyle="light-content" />
         <NavigationContainer >
-          <DrawerNav/>
+          <InfluencersProvider>
+            <RootStack/>
+          </InfluencersProvider>
         </NavigationContainer>
       </SafeAreaView>
     </GestureHandlerRootView>
