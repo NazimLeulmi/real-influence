@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Infleuncer from "../screens/infleuncer";
-import Infleuncers from "../screens/influencers";
+import Infleuncer from "../../screens/infleuncer";
+import Infleuncers from "../../screens/influencers";
 
 const Stack = createStackNavigator();
 

@@ -12,17 +12,23 @@ import Bg from "../assets/background.jpg";
 import Logo from "../assets/logo.png";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Animated, {
-  ZoomInUp,
   ZoomIn,
-  FadeInUp,
   FadeIn,
   FadeInLeft,
+  StretchInY,
 } from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Intro() {
+  const navigation = useNavigation();
+
+  function start() {
+    navigation.navigate("Auth", { screen: "SignIn" });
+  }
+
   return (
     <View style={s.container}>
       <View>
@@ -37,34 +43,30 @@ function Intro() {
         <Animated.Text style={s.brand} entering={FadeInLeft.duration(1000)}>
           Miss Influencer
         </Animated.Text>
-        <Animated.Text style={s.header} entering={FadeInLeft.duration(1000)}>
-          ABOUT US
-        </Animated.Text>
-        <Animated.Text style={s.text} entering={FadeIn.duration(1000)}>
-          Miss Influencer is the newest project of MID MANAGEMENT. The company
-          has been established based on three successful businesses in Budapest
-          and London. A combined idea of a beauty pageant, a media school and an
-          influencer management company, which is aiming to break into the
-          international market with a brand new, brilliant advertising concept
-          by 2023.
-        </Animated.Text>
-        <Animated.Text style={s.header} entering={FadeInLeft.duration(1000)}>
-          OUR MISSION
-        </Animated.Text>
-        <Animated.Text style={s.text} entering={FadeIn.duration(1000)}>
+        <Animated.View
+          style={s.headerContainer}
+          entering={FadeInLeft.duration(800)}
+        >
+          <Animated.Text style={s.header} entering={FadeInLeft.duration(1000)}>
+            OUR MISSION
+          </Animated.Text>
+        </Animated.View>
+        <Animated.Text style={s.text} entering={FadeIn.duration(1200)}>
           Miss Influencer Dubai is dedicated to spread value throughout beauty.
           We aim to prove that – on the contrary to so many misconceptions –
           dazzling and powerful women of social media can indeed rule the whole
-          World by using their positive influence on their followers. This time
+          world by using their positive influence on their followers. This time
           they are not only willing to grow their own personal brand but
           together will publicize and strengthen the brilliance of Dubai and use
           their strong impact on their combined, enormous crowd to grow the
           market value of our partners.
         </Animated.Text>
-        <TouchableOpacity style={s.btn}>
-          <Text style={s.btnText}>GET STARTED</Text>
-          <Icon name="arrow-right" size={30} />
-        </TouchableOpacity>
+        <Animated.View entering={StretchInY.duration(750)}>
+          <TouchableOpacity style={s.btn} onPress={start}>
+            <Text style={s.btnText}>GET STARTED</Text>
+            <Icon name="arrow-right" size={30} color="white" />
+          </TouchableOpacity>
+        </Animated.View>
       </ScrollView>
     </View>
   );
@@ -92,7 +94,7 @@ const s = StyleSheet.create({
     alignSelf: "center",
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,.2)",
-    marginBottom: 40,
+    marginBottom: 20,
   },
   logo: {
     width: 150,
@@ -103,9 +105,11 @@ const s = StyleSheet.create({
   header: {
     fontSize: 24,
     fontFamily: "medium",
+  },
+  headerContainer: {
     borderLeftWidth: 5,
     borderColor: "rgb(139,0,139)",
-    paddingLeft: 15,
+    paddingLeft: 10,
     marginBottom: 15,
     marginTop: 15,
   },
@@ -117,17 +121,19 @@ const s = StyleSheet.create({
   btn: {
     width: "95%",
     padding: 15,
-    backgroundColor: "rgba(0,0,0,.1)",
+    backgroundColor: "rgb(139,0,139)",
     marginTop: 20,
     marginBottom: 50,
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: 10,
   },
   btnText: {
     fontSize: 20,
     fontFamily: "regular",
     marginRight: "auto",
     letterSpacing: 1,
+    color: "white",
   },
   animated: {
     fontFamily: "bold",

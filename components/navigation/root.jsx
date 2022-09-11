@@ -1,16 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Intro from "../screens/intro";
 import DrawerNav from "./drawer";
+import AuthStack from "./auth";
 
 const Root = createStackNavigator();
 
 function RootStack() {
   return (
-    <Root.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="InfluencersList"
-    >
-      <Root.Screen name="Intro" component={Intro} />
+    <Root.Navigator screenOptions={{ headerShown: false }}>
+      <Root.Screen name="Auth" component={AuthStack} />
       <Root.Screen name="App" component={DrawerNav} />
     </Root.Navigator>
   );

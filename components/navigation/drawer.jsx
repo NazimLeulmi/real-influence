@@ -4,10 +4,10 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import Tabs from "./tabs";
-import Settings from "../screens/settings";
-import Notifications from "../screens/notifications";
-import Wishlist from "../screens/wishlist";
+import Tabs from "../tabs";
+import Settings from "../../screens/settings";
+import Notifications from "../../screens/notifications";
+import Wishlist from "../../screens/wishlist";
 import {
   ImageBackground,
   StyleSheet,
@@ -16,8 +16,8 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import Bg from "../assets/background.jpg";
-import Logo from "../assets/logo.png";
+import Bg from "../../assets/background.jpg";
+import Logo from "../../assets/logo.png";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 const Drawer = createDrawerNavigator();
@@ -49,6 +49,7 @@ function DrawerNav() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <DrawerView {...props} />}
+      initialRouteName="Main"
       screenOptions={{
         headerShown: false,
         drawerLabelStyle: {
