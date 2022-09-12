@@ -64,7 +64,7 @@ function Intro() {
         <Animated.View entering={StretchInY.duration(750)}>
           <TouchableOpacity style={s.btn} onPress={start}>
             <Text style={s.btnText}>GET STARTED</Text>
-            <Icon name="arrow-right" size={30} color="white" />
+            <Icon name="arrow-right" size={30} color="black" />
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
@@ -108,7 +108,7 @@ const s = StyleSheet.create({
   },
   headerContainer: {
     borderLeftWidth: 5,
-    borderColor: "rgb(139,0,139)",
+    borderColor: "#FFD700",
     paddingLeft: 10,
     marginBottom: 15,
     marginTop: 15,
@@ -121,7 +121,7 @@ const s = StyleSheet.create({
   btn: {
     width: "95%",
     padding: 15,
-    backgroundColor: "rgb(139,0,139)",
+    backgroundColor: "#FFD700",
     marginTop: 20,
     marginBottom: 50,
     flexDirection: "row",
@@ -133,7 +133,7 @@ const s = StyleSheet.create({
     fontFamily: "regular",
     marginRight: "auto",
     letterSpacing: 1,
-    color: "white",
+    color: "black",
   },
   animated: {
     fontFamily: "bold",

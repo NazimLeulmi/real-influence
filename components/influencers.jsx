@@ -8,37 +8,34 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Gal from "../assets/gal.jpeg";
 import { useNavigation } from "@react-navigation/native";
 
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ firstName, lastName, picture }) {
+function Infleuncer({ name, img, age }) {
   const navigation = useNavigation();
 
   function navigate() {
     navigation.navigate("Influencers", {
       screen: "Influencer",
-      initial: false,
+      params: {
+        name: name,
+        img: img,
+        age: age,
+      },
     });
   }
   return (
     <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image source={{ uri: picture }} style={s.img} />
-      <Text style={s.name}>
-        {firstName} {lastName}
-      </Text>
+      <Image source={img} style={s.img} resizeMethod="resize" />
+      <Text style={s.name}>{name}</Text>
     </TouchableOpacity>
   );
 }
 
-const Infleuncers = ({ data, first }) => {
+const Infleuncers = ({ data }) => {
   const renderItem = ({ item }) => (
-    <Infleuncer
-      firstName={item.firstName}
-      lastName={item.lastName}
-      picture={item.picture}
-    />
+    <Infleuncer name={item.name} img={item.img} age={item.age} />
   );
   return (
     <View style={s.container}>
@@ -56,7 +53,7 @@ const Infleuncers = ({ data, first }) => {
 const s = StyleSheet.create({
   container: {
     width: width,
-    height: 155,
+    height: 205,
     position: "relative",
   },
   influencer: {
@@ -64,10 +61,10 @@ const s = StyleSheet.create({
   },
   img: {
     width: width / 3 - 10,
-    height: 125,
+    height: 175,
     margin: 5,
     position: "relative",
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
   name: {
     fontFamily: "regular",

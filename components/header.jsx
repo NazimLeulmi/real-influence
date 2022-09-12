@@ -1,8 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
-
-
 
 function Header({ text, screen }) {
   return (
@@ -15,31 +12,29 @@ function Header({ text, screen }) {
   );
 }
 
-
 const s = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 15
+    padding: 15,
   },
   header: {
-    fontFamily: "regular",
+    fontFamily: "medium",
     textTransform: "uppercase",
     fontSize: 20,
     letterSpacing: 1.5,
   },
   btn: {
     marginLeft: "auto",
-    backgroundColor: "rgba(255,255,255,.5)",
+    backgroundColor: "#FFD700",
     padding: 15,
-    borderWidth: .1,
-    borderRadius: 10
+    borderRadius: 10,
   },
   btnText: {
     fontFamily: "regular",
     letterSpacing: 2,
-    fontSize: 10
-  }
-})
+    fontSize: 10,
+  },
+});
 
 export default Header;

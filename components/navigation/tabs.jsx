@@ -1,16 +1,17 @@
 import React from "react";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Brands from "../screens/brands";
-import Categories from "../screens/categories";
-import InfluencersStack from "./navigation/influencers";
-import Home from "../screens/home";
+import Brands from "../../screens/brands";
+import Categories from "../../screens/categories";
+import InfluencersStack from "./influencers";
+import Home from "../../screens/home";
 
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -46,7 +47,11 @@ function Tabs() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Brands" component={Brands} />
-      <Tab.Screen name="Influencers" component={InfluencersStack} />
+      <Tab.Screen
+        name="Influencers"
+        component={InfluencersStack}
+        options={{ unmountOnBlur: true }}
+      />
       <Tab.Screen name="Categories" component={Categories} />
     </Tab.Navigator>
   );

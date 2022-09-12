@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import Tabs from "../tabs";
+import Tabs from "./tabs";
 import Settings from "../../screens/settings";
 import Notifications from "../../screens/notifications";
 import Wishlist from "../../screens/wishlist";

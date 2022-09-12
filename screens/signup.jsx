@@ -59,10 +59,7 @@ function SignUp({ navigation }) {
   );
 
   return (
-    <KeyboardAvoidingView
-      style={s.container}
-      keyboardVerticalOffset={50}
-    >
+    <KeyboardAvoidingView style={s.container} keyboardVerticalOffset={50}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header route={route.name} />
         {/* EMAIL ADDRESS INPUT */}
@@ -77,6 +74,9 @@ function SignUp({ navigation }) {
         <Label text="PASSWORD" />
         <Input control={control} name="password" error={errors.password} />
         {errors.password ? <Error text={errors.password.message} /> : null}
+        <Label text="PHONE NUMBER" />
+        <Input control={control} name="number" error={errors.number} />
+        {errors.number ? <Error text={errors.number.message} /> : null}
         {/* PASSWORD CONFIRMATION */}
         <Label text="PASSWORD CONFIRMATION" />
         <Input
@@ -101,7 +101,7 @@ function SignUp({ navigation }) {
 export const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(255,255,255,.9)",
+    backgroundColor: "white",
     padding: 20,
     paddingTop: 40,
   },

@@ -27,7 +27,7 @@ const s = StyleSheet.create({
   bold: {
     fontFamily: "bold",
     fontSize: 16,
-    color: "purple",
+    color: "#FFD700",
   },
 });
 

@@ -1,30 +1,27 @@
-import * as React from 'react';
-import { Dimensions, Text, View } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
+import * as React from "react";
+import { Dimensions, Text, View, Image } from "react-native";
+import Carousel from "react-native-reanimated-carousel";
+import { carousel } from "../data";
 
 function MyCarousel({ margin }) {
-  const width = Dimensions.get('window').width;
+  const width = Dimensions.get("window").width;
   return (
     <View style={{ flex: 1, marginTop: margin ? 20 : 0 }}>
       <Carousel
         loop
         width={width}
-        height={width / 2}
+        height={300}
         autoPlay={true}
-        data={[...new Array(6).keys()]}
+        data={carousel}
         scrollAnimationDuration={1000}
-        // onSnapToItem={(index) => console.log('current index:', index)}
-        renderItem={({ index }) => (
-          <View
-            style={{
-              flex: 1,
-              borderWidth: 1,
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ textAlign: 'center', fontSize: 30 }}>
-              {index}
-            </Text>
+        renderItem={({ index, item }) => (
+          <View style={{ flex: 1, position: "relative" }}>
+            <Image
+              source={item.img}
+              resizeMode="cover"
+              resizeMethod="auto"
+              style={{ height: "100%", width: "100%" }}
+            />
           </View>
         )}
       />

@@ -20,9 +20,9 @@ function AuthHeader({ route }) {
 let s = StyleSheet.create({
   headline: {
     fontFamily: "brand",
-    fontSize: 55,
-    color: "rgb(139,0,139)",
-    marginBottom:10
+    fontSize: 40,
+    color: "#FFD700",
+    marginBottom: 10,
   },
   subHeader: {
     fontFamily: "light",

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { KeyboardAvoidingView, ScrollView,Platform } from "react-native";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
 import { s } from "./signup";
 import { useForm } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
@@ -53,7 +53,7 @@ function SignIn({ navigation }) {
     }, [])
   );
   return (
-    <KeyboardAvoidingView style={s.container} >
+    <KeyboardAvoidingView style={s.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"

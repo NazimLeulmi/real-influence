@@ -8,43 +8,38 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Gal from "../assets/gal.jpeg";
 import Bg from "../assets/background.jpg";
 import { useNavigation } from "@react-navigation/native";
 import TopBar from "../components/topbar";
-import { InfluencersContext } from "../context/infContext";
+import { influencers } from "../data";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ firstName, lastName, picture }) {
+function Infleuncer({ name, img, age }) {
   const navigation = useNavigation();
 
   function navigate() {
     navigation.navigate("Influencers", {
       screen: "Influencer",
-      initial: false,
+      params: {
+        name: name,
+        img: img,
+        age: age,
+      },
     });
   }
   return (
     <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image source={{ uri: picture }} style={s.img} />
-      <Text style={s.name}>
-        {firstName} {lastName}
-      </Text>
+      <Image source={img} style={s.img} />
+      <Text style={s.name}>{name}</Text>
     </TouchableOpacity>
   );
 }
 
 const Infleuncers = () => {
-  const { influencers } = useContext(InfluencersContext);
-
   const renderItem = ({ item }) => (
-    <Infleuncer
-      firstName={item.firstName}
-      lastName={item.lastName}
-      picture={item.picture}
-    />
+    <Infleuncer name={item.name} img={item.img} age={item.age} />
   );
   return (
     <View style={s.container}>
@@ -81,7 +76,7 @@ const s = StyleSheet.create({
   },
   img: {
     width: width / 3 - 10,
-    height: 125,
+    height: 175,
     margin: 5,
     position: "relative",
   },

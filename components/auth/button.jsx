@@ -22,7 +22,7 @@ function AuthBtn({ handleSubmit, submitForm, disabled, text }) {
 const s = StyleSheet.create({
   btn: {
     width: "100%",
-    backgroundColor: "rgb(139,0,139)",
+    backgroundColor: "#FFD700",
     height: 60,
     borderRadius: 10,
     justifyContent: "center",
@@ -33,7 +33,7 @@ const s = StyleSheet.create({
   btnText: {
     fontFamily: "regular",
     fontSize: 22,
-    color: "white",
+    color: "black",
     letterSpacing: 1,
     marginLeft: 15,
   },

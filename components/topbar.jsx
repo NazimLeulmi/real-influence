@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Dimensions,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
@@ -15,7 +14,7 @@ function TopBar({ stack, title }) {
 
   function action() {
     if (stack) {
-      navigation.goBack(null);
+      navigation.navigate("Home");
     } else {
       navigation.openDrawer();
     }
@@ -27,8 +26,8 @@ function TopBar({ stack, title }) {
         <Icon name={stack ? "arrow-left" : "menu"} style={s.menu} />
       </TouchableOpacity>
       <Text style={s.brand}>{title}</Text>
-      <Icon name="magnify" style={s.icon} />
-      <Icon name="cards-heart-outline" style={s.icon} />
+      <Icon name="magnify" style={s.icon} color="rgba(0,0,0,.45)" />
+      <Icon name="heart" style={s.icon} color="#FFD700" />
     </View>
   );
 }
@@ -57,7 +56,6 @@ const s = StyleSheet.create({
     fontSize: 30,
   },
   icon: {
-    color: "rgba(0,0,0,.45)",
     fontSize: 25,
     marginLeft: 5,
   },

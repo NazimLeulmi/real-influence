@@ -7,12 +7,14 @@ function AuthInput({ control, name, error, password }) {
   const placeholders = {
     email: "Enter a valid email",
     name: "Enter your username",
+    number: "Enter your phone number",
     password: "Enter your password",
     passwordc: "Confirm your password",
   };
   const icons = {
     email: "email",
     name: "account",
+    number: "phone",
     password: "lock",
     passwordc: "lock",
   };
@@ -94,7 +96,7 @@ let s = StyleSheet.create({
   input: {
     width: "100%",
     height: 60,
-    backgroundColor: "#FAF9F6",
+    backgroundColor: "rgba(255,255,255,.3)",
     borderWidth: 0.5,
     borderColor: "rgba(0,0,0,.1)",
     borderRadius: 10,
