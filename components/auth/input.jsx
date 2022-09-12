@@ -6,13 +6,13 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 function AuthInput({ control, name, error, password }) {
   const placeholders = {
     email: "Enter a valid email",
-    username: "Enter your username",
+    name: "Enter your username",
     password: "Enter your password",
     passwordc: "Confirm your password",
   };
   const icons = {
     email: "email",
-    username: "account",
+    name: "account",
     password: "lock",
     passwordc: "lock",
   };
@@ -32,7 +32,7 @@ function AuthInput({ control, name, error, password }) {
         message: "The email is invalid",
       },
     },
-    username: {
+    name: {
       required: { value: true, message: "The username is required" },
       minLength: {
         value: 3,
@@ -40,11 +40,7 @@ function AuthInput({ control, name, error, password }) {
       },
       maxLength: {
         value: 10,
-        message: "The maximum length is 10 characters",
-      },
-      pattern: {
-        value: /^[a-z0-9]+$/i,
-        message: "The username is must be alphanumeric",
+        message: "The maximum length is 20 characters",
       },
     },
     password: {
@@ -73,7 +69,7 @@ function AuthInput({ control, name, error, password }) {
         render={({ field: { value, onChange, onBlur } }) => (
           <>
             <TextInput
-              style={error ? s.inputError : s.input}
+              style={s.input}
               placeholder={placeholders[name]}
               placeholderTextColor="rgba(0,0,0,.25)"
               onChangeText={onChange}
@@ -102,20 +98,6 @@ let s = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: "rgba(0,0,0,.1)",
     borderRadius: 10,
-    marginTop: 8,
-    marginBottom: 10,
-    fontSize: 18,
-    paddingLeft: 15,
-    paddingRight: 15,
-    position: "relative",
-  },
-  inputError: {
-    width: "100%",
-    height: 60,
-    backgroundColor: "#FAF9F6",
-    borderWidth: 1,
-    borderColor: "red",
-    borderRadius: 15,
     marginTop: 8,
     marginBottom: 10,
     fontSize: 18,

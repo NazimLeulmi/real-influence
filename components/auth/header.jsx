@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
+import Animated, { SlideInLeft } from "react-native-reanimated";
 
 function AuthHeader({ route }) {
   return (
     <>
-      <Text style={s.headline}>
+      <Animated.Text style={s.headline} entering={SlideInLeft.duration(500)}>
         {route === "SignUp" ? "SIGN UP" : "SIGN IN"}
-      </Text>
+      </Animated.Text>
       <Text style={s.subHeader}>
         {route === "SignUp"
           ? "Enter a valid email and a strong password to create an account"
@@ -18,10 +19,10 @@ function AuthHeader({ route }) {
 
 let s = StyleSheet.create({
   headline: {
-    fontFamily: "bold",
+    fontFamily: "brand",
     fontSize: 55,
-    width: "75%",
-    color: "purple",
+    color: "rgb(139,0,139)",
+    marginBottom:10
   },
   subHeader: {
     fontFamily: "light",

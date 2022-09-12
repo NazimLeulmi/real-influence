@@ -62,7 +62,6 @@ function SignUp({ navigation }) {
     <KeyboardAvoidingView
       style={s.container}
       keyboardVerticalOffset={50}
-      behavior="padding"
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header route={route.name} />
@@ -71,9 +70,9 @@ function SignUp({ navigation }) {
         <Input control={control} name="email" error={errors.email} />
         {errors.email ? <Error text={errors.email.message} /> : null}
         {/* USERNAME INPUT */}
-        <Label text="USERNAME" />
-        <Input control={control} name="username" error={errors.username} />
-        {errors.username ? <Error text={errors.username.message} /> : null}
+        <Label text="FULL NAME" />
+        <Input control={control} name="name" error={errors.name} />
+        {errors.name ? <Error text={errors.name.message} /> : null}
         {/* PASSWORD INPUT */}
         <Label text="PASSWORD" />
         <Input control={control} name="password" error={errors.password} />
