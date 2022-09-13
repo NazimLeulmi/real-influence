@@ -11,19 +11,17 @@ import {
 import Bg from "../assets/background.jpg";
 import Logo from "../assets/logo.png";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import Animated, {
-  ZoomIn,
-  FadeIn,
-  FadeInLeft,
-  StretchInY,
-} from "react-native-reanimated";
+import Animated, { ZoomIn, FadeIn } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
+import Model from "../assets/model.jpg";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Intro() {
   const navigation = useNavigation();
+
+  const [loading, setLoading] = React.useState(true);
 
   function start() {
     navigation.navigate("Auth", { screen: "SignIn" });
@@ -35,33 +33,32 @@ function Intro() {
         <Image source={Bg} style={s.bg} />
       </View>
       <ScrollView style={s.scroll}>
-        <Animated.Image
-          source={Logo}
-          style={s.logo}
-          entering={ZoomIn.duration(650)}
-        />
-        <Animated.Text style={s.brand} entering={FadeInLeft.duration(1000)}>
-          Miss Influencer
+        <View style={s.hero}>
+          <Image
+            source={Model}
+            style={s.img}
+            onLoad={() => setLoading(false)}
+          />
+          {loading === false && (
+            <>
+              <Animated.Image
+                source={Logo}
+                style={s.logo}
+                entering={ZoomIn.duration(650)}
+              />
+              <Animated.Text entering={FadeIn.duration(650)} style={s.brand}>
+                Miss Influencer
+              </Animated.Text>
+            </>
+          )}
+        </View>
+        <Animated.Text style={s.text} entering={FadeIn.duration(1500)}>
+          Our primary vision of Miss Influencer is to support and strengthen
+          those talented individuals who are ready to use their social media
+          platforms to create value, generate meaningful engagement and build a
+          community by empowering each other.
         </Animated.Text>
-        <Animated.View
-          style={s.headerContainer}
-          entering={FadeInLeft.duration(800)}
-        >
-          <Animated.Text style={s.header} entering={FadeInLeft.duration(1000)}>
-            OUR MISSION
-          </Animated.Text>
-        </Animated.View>
-        <Animated.Text style={s.text} entering={FadeIn.duration(1200)}>
-          Miss Influencer Dubai is dedicated to spread value throughout beauty.
-          We aim to prove that – on the contrary to so many misconceptions –
-          dazzling and powerful women of social media can indeed rule the whole
-          world by using their positive influence on their followers. This time
-          they are not only willing to grow their own personal brand but
-          together will publicize and strengthen the brilliance of Dubai and use
-          their strong impact on their combined, enormous crowd to grow the
-          market value of our partners.
-        </Animated.Text>
-        <Animated.View entering={StretchInY.duration(750)}>
+        <Animated.View entering={FadeIn.duration(1500)}>
           <TouchableOpacity style={s.btn} onPress={start}>
             <Text style={s.btnText}>GET STARTED</Text>
             <Icon name="arrow-right" size={30} color="black" />
@@ -86,59 +83,63 @@ const s = StyleSheet.create({
     left: 0,
   },
   scroll: {
-    padding: 20,
+    padding: 15,
+    position: "relative",
+  },
+  hero: {
+    width: width - 30,
+    height: height / 1.7,
+    alignSelf: "center",
+    position: "relative",
+    borderRadius: 20,
+  },
+  img: {
+    resizeMode: "cover",
+    width: "100%",
+    height: "100%",
+    borderRadius: 20,
+  },
+  logo: {
+    position: "absolute",
+    width: 100,
+    height: 100,
+    bottom: 0,
+    left: 0,
+    zIndex: 2,
+    margin: 20,
   },
   brand: {
     fontFamily: "brand",
     fontSize: 30,
-    alignSelf: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(0,0,0,.2)",
-    marginBottom: 20,
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    alignSelf: "center",
-    marginTop: 15,
-  },
-  header: {
-    fontSize: 24,
-    fontFamily: "medium",
-  },
-  headerContainer: {
-    borderLeftWidth: 5,
-    borderColor: "#FFD700",
-    paddingLeft: 10,
-    marginBottom: 15,
-    marginTop: 15,
+    color: "#FFD700",
+    position: "absolute",
+    zIndex: 2,
+    transform: [{ rotate: "270deg" }],
+    right: -60,
+    bottom: "50%",
   },
   text: {
-    fontSize: 18,
     fontFamily: "regular",
-    width: "95%",
+    fontSize: 17,
+    margin: 10,
+    marginTop: 20,
   },
   btn: {
-    width: "95%",
-    padding: 15,
+    width: width - 40,
     backgroundColor: "#FFD700",
-    marginTop: 20,
-    marginBottom: 50,
+    borderRadius: 20,
+    margin: 10,
+    marginTop: 15,
+    alignSelf: "center",
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 10,
+    padding: 15,
   },
   btnText: {
-    fontSize: 20,
-    fontFamily: "regular",
-    marginRight: "auto",
+    fontFamily: "medium",
+    fontSize: 18,
     letterSpacing: 1,
-    color: "black",
-  },
-  animated: {
-    fontFamily: "bold",
-    fontSize: 30,
-    marginBottom: 30,
   },
 });
 

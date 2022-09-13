@@ -19,10 +19,7 @@ function InfluencersStack() {
   }
   useResetScreenOnBlur();
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="InfluencersList"
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="InfluencersList" component={Infleuncers} />
       <Stack.Screen name="Influencer" component={Profile} />
     </Stack.Navigator>

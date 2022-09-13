@@ -4,9 +4,11 @@ import { Controller } from "react-hook-form";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 function AuthInput({ control, name, error, password }) {
+  const [focused, setFocused] = React.useState(false);
+
   const placeholders = {
-    email: "Enter a valid email",
-    name: "Enter your username",
+    email: "Enter your email address",
+    name: "Enter your name",
     number: "Enter your phone number",
     password: "Enter your password",
     passwordc: "Confirm your password",
@@ -45,6 +47,17 @@ function AuthInput({ control, name, error, password }) {
         message: "The maximum length is 20 characters",
       },
     },
+    number: {
+      required: { value: true, message: "The mobile number is required" },
+      minLength: {
+        value: 3,
+        message: "The minimum length is 10 characters",
+      },
+      maxLength: {
+        value: 10,
+        message: "The maximum length is 10 characters",
+      },
+    },
     password: {
       required: { value: true, message: "The password is required" },
       minLength: {
@@ -71,11 +84,12 @@ function AuthInput({ control, name, error, password }) {
         render={({ field: { value, onChange, onBlur } }) => (
           <>
             <TextInput
-              style={s.input}
+              style={focused ? s.focused : s.input}
               placeholder={placeholders[name]}
               placeholderTextColor="rgba(0,0,0,.25)"
               onChangeText={onChange}
-              onBlur={onBlur}
+              onBlur={() => setFocused(false)}
+              onFocus={() => setFocused(true)}
               secureTextEntry={name === "password" || name === "passwordc"}
               value={value}
               autoComplete="password"
@@ -95,22 +109,34 @@ let s = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 60,
-    backgroundColor: "rgba(255,255,255,.3)",
-    borderWidth: 0.5,
-    borderColor: "rgba(0,0,0,.1)",
-    borderRadius: 10,
+    height: 55,
+    backgroundColor: "rgba(255,255,255,.65)",
+    borderLeftWidth: 3,
+    borderLeftColor: "gold",
     marginTop: 8,
     marginBottom: 10,
-    fontSize: 18,
-    paddingLeft: 15,
+    fontSize: 16,
+    paddingLeft: 55,
+    paddingRight: 15,
+    position: "relative",
+  },
+  focused: {
+    width: "100%",
+    height: 55,
+    backgroundColor: "rgba(255,255,255,.65)",
+    borderLeftWidth: 5,
+    borderLeftColor: "darkgold",
+    marginTop: 8,
+    marginBottom: 10,
+    fontSize: 16,
+    paddingLeft: 55,
     paddingRight: 15,
     position: "relative",
   },
   inputIcon: {
     position: "absolute",
-    right: 15,
-    color: "rgba(0,0,0,.2)",
+    left: 15,
+    color: "rgba(0,0,0,.25)",
   },
 });
 

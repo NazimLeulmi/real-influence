@@ -41,7 +41,7 @@ function App() {
         onLayout={onLayoutRootView}
         style={{ flex: 1, backgroundColor: "black" }}
       >
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="dark-content" backgroundColor="whitesmoke" />
         <NavigationContainer>
           <InfluencersProvider>
             <AuthProvider>

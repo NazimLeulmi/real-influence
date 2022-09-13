@@ -8,7 +8,7 @@ function AuthLabel({ text }) {
 let s = StyleSheet.create({
   label: {
     fontFamily: "regular",
-    fontSize: 15,
+    fontSize: 14,
     width: "75%",
     color: "black",
   },

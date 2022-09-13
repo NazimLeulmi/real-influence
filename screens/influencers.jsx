@@ -7,18 +7,18 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import Bg from "../assets/background.jpg";
 import { useNavigation } from "@react-navigation/native";
 import TopBar from "../components/topbar";
-import { influencers } from "../data";
+import { InfluencersContext } from "../context/infContext";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Infleuncer({ name, img, age }) {
   const navigation = useNavigation();
-
   function navigate() {
     navigation.navigate("Influencers", {
       screen: "Influencer",
@@ -37,10 +37,13 @@ function Infleuncer({ name, img, age }) {
   );
 }
 
-const Infleuncers = () => {
-  const renderItem = ({ item }) => (
-    <Infleuncer name={item.name} img={item.img} age={item.age} />
-  );
+function InfluencersList() {
+  const { influencers } = useContext(InfluencersContext);
+
+  function renderItem({ item }) {
+    return <Infleuncer name={item.name} img={item.img} age={item.age} />;
+  }
+
   return (
     <View style={s.container}>
       <View>
@@ -55,7 +58,7 @@ const Infleuncers = () => {
       />
     </View>
   );
-};
+}
 
 const s = StyleSheet.create({
   container: {
@@ -86,4 +89,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default Infleuncers;
+export default InfluencersList;

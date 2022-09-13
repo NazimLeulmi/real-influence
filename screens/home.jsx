@@ -6,12 +6,14 @@ import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import { ScrollView } from "react-native-gesture-handler";
 import Brands from "../components/brands";
-import { influencers } from "../data";
+import { InfluencersContext } from "../context/infContext";
+import React from "react";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Home() {
+  const { influencers } = React.useContext(InfluencersContext);
   return (
     <View style={s.container}>
       <View>

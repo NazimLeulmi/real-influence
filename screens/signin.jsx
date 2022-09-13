@@ -12,6 +12,8 @@ import Link from "../components/auth/link";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { AuthContext } from "../context/authContext";
+import AuthBrand from "../components/auth/brand";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function SignIn({ navigation }) {
   // React hook form state
@@ -58,6 +60,7 @@ function SignIn({ navigation }) {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
+        <AuthBrand text="Sign in" />
         <Header route={route.name} />
         {/* EMAIL ADDRESS INPUT */}
         <Label text="EMAIL ADDRESS" />

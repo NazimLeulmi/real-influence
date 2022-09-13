@@ -34,7 +34,7 @@ function TopBar({ stack, title }) {
 
 const s = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(255,255,255,.5)",
+    backgroundColor: "whitesmoke",
     width: windowWidth,
     height: 90,
     display: "flex",
@@ -42,7 +42,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 15,
-    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderBottomColor: "rgba(0,0,0,.3)",
   },
   brand: {

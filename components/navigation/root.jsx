@@ -8,7 +8,7 @@ function RootStack() {
   return (
     <Root.Navigator screenOptions={{ headerShown: false }}>
       <Root.Screen name="Auth" component={AuthStack} />
-      {/* <Root.Screen name="App" component={DrawerNav} /> */}
+      <Root.Screen name="App" component={DrawerNav} />
     </Root.Navigator>
   );
 }

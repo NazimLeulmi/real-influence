@@ -9,7 +9,7 @@ function AuthLink({ navigate, route }) {
     >
       <Animated.Text style={s.link} entering={SlideInDown.duration(500)}>
         {route === "SignUp" ? "Already" : "Don't"} have an account ?{" "}
-        <Text style={s.bold}>{route === "SignUp" ? "SIGN IN" : "SIGN UP"}</Text>
+        <Text style={s.bold}>{route === "SignUp" ? "Sign in" : "Sign up"}</Text>
       </Animated.Text>
     </TouchableOpacity>
   );
@@ -25,9 +25,9 @@ const s = StyleSheet.create({
     color: "black",
   },
   bold: {
-    fontFamily: "bold",
-    fontSize: 16,
-    color: "#FFD700",
+    fontFamily: "medium",
+    fontSize: 15,
+    letterSpacing: 1,
   },
 });
 

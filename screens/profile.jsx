@@ -1,7 +1,6 @@
 import React from "react";
 import {
   ScrollView,
-  StatusBar,
   Text,
   View,
   StyleSheet,
@@ -31,7 +30,6 @@ function Profile({ route, navigation }) {
         <Image source={Bg} style={s.bg} />
       </View>
       <ScrollView>
-        <StatusBar />
         <TopBar title="Influencer Profile" stack={true} />
         <View style={s.hero}>
           <View style={s.imgContainer}>

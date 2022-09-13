@@ -1,35 +1,32 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import Animated, { SlideInLeft } from "react-native-reanimated";
+import { StyleSheet, Text, View } from "react-native";
 
 function AuthHeader({ route }) {
   return (
-    <>
-      <Animated.Text style={s.headline} entering={SlideInLeft.duration(500)}>
-        {route === "SignUp" ? "SIGN UP" : "SIGN IN"}
-      </Animated.Text>
-      <Text style={s.subHeader}>
+    <View style={s.container}>
+      <Text style={s.headline}>
         {route === "SignUp"
           ? "Enter a valid email and a strong password to create an account"
-          : "Enter your email and password to start chatting"}
+          : "Enter your email and password to join our community of influencers"}
       </Text>
-    </>
+    </View>
   );
 }
 
 let s = StyleSheet.create({
-  headline: {
-    fontFamily: "brand",
-    fontSize: 40,
-    color: "#FFD700",
-    marginBottom: 10,
-  },
-  subHeader: {
-    fontFamily: "light",
-    fontSize: 22,
-    width: "75%",
-    color: "black",
+  container: {
+    marginTop: 30,
     marginBottom: 30,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: "rgba(0,0,0,.2)",
+  },
+  headline: {
+    fontFamily: "medium",
+    fontSize: 18,
+    marginBottom: 10,
   },
 });
 
