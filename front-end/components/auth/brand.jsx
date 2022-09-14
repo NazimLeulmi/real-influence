@@ -28,7 +28,7 @@ let s = StyleSheet.create({
     height: 75,
   },
   brand: {
-    fontFamily: "brand",
+    fontFamily: "medium",
     marginLeft: 15,
     fontSize: 26,
   },

@@ -7,11 +7,11 @@ import Header from "../components/auth/header";
 import Input from "../components/auth/input";
 import Error from "../components/auth/error";
 import Btn from "../components/auth/button";
-import Link from "../components/auth/link";
 import { useFocusEffect } from "@react-navigation/native";
 import AuthBrand from "../components/auth/brand";
+import PicturePicker from "../components/auth/imagePicker";
 
-function SignUp({ navigation }) {
+function SignUpTwo({ navigation }) {
   const route = useRoute();
   const {
     handleSubmit,
@@ -63,18 +63,8 @@ function SignUp({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <AuthBrand text="Sign up" />
         <Header route={route.name} />
-        {/* EMAIL ADDRESS INPUT */}
-        <Label text="Email address" />
-        <Input control={control} name="email" error={errors.email} />
-        {errors.email ? <Error text={errors.email.message} /> : null}
-        {/* USERNAME INPUT */}
-        <Label text="Full name" />
-        <Input control={control} name="name" error={errors.name} />
-        {errors.name ? <Error text={errors.name.message} /> : null}
-        {/* MOBILE NUMBER */}
-        <Label text="Mobile number" />
-        <Input control={control} name="number" error={errors.number} />
-        {errors.number ? <Error text={errors.number.message} /> : null}
+        {/* UPLOAD PROFILE IMAGE */}
+        <PicturePicker />
         {/* PASSWORD INPUT */}
         <Label text="Password" />
         <Input control={control} name="password" error={errors.password} />
@@ -88,13 +78,13 @@ function SignUp({ navigation }) {
           password={password.current}
         />
         {errors.passwordc ? <Error text={errors.passwordc.message} /> : null}
+
         <Btn
           handleSubmit={handleSubmit}
           submitForm={submitForm}
-          text="SIGN UP"
+          text="SUBMIT"
           disabled={disabled}
         />
-        <Link route={route.name} navigate={navigation.navigate} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -109,4 +99,4 @@ export const s = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default SignUpTwo;

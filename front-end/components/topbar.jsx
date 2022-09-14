@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 function TopBar({ stack, title }) {
   const navigation = useNavigation();
+  const route = useRoute();
 
   function action() {
     if (stack) {
@@ -26,7 +27,6 @@ function TopBar({ stack, title }) {
         <Icon name={stack ? "arrow-left" : "menu"} style={s.menu} />
       </TouchableOpacity>
       <Text style={s.brand}>{title}</Text>
-      <Icon name="magnify" style={s.icon} color="rgba(0,0,0,.45)" />
       <Icon name="heart" style={s.icon} color="#FFD700" />
     </View>
   );

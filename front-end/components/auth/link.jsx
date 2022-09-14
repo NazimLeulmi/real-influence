@@ -5,11 +5,13 @@ import Animated, { SlideInDown } from "react-native-reanimated";
 function AuthLink({ navigate, route }) {
   return (
     <TouchableOpacity
-      onPress={() => navigate(route === "SignUp" ? "SignIn" : "SignUp")}
+      onPress={() => navigate(route === "SignUpOne" ? "SignIn" : "SignUpOne")}
     >
       <Animated.Text style={s.link} entering={SlideInDown.duration(500)}>
-        {route === "SignUp" ? "Already" : "Don't"} have an account ?{" "}
-        <Text style={s.bold}>{route === "SignUp" ? "Sign in" : "Sign up"}</Text>
+        {route === "SignUpOne" ? "Already" : "Don't"} have an account ?{" "}
+        <Text style={s.bold}>
+          {route === "SignUpOne" ? "Sign in" : "Sign up"}
+        </Text>
       </Animated.Text>
     </TouchableOpacity>
   );

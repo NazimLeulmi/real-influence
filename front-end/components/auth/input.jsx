@@ -7,15 +7,17 @@ function AuthInput({ control, name, error, password }) {
   const [focused, setFocused] = React.useState(false);
 
   const placeholders = {
-    email: "Enter your email address",
-    name: "Enter your name",
-    number: "Enter your phone number",
+    email: "email@domain.com",
+    name: "Lara Croft",
+    country: "+XXX",
+    number: "XXXXXXXXX",
     password: "Enter your password",
     passwordc: "Confirm your password",
   };
   const icons = {
     email: "email",
     name: "account",
+    country: "flag",
     number: "phone",
     password: "lock",
     passwordc: "lock",
@@ -102,7 +104,7 @@ function AuthInput({ control, name, error, password }) {
   );
 }
 
-let s = StyleSheet.create({
+export let s = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",

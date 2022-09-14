@@ -9,17 +9,17 @@ import { useNavigation } from "@react-navigation/native";
 
 function AuthBtn({ handleSubmit, submitForm, disabled, text }) {
   const navigation = useNavigation();
-
+  function action() {
+    if (text === "NEXT") {
+      navigation.navigate("SignUpTwo");
+    } else if (text === "SUBMIT") {
+      handleSubmit(submitForm);
+    } else {
+      navigation.navigate("App");
+    }
+  }
   return (
-    <TouchableOpacity
-      style={s.btn}
-      onPress={
-        text === "SIGN UP"
-          ? handleSubmit(submitForm)
-          : () => navigation.navigate("App")
-      }
-      disabled={disabled}
-    >
+    <TouchableOpacity style={s.btn} disabled={disabled} onPress={action}>
       {disabled ? <ActivityIndicator size="small" color="white" /> : null}
       <Text style={s.btnText}>{text}</Text>
     </TouchableOpacity>

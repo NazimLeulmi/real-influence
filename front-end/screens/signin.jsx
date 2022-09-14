@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { KeyboardAvoidingView, ScrollView } from "react-native";
-import { s } from "./signup";
+import { s } from "./signUpOne";
 import { useForm } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
 import Label from "../components/auth/label";

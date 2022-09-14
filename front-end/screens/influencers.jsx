@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   FlatList,
@@ -13,6 +13,7 @@ import Bg from "../assets/background.jpg";
 import { useNavigation } from "@react-navigation/native";
 import TopBar from "../components/topbar";
 import { InfluencersContext } from "../context/infContext";
+import Search from "../components/search";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -39,9 +40,19 @@ function Infleuncer({ name, img, age }) {
 
 function InfluencersList() {
   const { influencers } = useContext(InfluencersContext);
+  const [filtered, setFiltered] = useState(influencers);
+  const [text, setText] = useState("");
 
   function renderItem({ item }) {
     return <Infleuncer name={item.name} img={item.img} age={item.age} />;
+  }
+
+  async function filter(text) {
+    const copy = [...influencers];
+    const filtered = await copy.filter((influencer) =>
+      influencer.name.includes(text)
+    );
+    setFiltered(filtered);
   }
 
   return (
@@ -50,8 +61,9 @@ function InfluencersList() {
         <Image source={Bg} style={s.bg} />
       </View>
       <TopBar title="influencers" />
+      <Search value={text} onChange={filter} />
       <FlatList
-        data={influencers}
+        data={filtered}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={3}
@@ -82,6 +94,7 @@ const s = StyleSheet.create({
     height: 175,
     margin: 5,
     position: "relative",
+    borderRadius: 8,
   },
   name: {
     fontFamily: "regular",
