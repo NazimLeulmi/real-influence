@@ -19,9 +19,11 @@ import { useFocusEffect } from "@react-navigation/native";
 import AuthBrand from "../components/auth/brand";
 import { s as style } from "../components/auth/input";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import Countries from "../components/auth/countries";
 
 function SignUpOne({ navigation }) {
   const route = useRoute();
+  const [open, setOpen] = useState(false)
   const {
     handleSubmit,
     control,
@@ -68,7 +70,7 @@ function SignUpOne({ navigation }) {
             style={style.inputIcon}
             onPress={() => setShow(true)}
           />
-          <TouchableOpacity style={s.countryPicker}>
+          <TouchableOpacity style={s.countryPicker} onPress={()=>setOpen(true)}>
             <Text style={s.pickerText}>+XXX</Text>
           </TouchableOpacity>
         </View>
@@ -83,6 +85,7 @@ function SignUpOne({ navigation }) {
           disabled={false}
         />
         <Link route={route.name} navigate={navigation.navigate} />
+        <Countries open={open} setOpen={setOpen}/>
       </ScrollView>
     </KeyboardAvoidingView>
   );

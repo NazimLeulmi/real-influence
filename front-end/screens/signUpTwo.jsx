@@ -10,6 +10,7 @@ import Btn from "../components/auth/button";
 import { useFocusEffect } from "@react-navigation/native";
 import AuthBrand from "../components/auth/brand";
 import PicturePicker from "../components/auth/imagePicker";
+import Countries from "../components/auth/countries";
 
 function SignUpTwo({ navigation }) {
   const route = useRoute();
