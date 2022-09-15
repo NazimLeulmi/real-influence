@@ -7,7 +7,6 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  Pressable,
 } from "react-native";
 import Bg from "../assets/background.jpg";
 import { useNavigation } from "@react-navigation/native";
@@ -18,33 +17,42 @@ import Search from "../components/search";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ name, img, age }) {
-  const navigation = useNavigation();
-  function navigate() {
-    navigation.navigate("Influencers", {
+class Influencer extends React.PureComponent {
+  navigate = () => {
+    this.props.navigation.navigate("Influencers", {
       screen: "Influencer",
       params: {
-        name: name,
-        img: img,
-        age: age,
+        name: this.props.name,
+        img: this.props.img,
+        age: this.props.age,
       },
     });
+  };
+  render() {
+    return (
+      <TouchableOpacity style={s.influencer} onPress={this.navigate}>
+        <Image source={this.props.img} style={s.img} />
+        <Text style={s.name}>{this.props.name}</Text>
+      </TouchableOpacity>
+    );
   }
-  return (
-    <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image source={img} style={s.img} />
-      <Text style={s.name}>{name}</Text>
-    </TouchableOpacity>
-  );
 }
 
 function InfluencersList() {
   const { influencers } = useContext(InfluencersContext);
   const [filtered, setFiltered] = useState(influencers);
   const [text, setText] = useState("");
+  const navigation = useNavigation();
 
   function renderItem({ item }) {
-    return <Infleuncer name={item.name} img={item.img} age={item.age} />;
+    return (
+      <Influencer
+        name={item.name}
+        img={item.img}
+        age={item.age}
+        navigation={navigation}
+      />
+    );
   }
 
   async function filter(text) {
@@ -91,7 +99,7 @@ const s = StyleSheet.create({
   },
   img: {
     width: width / 3 - 10,
-    height: 175,
+    height: width / 3 - 10,
     margin: 5,
     position: "relative",
     borderRadius: 8,

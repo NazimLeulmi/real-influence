@@ -63,7 +63,7 @@ function SignUpTwo({ navigation }) {
     <KeyboardAvoidingView style={s.container} keyboardVerticalOffset={50}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <AuthBrand text="Sign up" />
-        <Header route={route.name} />
+        <Header text="Upload your profile picture , and enter a strong password" />
         {/* UPLOAD PROFILE IMAGE */}
         <PicturePicker />
         {/* PASSWORD INPUT */}

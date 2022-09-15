@@ -53,18 +53,19 @@ const Infleuncers = ({ data }) => {
 const s = StyleSheet.create({
   container: {
     width: width,
-    height: 205,
+    height: width / 2 + 18,
     position: "relative",
   },
   influencer: {
     alignItems: "center",
   },
   img: {
-    width: width / 3 - 10,
-    height: 175,
+    width: width / 2 - 10,
+    height: width / 2 - 10,
     margin: 5,
     position: "relative",
     resizeMode: "cover",
+    borderRadius: 8,
   },
   name: {
     fontFamily: "regular",

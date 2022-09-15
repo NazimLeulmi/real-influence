@@ -61,13 +61,13 @@ function SignIn({ navigation }) {
         keyboardShouldPersistTaps="always"
       >
         <AuthBrand text="Sign in" />
-        <Header route={route.name} />
+        <Header text="Enter your email address and password to join our community" />
         {/* EMAIL ADDRESS INPUT */}
-        <Label text="EMAIL ADDRESS" />
+        <Label text="Email Address" />
         <Input control={control} name="email" error={errors.email} />
         {errors.email ? <Error text={errors.email.message} /> : null}
         {/* PASSWORD INPUT */}
-        <Label text="PASSWORD" />
+        <Label text="Password" />
         <Input control={control} name="password" error={errors.password} />
         {errors.password ? <Error text={errors.password.message} /> : null}
         <Btn

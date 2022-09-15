@@ -31,30 +31,24 @@ function Profile({ route, navigation }) {
       </View>
       <ScrollView>
         <TopBar title="Influencer Profile" stack={true} />
-        <View style={s.hero}>
-          <View style={s.imgContainer}>
-            <Animated.Image
-              source={img}
-              style={s.img}
-              entering={ZoomInLeft.duration(500)}
-            />
-          </View>
-          <View style={s.content}>
-            <Animated.Text style={s.name} entering={FadeInUp.duration(500)}>
-              {name}
-            </Animated.Text>
-            <Animated.Text style={s.age} entering={FadeInDown.duration(500)}>
-              {age}
-            </Animated.Text>
-          </View>
+        <View style={s.imgContainer}>
+          <Animated.Image
+            source={img}
+            style={s.img}
+            entering={ZoomInLeft.duration(500)}
+          />
         </View>
-        <Text style={s.header}>BIOGRAPHY</Text>
+        <View style={s.content}>
+          <Text style={s.name}>{name} - </Text>
+          <Text style={s.name}>{age}</Text>
+        </View>
+        <Text style={s.header}>BIO</Text>
         <Text style={s.text}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown
         </Text>
-        <Header text="SOMETHING" />
+        <Header text="GALLERY" />
         <MyCarousel />
         <View style={s.btnGroup}>
           <TouchableOpacity style={s.btn} onPress={() => navigation.goBack()}>
@@ -83,43 +77,35 @@ const s = StyleSheet.create({
     top: 0,
     left: 0,
   },
-  hero: {
-    width: width,
-    height: 250,
-    backgroundColor: "rgba(0,0,0,.2)",
-    position: "relative",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
   imgContainer: {
-    flex: 1,
-    height: "100%",
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  content: {
-    height: "100%",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  name: {
-    fontFamily: "brand",
-    fontSize: 22,
-    color: "#FFD700",
-  },
-  age: {
-    fontFamily: "brand",
-    fontSize: 22,
+    width: width / 1.75,
+    height: width / 1.75,
+    borderRadius: width / 1.75,
+    alignSelf: "center",
+    margin: 15,
   },
   img: {
     resizeMode: "cover",
-    width: "90%",
-    height: "90%",
-    borderRadius: 10,
+    width: "100%",
+    height: "100%",
+    borderRadius: width / 1.75,
+    marginBottom: 10,
+    borderWidth: 0.5,
+    borderColor: "rgba(0,0,0,.15)",
   },
+  content: {
+    flexDirection: "row",
+    alignSelf: "center",
+    margin: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0,0,0,.1)",
+    paddingBottom: 5,
+  },
+  name: {
+    fontFamily: "regular",
+    fontSize: 18,
+  },
+
   btnGroup: {
     flexDirection: "row",
     padding: 15,

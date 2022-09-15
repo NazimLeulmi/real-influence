@@ -1,14 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-function AuthHeader({ route }) {
+function AuthHeader({ text }) {
   return (
     <View style={s.container}>
-      <Text style={s.headline}>
-        {route === "SignUp"
-          ? "Enter a valid email and a strong password to create an account"
-          : "Enter your email and password to join our community of influencers"}
-      </Text>
+      <Text style={s.headline}>{text}</Text>
     </View>
   );
 }
@@ -24,7 +20,7 @@ let s = StyleSheet.create({
     borderColor: "rgba(0,0,0,.2)",
   },
   headline: {
-    fontFamily: "medium",
+    fontFamily: "light",
     fontSize: 18,
     marginBottom: 10,
   },

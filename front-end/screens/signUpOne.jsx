@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  Dimensions,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
@@ -21,9 +22,14 @@ import { s as style } from "../components/auth/input";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Countries from "../components/auth/countries";
 
+const height = Dimensions.get("window").height;
+const width = Dimensions.get("window").width;
+
 function SignUpOne({ navigation }) {
   const route = useRoute();
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState("+971");
+
   const {
     handleSubmit,
     control,
@@ -52,7 +58,7 @@ function SignUpOne({ navigation }) {
     <KeyboardAvoidingView style={s.container} keyboardVerticalOffset={50}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <AuthBrand text="Sign up" />
-        <Header route={route.name} />
+        <Header text="Enter your credentials to join our community of influencers" />
         {/* EMAIL ADDRESS INPUT */}
         <Label text="Email Address" />
         <Input control={control} name="email" error={errors.email} />
@@ -61,8 +67,8 @@ function SignUpOne({ navigation }) {
         <Label text="Full Name" />
         <Input control={control} name="name" error={errors.name} />
         {errors.name ? <Error text={errors.name.message} /> : null}
-        {/* COUNTRY CODE */}
-        <Label text="Country Code" />
+        {/* MOBILE NUMBER */}
+        <Label text="Mobile Number" />
         <View style={style.inputContainer}>
           <Icon
             name="flag"
@@ -70,13 +76,19 @@ function SignUpOne({ navigation }) {
             style={style.inputIcon}
             onPress={() => setShow(true)}
           />
-          <TouchableOpacity style={s.countryPicker} onPress={()=>setOpen(true)}>
-            <Text style={s.pickerText}>+XXX</Text>
+          <TouchableOpacity
+            style={s.countryPicker}
+            onPress={() => setOpen(true)}
+          >
+            <Text style={s.pickerText}>{code}</Text>
           </TouchableOpacity>
+          <Input
+            control={control}
+            name="number"
+            error={errors.number}
+            number={true}
+          />
         </View>
-        {/* MOBILE NUMBER */}
-        <Label text="Mobile Number" />
-        <Input control={control} name="number" error={errors.number} />
         {errors.number ? <Error text={errors.number.message} /> : null}
         <Btn
           handleSubmit={handleSubmit}
@@ -85,7 +97,7 @@ function SignUpOne({ navigation }) {
           disabled={false}
         />
         <Link route={route.name} navigate={navigation.navigate} />
-        <Countries open={open} setOpen={setOpen}/>
+        <Countries open={open} setOpen={setOpen} setCode={setCode} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -99,8 +111,8 @@ export const s = StyleSheet.create({
     paddingTop: 40,
   },
   countryPicker: {
-    width: "100%",
     height: 55,
+    width: 150,
     backgroundColor: "rgba(255,255,255,.65)",
     borderLeftWidth: 3,
     borderLeftColor: "gold",
@@ -111,6 +123,7 @@ export const s = StyleSheet.create({
     paddingRight: 15,
     position: "relative",
     justifyContent: "center",
+    marginRight: 10,
   },
   pickerText: {
     fontFamily: "regular",

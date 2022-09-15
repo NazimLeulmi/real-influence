@@ -60,7 +60,7 @@ function Intro() {
         </Animated.Text>
         <Animated.View entering={FadeIn.duration(1500)}>
           <TouchableOpacity style={s.btn} onPress={start}>
-            <Text style={s.btnText}>GET STARTED</Text>
+            <Text style={s.btnText}>Continue</Text>
             <Icon name="arrow-right" size={30} color="black" />
           </TouchableOpacity>
         </Animated.View>
@@ -88,7 +88,8 @@ const s = StyleSheet.create({
   },
   hero: {
     width: width - 30,
-    height: height / 1.7,
+    minHeight: height / 1.7,
+    flex: 1,
     alignSelf: "center",
     position: "relative",
     borderRadius: 20,
@@ -109,23 +110,25 @@ const s = StyleSheet.create({
     margin: 20,
   },
   brand: {
-    fontFamily: "brand",
+    fontFamily: "bold",
     fontSize: 30,
     color: "#FFD700",
     position: "absolute",
     zIndex: 2,
-    transform: [{ rotate: "270deg" }],
-    right: -60,
+    transform: [{ rotate: "90deg" }],
+    right: -115,
     bottom: "50%",
+    textTransform: "uppercase",
+    letterSpacing: 1,
   },
   text: {
     fontFamily: "regular",
     fontSize: 17,
-    margin: 10,
     marginTop: 20,
+    flex: 1,
+    padding: 10,
   },
   btn: {
-    width: width - 40,
     backgroundColor: "#FFD700",
     borderRadius: 20,
     margin: 10,
@@ -135,11 +138,13 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
+    alignSelf: "flex-end",
   },
   btnText: {
     fontFamily: "medium",
     fontSize: 18,
     letterSpacing: 1,
+    marginRight: 15,
   },
 });
 

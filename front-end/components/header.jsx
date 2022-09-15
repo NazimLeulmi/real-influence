@@ -1,11 +1,20 @@
 import * as React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 function Header({ text, screen }) {
+  const navigation = useNavigation();
+
+  function action() {
+    if ((text = "INFLUENCERS")) {
+      navigation.navigate("Infleuncers", { screen: "InfluencersList" });
+    }
+  }
+
   return (
     <View style={s.container}>
       <Text style={s.header}>{text}</Text>
-      <TouchableOpacity style={s.btn}>
+      <TouchableOpacity style={s.btn} onPress={action}>
         <Text style={s.btnText}>VIEW ALL</Text>
       </TouchableOpacity>
     </View>

@@ -39,8 +39,12 @@ const InfluencersContext = createContext(null);
 
 function InfluencersProvider({ children }) {
   const [influencers, setInfluencers] = useState(data);
+  const influencersValue = React.useMemo(
+    () => ({ influencers, setInfluencers }),
+    [influencers, setInfluencers]
+  );
   return (
-    <InfluencersContext.Provider value={{ influencers, setInfluencers }}>
+    <InfluencersContext.Provider value={influencersValue}>
       {children}
     </InfluencersContext.Provider>
   );

@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Dimensions } from "react-native";
 import { Controller } from "react-hook-form";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-function AuthInput({ control, name, error, password }) {
-  const [focused, setFocused] = React.useState(false);
+const height = Dimensions.get("window").height;
+const width = Dimensions.get("window").width;
 
+function AuthInput({ control, name, error, password, number }) {
   const placeholders = {
     email: "email@domain.com",
     name: "Lara Croft",
@@ -86,15 +87,15 @@ function AuthInput({ control, name, error, password }) {
         render={({ field: { value, onChange, onBlur } }) => (
           <>
             <TextInput
-              style={focused ? s.focused : s.input}
+              style={number ? s.number : s.input}
               placeholder={placeholders[name]}
               placeholderTextColor="rgba(0,0,0,.25)"
               onChangeText={onChange}
-              onBlur={() => setFocused(false)}
-              onFocus={() => setFocused(true)}
               secureTextEntry={name === "password" || name === "passwordc"}
               value={value}
               autoComplete="password"
+              maxLength={number ? 8 : null}
+              keyboardType={number ? "numeric" : null}
             />
             <Icon style={s.inputIcon} name={icons[name]} size={25} />
           </>
@@ -122,18 +123,16 @@ export let s = StyleSheet.create({
     paddingRight: 15,
     position: "relative",
   },
-  focused: {
-    width: "100%",
+  number: {
     height: 55,
     backgroundColor: "rgba(255,255,255,.65)",
-    borderLeftWidth: 5,
-    borderLeftColor: "darkgold",
     marginTop: 8,
     marginBottom: 10,
     fontSize: 16,
     paddingLeft: 55,
     paddingRight: 15,
     position: "relative",
+    width: width - 150,
   },
   inputIcon: {
     position: "absolute",
