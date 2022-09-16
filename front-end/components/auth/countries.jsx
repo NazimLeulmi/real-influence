@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from "react-native";
 import countries from "../../countries";
 import { Flag } from "react-native-svg-flagkit";
@@ -60,25 +61,27 @@ function Countries({ open, setOpen, setCode }) {
     filteredValue.setFiltered(filtered);
   }
   return (
-    <View>
-      <Modal
-        animationType="slide"
-        visible={open}
-        onRequestClose={() => {
-          setOpen(!open);
-        }}
-      >
-        <View style={s.container}>
-          <Search value={text} onChange={filter} />
-          <FlatList
-            data={filteredValue.filtered}
-            renderItem={renderItem}
-            initialNumToRender={16}
-            keyExtractor={(item) => item.name}
-          />
-        </View>
-      </Modal>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Modal
+          animationType="slide"
+          visible={open}
+          onRequestClose={() => {
+            setOpen(!open);
+          }}
+        >
+          <View style={s.container}>
+            <Search value={text} onChange={filter} />
+            <FlatList
+              data={filteredValue.filtered}
+              renderItem={renderItem}
+              initialNumToRender={16}
+              keyExtractor={(item) => item.name}
+            />
+          </View>
+        </Modal>
+      </View>
+    </SafeAreaView>
   );
 }
 

@@ -39,7 +39,7 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView
         onLayout={onLayoutRootView}
-        style={{ flex: 1, backgroundColor: "black" }}
+        style={{ flex: 1, backgroundColor: "whitesmoke" }}
       >
         <StatusBar barStyle="dark-content" backgroundColor="whitesmoke" />
         <NavigationContainer>

@@ -94,7 +94,6 @@ function AuthInput({ control, name, error, password, number }) {
               secureTextEntry={name === "password" || name === "passwordc"}
               value={value}
               autoComplete="password"
-              maxLength={number ? 8 : null}
               keyboardType={number ? "numeric" : null}
             />
             <Icon style={s.inputIcon} name={icons[name]} size={25} />

@@ -6,10 +6,10 @@ import Img from "../assets/coming.png";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-function Notifications() {
+function Favourites() {
   return (
     <View style={s.container}>
-      <TopBar title="Notifications" />
+      <TopBar title="FAVOURITES" />
       <Text style={s.header}>COMING SOON</Text>
       <Image source={Img} style={s.img} />
     </View>
@@ -37,4 +37,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default Notifications;
+export default Favourites;

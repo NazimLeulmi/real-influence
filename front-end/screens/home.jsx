@@ -5,7 +5,7 @@ import Infleuncers from "../components/influencers";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import { ScrollView } from "react-native-gesture-handler";
-import Brands from "../components/brands";
+import Brands from "../components/sponsors";
 import { InfluencersContext } from "../context/infContext";
 import React from "react";
 
@@ -19,15 +19,12 @@ function Home() {
       <View>
         <Image source={Bg} style={s.bg} />
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <TopBar title="Miss Influencer" />
         <MyCarousel />
-        <Header text="INFLUENCERS" />
-        <Infleuncers data={influencers.slice(0, 8)} />
-        <Infleuncers data={influencers.slice(8, 16)} />
-        <Header text="ANNOUNCEMENTS" />
-        <MyCarousel />
-        <Header text="FEATURED BRANDS" />
+        <Header text="INFLUENCERS" btn />
+        <Infleuncers data={influencers.slice(0, 12)} />
+        <Header text="SPONSORS" btn />
         <Brands />
       </ScrollView>
     </View>

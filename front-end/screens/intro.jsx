@@ -32,7 +32,7 @@ function Intro() {
       <View>
         <Image source={Bg} style={s.bg} />
       </View>
-      <ScrollView style={s.scroll}>
+      <View style={s.content}>
         <View style={s.hero}>
           <Image
             source={Model}
@@ -64,7 +64,7 @@ function Intro() {
             <Icon name="arrow-right" size={30} color="black" />
           </TouchableOpacity>
         </Animated.View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -82,14 +82,14 @@ const s = StyleSheet.create({
     top: 0,
     left: 0,
   },
-  scroll: {
+  content: {
     padding: 15,
     position: "relative",
+    height: height,
   },
   hero: {
     width: width - 30,
-    minHeight: height / 1.7,
-    flex: 1,
+    height: height / 1.75,
     alignSelf: "center",
     position: "relative",
     borderRadius: 20,
@@ -124,15 +124,12 @@ const s = StyleSheet.create({
   text: {
     fontFamily: "regular",
     fontSize: 17,
-    marginTop: 20,
-    flex: 1,
     padding: 10,
   },
   btn: {
     backgroundColor: "#FFD700",
     borderRadius: 20,
     margin: 10,
-    marginTop: 15,
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "space-between",

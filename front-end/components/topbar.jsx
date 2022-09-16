@@ -27,7 +27,6 @@ function TopBar({ stack, title }) {
         <Icon name={stack ? "arrow-left" : "menu"} style={s.menu} />
       </TouchableOpacity>
       <Text style={s.brand}>{title}</Text>
-      <Icon name="heart" style={s.icon} color="#FFD700" />
     </View>
   );
 }
@@ -36,7 +35,7 @@ const s = StyleSheet.create({
   container: {
     backgroundColor: "whitesmoke",
     width: windowWidth,
-    height: 90,
+    height: 60,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -46,18 +45,16 @@ const s = StyleSheet.create({
     borderBottomColor: "rgba(0,0,0,.3)",
   },
   brand: {
-    fontFamily: "brand",
+    fontFamily: "light",
     fontSize: 18,
     marginRight: "auto",
     marginLeft: "auto",
+    letterSpacing: 1,
+    textTransform: "uppercase",
   },
   menu: {
     color: "rgba(0,0,0,.45)",
     fontSize: 30,
-  },
-  icon: {
-    fontSize: 25,
-    marginLeft: 5,
   },
 });
 

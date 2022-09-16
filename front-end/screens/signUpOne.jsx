@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
+  Platform,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
 import Label from "../components/auth/label";
-import Header from "../components/auth/header";
 import Input from "../components/auth/input";
 import Error from "../components/auth/error";
 import Btn from "../components/auth/button";
@@ -55,10 +55,13 @@ function SignUpOne({ navigation }) {
   );
 
   return (
-    <KeyboardAvoidingView style={s.container} keyboardVerticalOffset={50}>
+    <KeyboardAvoidingView
+      style={s.container}
+      keyboardVerticalOffset={50}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <AuthBrand text="Sign up" />
-        <Header text="Enter your credentials to join our community of influencers" />
+        <AuthBrand text="SIGN UP" />
         {/* EMAIL ADDRESS INPUT */}
         <Label text="Email Address" />
         <Input control={control} name="email" error={errors.email} />
@@ -108,7 +111,6 @@ export const s = StyleSheet.create({
     flex: 1,
     backgroundColor: "whitesmoke",
     padding: 20,
-    paddingTop: 40,
   },
   countryPicker: {
     height: 55,

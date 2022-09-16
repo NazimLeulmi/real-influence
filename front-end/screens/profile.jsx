@@ -53,7 +53,7 @@ function Profile({ route, navigation }) {
         <View style={s.btnGroup}>
           <TouchableOpacity style={s.btn} onPress={() => navigation.goBack()}>
             <Icon name="arrow-left" size={22} />
-            <Text style={s.btnText}>GO BACK</Text>
+            <Text style={s.btnText}>BACK</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[s.btn, { backgroundColor: "#FFD700" }]}>
             <Icon name="heart" size={22} />

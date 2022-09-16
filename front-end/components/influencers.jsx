@@ -53,15 +53,14 @@ const Infleuncers = ({ data }) => {
 const s = StyleSheet.create({
   container: {
     width: width,
-    height: width / 2 + 18,
     position: "relative",
   },
   influencer: {
     alignItems: "center",
   },
   img: {
-    width: width / 2 - 10,
-    height: width / 2 - 10,
+    width: width / 2 - 25,
+    height: width / 2 - 25,
     margin: 5,
     position: "relative",
     resizeMode: "cover",

@@ -7,7 +7,7 @@ import {
 import Tabs from "./tabs";
 import Settings from "../../screens/settings";
 import Notifications from "../../screens/notifications";
-import Wishlist from "../../screens/wishlist";
+import Favourites from "../../screens/favourites";
 import {
   ImageBackground,
   StyleSheet,
@@ -89,8 +89,8 @@ function DrawerNav() {
         }}
       />
       <Drawer.Screen
-        name="Wishlist"
-        component={Wishlist}
+        name="Favourites"
+        component={Favourites}
         options={{
           drawerIcon: () => (
             <Icon name="heart" size={22} color="rgba(0,0,0,.5)" />
