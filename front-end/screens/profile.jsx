@@ -23,7 +23,7 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
-  const { name, img, age } = route.params;
+  const { name, img } = route.params;
   return (
     <View style={s.container}>
       <View>
@@ -40,7 +40,6 @@ function Profile({ route, navigation }) {
         </View>
         <View style={s.content}>
           <Text style={s.name}>{name} - </Text>
-          <Text style={s.name}>{age}</Text>
         </View>
         <Text style={s.header}>BIO</Text>
         <Text style={s.text}>

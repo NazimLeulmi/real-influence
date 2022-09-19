@@ -1,8 +1,9 @@
 import * as React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-function Header({ text, btn }) {
+function Header({ text, btn, status, setStatus }) {
   const navigation = useNavigation();
 
   function action() {
@@ -10,6 +11,9 @@ function Header({ text, btn }) {
       navigation.navigate("Influencers", { screen: "InfluencersList" });
     } else if (text === "SPONSORS") {
       navigation.navigate("Sponsors");
+    } else if (text === "BIO") {
+      if (status === "VIEW") setStatus("EDIT");
+      else setStatus("VIEW");
     }
   }
 
@@ -19,6 +23,15 @@ function Header({ text, btn }) {
       {btn ? (
         <TouchableOpacity style={s.btn} onPress={action}>
           <Text style={s.btnText}>VIEW ALL</Text>
+        </TouchableOpacity>
+      ) : null}
+      {text === "BIO" ? (
+        <TouchableOpacity style={s.btn} onPress={action}>
+          {status === "VIEW" ? (
+            <Icon name="pen" size={20} />
+          ) : (
+            <Text style={s.btnText}>SUBMIT</Text>
+          )}
         </TouchableOpacity>
       ) : null}
     </View>

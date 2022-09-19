@@ -13,7 +13,7 @@ function AuthBtn({ handleSubmit, submitForm, disabled, text, errors }) {
       disabled={disabled}
       onPress={handleSubmit(submitForm)}
     >
-      {disabled ? <ActivityIndicator size="small" color="white" /> : null}
+      {disabled ? <ActivityIndicator size="small" color="black" /> : null}
       <Text style={s.btnText}>{text}</Text>
     </TouchableOpacity>
   );

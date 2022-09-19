@@ -4,8 +4,9 @@ import {
   StyleSheet,
   ScrollView,
   Platform,
+  Dimensions,
 } from "react-native";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Label from "../components/auth/label";
 import Input from "../components/auth/input";
 import Error from "../components/auth/error";
@@ -13,7 +14,6 @@ import Btn from "../components/auth/button";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import AuthBrand from "../components/auth/brand";
 import PicturePicker from "../components/auth/imagePicker";
-import mime from "mime";
 
 function SignUpTwo({ navigation }) {
   const route = useRoute();
@@ -28,13 +28,18 @@ function SignUpTwo({ navigation }) {
 
   const password = React.useRef({});
   password.current = watch("password", "");
-  const [disabled, setDisabled] = React.useState(false);
-  const [img, setImg] = React.useState(false);
-
-  console.log(route.params);
+  const [loading, setLoading] = React.useState(false);
+  const [img, setImg] = React.useState(null);
+  const [imgError, setImgError] = React.useState("");
+  const [serverError, setServerError] = React.useState("");
 
   async function submitForm(formData) {
     try {
+      if (!img) {
+        setImgError("The profile picture is required");
+        return;
+      }
+      setLoading(true);
       const uri = img.uri;
       const data = new FormData();
       data.append("email", route.params.email);
@@ -44,22 +49,29 @@ function SignUpTwo({ navigation }) {
       data.append("number", route.params.number);
       data.append("password", formData.password);
       data.append("passwordc", formData.passwordc);
-
-      const newImageUri = "file:///" + uri.split("file:/").join("");
-      data.append("file", {
-        uri: newImageUri,
-        type: "image/jpeg",
-        name: "image.jpg",
+      const fileName = uri.split("/").pop();
+      const mimeType = fileName.split(".").pop();
+      data.append("profileImage", {
+        uri: uri,
+        type: "image/" + mimeType,
+        name: fileName,
       });
-      const url = "http://192.168.0.177:8888/signup";
+      const url = "http://192.168.1.102:8888/signup";
       const headers = { "Content-Type": "multipart/form-data" };
       let response = await fetch(url, {
         method: "post",
         body: data,
         headers: headers,
       });
-      let res = response.json();
-      console.log(res);
+      let res = await response.json();
+      if (res.success === true) {
+        setLoading(false);
+        navigation.navigate("Auth", { screen: "SignIn" });
+      }
+      if (res.success === false) {
+        setLoading(false);
+        setServerError(res.error);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -96,12 +108,15 @@ function SignUpTwo({ navigation }) {
           password={password.current}
         />
         {errors.passwordc ? <Error text={errors.passwordc.message} /> : null}
+        {imgError && !img ? <Error text={imgError} /> : null}
+        {serverError ? <Error text={serverError} /> : null}
 
         <Btn
           handleSubmit={handleSubmit}
           submitForm={submitForm}
           text="SUBMIT"
           errors={errors}
+          disabled={loading}
         />
       </ScrollView>
     </KeyboardAvoidingView>

@@ -8,6 +8,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { InfluencersProvider } from "./context/infContext";
 import RootStack from "./components/navigation/root";
 import { AuthProvider } from "./context/authContext";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 function App() {
   let [fontsLoaded] = useFonts({

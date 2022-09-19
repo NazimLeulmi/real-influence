@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -6,67 +6,77 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  TouchableOpacity,
+  TextInput,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import Header from "../components/header";
-import Animated, { ZoomInLeft } from "react-native-reanimated";
-import ProfileImg from "../assets/pics/pic2.jpg";
-import Pic0 from "../assets/sponsors/pic0.jpg";
-import Pic1 from "../assets/sponsors/pic1.jpg";
-import Pic2 from "../assets/sponsors/pic2.jpg";
-import Pic3 from "../assets/sponsors/pic3.jpg";
+import Animated, {
+  FadeOutLeft,
+  SlideInLeft,
+  ZoomInLeft,
+} from "react-native-reanimated";
 import ProfileGallery from "../components/profileGallery";
-
-const data = [
-  { img: Pic0, id: "0" },
-  { img: Pic1, id: "1" },
-  { img: Pic2, id: "2" },
-  { img: Pic3, id: "3" },
-];
+import { AuthContext } from "../context/authContext";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
-class Img extends React.PureComponent {
-  render() {
-    return (
-      <TouchableOpacity style={s.galleryItem}>
-        <Image source={this.props.img} style={s.galleryImg} />
-      </TouchableOpacity>
-    );
-  }
-}
 
-function MyProfile() {
+function ProfileHeader() {
+  const { user } = useContext(AuthContext);
+  const [status, setStatus] = useState("VIEW");
+  const [bio, setBio] = useState(user.bio);
   return (
-    <View style={s.container}>
+    <ScrollView style={s.container}>
       <View>
         <Image source={Bg} style={s.bg} />
       </View>
       <TopBar title="Profile" stack={true} />
       <View style={s.imgContainer}>
         <Animated.Image
-          source={ProfileImg}
+          source={{ uri: "http://192.168.1.102:8888/" + user.profileImg }}
           style={s.img}
           entering={ZoomInLeft.duration(500)}
         />
       </View>
       <View style={s.content}>
-        <Text style={s.name}>Lara Watson - </Text>
-        <Text style={s.name}>23</Text>
+        <Text style={s.name}>Lara Watson</Text>
       </View>
-      <Header text="BIO" />
-      <Text style={s.text}>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown
-      </Text>
+      <Header text="BIO" status={status} setStatus={setStatus} />
+      {status === "EDIT" ? (
+        <Animated.View
+          entering={SlideInLeft.duration(800)}
+          exiting={FadeOutLeft.duration(100)}
+        >
+          <TextInput
+            style={s.input}
+            multiline={true}
+            textAlignVertical="top"
+            maxLength={300}
+            placeholder="Your biography in less than 300 characters"
+            cursorColor="black"
+            value={bio}
+            onChangeText={setBio}
+          />
+        </Animated.View>
+      ) : (
+        <Animated.Text
+          style={s.text}
+          entering={SlideInLeft.duration(800)}
+          exiting={FadeOutLeft.duration(100)}
+        >
+          {bio}
+        </Animated.Text>
+      )}
       <Header text="GALLERY" btn={false} />
-      <ProfileGallery />
-    </View>
+    </ScrollView>
   );
 }
+
+function MyProfile() {
+  return <ProfileGallery header={ProfileHeader} />;
+}
+
 const s = StyleSheet.create({
   container: {
     flex: 1,
@@ -81,9 +91,9 @@ const s = StyleSheet.create({
     left: 0,
   },
   imgContainer: {
-    width: width / 3,
-    height: width / 3,
-    borderRadius: width / 3,
+    width: width / 1.75,
+    height: width / 1.75,
+    borderRadius: width / 1.75,
     alignSelf: "center",
     margin: 10,
   },
@@ -91,7 +101,7 @@ const s = StyleSheet.create({
     resizeMode: "cover",
     width: "100%",
     height: "100%",
-    borderRadius: width / 3,
+    borderRadius: width / 1.75,
     borderWidth: 0.5,
     borderColor: "rgba(0,0,0,.15)",
   },
@@ -112,6 +122,17 @@ const s = StyleSheet.create({
     fontSize: 15,
     marginLeft: 15,
     marginRight: 15,
+  },
+  input: {
+    width: width - 30,
+    height: 100,
+    backgroundColor: "rgba(0,0,0,.05)",
+    borderLeftWidth: 3,
+    borderLeftColor: "gold",
+    fontSize: 16,
+    position: "relative",
+    alignSelf: "center",
+    padding: 10,
   },
 });
 

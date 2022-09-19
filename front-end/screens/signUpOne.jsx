@@ -45,7 +45,6 @@ function SignUpOne({ navigation }) {
 
   async function submitForm(formData) {
     try {
-      console.log(formData);
       navigation.navigate("Auth", {
         screen: "SignUpTwo",
         params: {

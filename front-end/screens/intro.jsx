@@ -47,7 +47,7 @@ function Intro() {
                 entering={ZoomIn.duration(650)}
               />
               <Animated.Text entering={FadeIn.duration(650)} style={s.brand}>
-                Miss Influencer
+                Real Influence
               </Animated.Text>
             </>
           )}
@@ -102,8 +102,8 @@ const s = StyleSheet.create({
   },
   logo: {
     position: "absolute",
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 85,
     bottom: 0,
     left: 0,
     zIndex: 2,
@@ -116,7 +116,7 @@ const s = StyleSheet.create({
     position: "absolute",
     zIndex: 2,
     transform: [{ rotate: "90deg" }],
-    right: -115,
+    right: -100,
     bottom: "50%",
     textTransform: "uppercase",
     letterSpacing: 1,

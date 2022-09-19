@@ -1,12 +1,15 @@
 const validator = require("validator");
 
 function validateSignUp(data) {
-  const { email, password, passwordc, username } = data;
+  const { email, password, passwordc, name, dialCode, isoCode, number } = data;
   const errors = {
     email: "",
     password: "",
     passwordc: "",
-    username: "",
+    name: "",
+    dialCode: "",
+    isoCode: "",
+    number: "",
   };
   // Email input validation
   if (email === "" || email === null || email === undefined) {
@@ -17,14 +20,30 @@ function validateSignUp(data) {
     errors.email = "The maximum length is 60 characters";
   }
   // User name input validation
-  if (username === "" || username === null || username === undefined) {
-    errors.username = "The username is required";
-  } else if (!validator.isAlphanumeric(username)) {
-    errors.username = "The username must contain only letters and numbers";
-  } else if (username.length < 3) {
-    errors.username = "The minimum length is 3 characters";
-  } else if (username.length > 20) {
-    errors.username = "The maximum length is 10 characters";
+  if (name === "" || name === null || name === undefined) {
+    errors.name = "The username is required";
+  } else if (name.length < 3) {
+    errors.name = "The minimum length is 3 characters";
+  } else if (name.length > 20) {
+    errors.name = "The maximum length is 20 characters";
+  }
+  // dialCode input validation
+  if (dialCode === "" || dialCode === null || dialCode === undefined) {
+    errors.dialCode = "The dialCode is required";
+  } else if (name.dialCode > 5) {
+    errors.dialCode = "The maximum length is 5 characters";
+  }
+  // isoCode input validation
+  if (isoCode === "" || isoCode === null || isoCode === undefined) {
+    errors.isoCode = "The isoCode is required";
+  } else if (isoCode.length < 2) {
+    errors.isoCode = "The isoCode has to be 2 characters";
+  } else if (isoCode.length > 2) {
+    errors.isoCode = "The isoCode has to be 2 characters";
+  }
+  // number input validation
+  if (number === "" || number === null || number === undefined) {
+    errors.number = "The phone number is required";
   }
   // Password input validation
   if (password === "" || password === null || password === undefined) {
@@ -38,7 +57,13 @@ function validateSignUp(data) {
     errors.passwordc = "The password confirmation doesn't match";
   }
   const errorsString =
-    errors.email + errors.password + errors.username + errors.passwordc;
+    errors.email +
+    errors.password +
+    errors.name +
+    errors.passwordc +
+    errors.dialCode +
+    errors.isoCode +
+    errors.number;
   return { isValid: errorsString === "" ? true : false, errors };
 }
 function validateSignIn(email) {

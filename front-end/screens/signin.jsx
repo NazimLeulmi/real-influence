@@ -25,14 +25,14 @@ function SignIn({ navigation }) {
   } = useForm();
 
   const route = useRoute();
-  const [disabled, setDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const { user, setUser } = useContext(AuthContext);
 
   async function submitForm(formData) {
-    setDisabled(true);
+    setLoading(true);
     try {
       let response = await axios.post(
-        "http://192.168.1.103:8888/signin",
+        "http://192.168.1.102:8888/signin",
         formData
       );
       let data = await response.data;
@@ -41,7 +41,7 @@ function SignIn({ navigation }) {
         setError("password", { message: data.error });
       }
       if (data.success === true) setUser(data.user);
-      setDisabled(false);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -73,7 +73,7 @@ function SignIn({ navigation }) {
           handleSubmit={handleSubmit}
           submitForm={submitForm}
           text="SIGN IN"
-          disabled={disabled}
+          disabled={loading}
         />
         <Link route={route.name} navigate={navigation.navigate} />
       </ScrollView>

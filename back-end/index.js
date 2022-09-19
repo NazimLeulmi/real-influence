@@ -7,12 +7,17 @@ const session = require("express-session");
 const multer = require("multer");
 const path = require("path");
 
+let app = express();
+
+app.use("/static", express.static("static"));
+
+app.use(express.json());
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    cb(null, "static");
   },
   filename: (req, file, cb) => {
-    console.log(file);
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
@@ -21,10 +26,6 @@ const upload = multer({
   storage: storage,
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
-
-let app = express();
-
-app.use(express.json());
 
 app.use(
   session({
@@ -43,39 +44,46 @@ async function connectDB() {
 }
 
 app.post("/signin", async (req, res) => {
-  const { isValid, errors } = validation.validateSignIn(req.body);
+  const { isValid, errors } = validation.validateSignIn(req.body.email);
   if (!isValid) return res.json({ isValid: false, errors });
-  const user = await models.UserModel.findOne({ email: req.body.email }).catch(
-    (err) => console.log(err)
-  );
-  if (!user)
+  const user = await models.UserModel.findOne({ email: req.body.email });
+  if (!user) {
+    console.log("The user doesn't exist");
     return res.json({
       isValid: false,
-      errors: { email: "The user doesn't exist" },
+      error: "The user doesn't exist",
     });
+  }
   const isCorrect = await bcrypt.compare(req.body.password, user.password);
-  if (!isCorrect)
+  if (!isCorrect) {
+    console.log("The password is incorrect");
     return res.json({
       isValid: false,
-      errors: { password: "The password is invalid" },
+      error: "The password is invalid",
     });
-  if (user.approved === false)
+  }
+  if (user.approved === false) {
+    console.log("The user isn't approved");
     return res.json({
       isValid: false,
-      errors: { password: "The user has to be approved" },
+      error: "Your account has to be approved",
     });
+  }
   // The user login data is correct
   req.session.userId = user._id;
-  req.session.firstName = user.first_name;
-  req.session.lastName = user.last_name;
+  req.session.name = user.name;
   req.session.email = user.email;
+  req.session.profileImg = user.profileImg;
+  req.session.approved = user.approved;
   return res.json({
     success: true,
     user: {
       id: user._id,
-      firstName: user.first_name,
-      lastName: user.last_name,
+      name: user.name,
+      bio: user.bio,
       email: user.email,
+      profileImg: user.profileImg,
+      approved: user.approved,
     },
   });
 });
@@ -87,22 +95,34 @@ const signUpFields = upload.fields([
   { name: "number" },
   { name: "password" },
   { name: "passwordc" },
-  { name: "file" },
+  { name: "profileImage", maxCount: 1 },
 ]);
 app.post("/signup", signUpFields, async (req, res) => {
-  console.log(req.body);
-  // const { isValid, errors } = validation.validateSignUp(req.body);
-  // if (!isValid) return res.json({ isValid, errors });
-  // const { name, last_name, email, password } = req.body;
-  // const hash = await bcrypt.hash(password, 12);
-  // const userModel = new models.UserModel({
-  //   first_name: first_name,
-  //   last_name: last_name,
-  //   email: email,
-  //   password: hash,
-  // });
-  // const userEntry = await userModel.save().catch((err) => console.log(err));
-  // return res.json({ success: true });
+  const { isValid, errors } = validation.validateSignUp(req.body);
+  if (isValid === false) {
+    console.log({ success: false, errors });
+    return;
+  }
+  const duplicate = await models.UserModel.findOne({ email: req.body.email });
+  if (duplicate) {
+    console.log("Duplicate email");
+    return res.json({
+      success: false,
+      error: "The email has been used already",
+    });
+  }
+  const hash = await bcrypt.hash(req.body.password, 12);
+  const userModel = new models.UserModel({
+    name: req.body.name,
+    email: req.body.email,
+    dialCode: req.body.dialCode,
+    isoCode: req.body.isoCode,
+    number: req.body.number,
+    password: hash,
+    profileImg: req.files.profileImage[0].path,
+  });
+  const userEntry = await userModel.save().catch((err) => console.log(err));
+  return res.json({ success: true });
 });
 
 app.get("/check-auth", async (req, res) => {
@@ -116,9 +136,10 @@ app.get("/check-auth", async (req, res) => {
       success: true,
       user: {
         id: user._id,
-        firstName: user.first_name,
-        lastName: user.last_name,
+        name: user.name,
+        bio: user.bio,
         email: user.email,
+        profileImg: user.profileImg,
       },
     });
   } else {

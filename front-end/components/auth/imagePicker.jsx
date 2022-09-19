@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Image, View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import AuthLabel from "./label";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+const height = Dimensions.get("window").height;
+const width = Dimensions.get("window").width;
 
 function PicturePicker({ setImg }) {
   const [image, setImage] = useState(null);
@@ -19,14 +20,13 @@ function PicturePicker({ setImg }) {
     if (!result.cancelled) {
       setImage(result.uri);
       setImg(result);
-      console.log(result);
     }
   };
 
   return (
     <TouchableOpacity onPress={pickImage} style={s.placeholder}>
       {image ? (
-        <Image source={{ uri: image }} style={s.img} />
+        <Image source={{ uri: image }} style={s.img} resizeMethod="resize" />
       ) : (
         <Icon name="cloud-upload" color="rgba(255,255,255,.75)" size={45} />
       )}
@@ -56,20 +56,22 @@ const s = StyleSheet.create({
     marginLeft: 15,
   },
   placeholder: {
-    width: 250,
-    height: 250,
-    borderRadius: 125,
-    backgroundColor: "rgba(0,0,0,.1)",
+    width: width / 1.5,
+    height: width / 1.5,
+    borderRadius: width / 1.5,
     alignSelf: "center",
-    marginTop: 5,
+    margin: 15,
+    backgroundColor: "rgba(0,0,0,.1)",
     alignItems: "center",
     justifyContent: "center",
   },
   img: {
+    resizeMode: "cover",
     width: "100%",
     height: "100%",
-    resizeMode: "contain",
-    borderRadius: 125,
+    borderRadius: width / 1.5,
+    borderWidth: 0.5,
+    borderColor: "rgba(0,0,0,.15)",
   },
 });
 
