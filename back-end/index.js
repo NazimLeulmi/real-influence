@@ -155,4 +155,70 @@ app.post("/signout", async (req, res) => {
   });
 });
 
+app.get("/check-auth", async (req, res) => {
+  if (req.session.userId) {
+    console.log("User signed in");
+    const user = await models.UserModel.findById(req.session.userId).catch(
+      (err) => console.log(err)
+    );
+    if (!user) return res.json({ success: false });
+    return res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        bio: user.bio,
+        email: user.email,
+        profileImg: user.profileImg,
+      },
+    });
+  } else {
+    console.log("User NOT signed in");
+    return res.json({ success: false });
+  }
+});
+app.post("/bio", async (req, res) => {
+  if (!req.session.userId) {
+    return res.json({ access: "restricted" });
+  }
+
+  const updated = await models.UserModel.findOneAndUpdate(
+    { _id: req.session.userId },
+    { bio: req.body.bio },
+    { new: true }
+  );
+  console.log(updated.bio);
+  return res.json({ success: true, user: updated });
+});
+app.get("/check-auth", async (req, res) => {
+  if (req.session.userId) {
+    console.log("User signed in");
+    const user = await models.UserModel.findById(req.session.userId).catch(
+      (err) => console.log(err)
+    );
+    if (!user) return res.json({ success: false });
+    return res.json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        bio: user.bio,
+        email: user.email,
+        profileImg: user.profileImg,
+      },
+    });
+  } else {
+    console.log("User NOT signed in");
+    return res.json({ success: false });
+  }
+});
+app.get("/users", async (req, res) => {
+  if (!req.session.userId) {
+    return res.json({ access: "restricted" });
+  }
+
+  const users = await models.UserModel.find();
+  return res.json({ success: true, influencers: users });
+});
+
 app.listen(8888, () => console.log("Node.js server running on port 8888"));

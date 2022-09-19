@@ -24,14 +24,17 @@ class Influencer extends React.PureComponent {
       params: {
         name: this.props.name,
         img: this.props.img,
-        age: this.props.age,
+        bio: this.props.bio,
       },
     });
   };
   render() {
     return (
       <TouchableOpacity style={s.influencer} onPress={this.navigate}>
-        <Image source={this.props.img} style={s.img} />
+        <Image
+          source={{ uri: "http://192.168.0.177:8888/" + this.props.img }}
+          style={s.img}
+        />
         <Text style={s.name}>{this.props.name}</Text>
       </TouchableOpacity>
     );
@@ -48,8 +51,8 @@ function InfluencersList() {
     return (
       <Influencer
         name={item.name}
-        img={item.img}
-        age={item.age}
+        img={item.profileImg}
+        bio={item.bio}
         navigation={navigation}
       />
     );

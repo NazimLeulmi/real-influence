@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-function Header({ text, btn, status, setStatus }) {
+function Header({ text, btn, status, setStatus, postBio }) {
   const navigation = useNavigation();
 
   function action() {
@@ -13,7 +13,9 @@ function Header({ text, btn, status, setStatus }) {
       navigation.navigate("Sponsors");
     } else if (text === "BIO") {
       if (status === "VIEW") setStatus("EDIT");
-      else setStatus("VIEW");
+      else {
+        postBio();
+      }
     }
   }
 

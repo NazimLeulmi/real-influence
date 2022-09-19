@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ name, img, age }) {
+function Infleuncer({ name, img, bio }) {
   const navigation = useNavigation();
 
   function navigate() {
@@ -21,13 +21,17 @@ function Infleuncer({ name, img, age }) {
       params: {
         name: name,
         img: img,
-        age: age,
+        bio: bio,
       },
     });
   }
   return (
     <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image source={img} style={s.img} resizeMethod="resize" />
+      <Image
+        source={{ uri: "http://192.168.0.177:8888/" + img }}
+        style={s.img}
+        resizeMethod="resize"
+      />
       <Text style={s.name}>{name}</Text>
     </TouchableOpacity>
   );
@@ -35,14 +39,14 @@ function Infleuncer({ name, img, age }) {
 
 const Infleuncers = ({ data }) => {
   const renderItem = ({ item }) => (
-    <Infleuncer name={item.name} img={item.img} age={item.age} />
+    <Infleuncer name={item.name} img={item.profileImg} bio={item.bio} />
   );
   return (
     <View style={s.container}>
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       />

@@ -23,7 +23,8 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
-  const { name, img } = route.params;
+  const { name, img, bio } = route.params;
+  console.log(img, "from influencers");
   return (
     <View style={s.container}>
       <View>
@@ -33,20 +34,16 @@ function Profile({ route, navigation }) {
         <TopBar title="Influencer Profile" stack={true} />
         <View style={s.imgContainer}>
           <Animated.Image
-            source={img}
+            source={{ uri: "http://192.168.0.177:8888/" + img }}
             style={s.img}
             entering={ZoomInLeft.duration(500)}
           />
         </View>
         <View style={s.content}>
-          <Text style={s.name}>{name} - </Text>
+          <Text style={s.name}>{name}</Text>
         </View>
         <Text style={s.header}>BIO</Text>
-        <Text style={s.text}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown
-        </Text>
+        <Text style={s.text}>{bio}</Text>
         <Header text="GALLERY" />
         <MyCarousel />
         <View style={s.btnGroup}>

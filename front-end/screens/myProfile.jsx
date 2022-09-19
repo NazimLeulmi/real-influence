@@ -18,14 +18,30 @@ import Animated, {
 } from "react-native-reanimated";
 import ProfileGallery from "../components/profileGallery";
 import { AuthContext } from "../context/authContext";
+import axios from "axios";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function ProfileHeader() {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [status, setStatus] = useState("VIEW");
   const [bio, setBio] = useState(user.bio);
+  async function postBio() {
+    try {
+      const response = await axios.post("http://192.168.0.177:8888/bio", {
+        bio: bio,
+      });
+      const { data } = response;
+      if (data.success === true) {
+        setUser(data.user);
+        setBio(data.user.bio);
+        setStatus("VIEW");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <ScrollView style={s.container}>
       <View>
@@ -34,15 +50,20 @@ function ProfileHeader() {
       <TopBar title="Profile" stack={true} />
       <View style={s.imgContainer}>
         <Animated.Image
-          source={{ uri: "http://192.168.1.102:8888/" + user.profileImg }}
+          source={{ uri: "http://192.168.0.177:8888/" + user.profileImg }}
           style={s.img}
           entering={ZoomInLeft.duration(500)}
         />
       </View>
       <View style={s.content}>
-        <Text style={s.name}>Lara Watson</Text>
+        <Text style={s.name}>{user.name}</Text>
       </View>
-      <Header text="BIO" status={status} setStatus={setStatus} />
+      <Header
+        text="BIO"
+        status={status}
+        setStatus={setStatus}
+        postBio={postBio}
+      />
       {status === "EDIT" ? (
         <Animated.View
           entering={SlideInLeft.duration(800)}
@@ -65,7 +86,7 @@ function ProfileHeader() {
           entering={SlideInLeft.duration(800)}
           exiting={FadeOutLeft.duration(100)}
         >
-          {bio}
+          {user.bio}
         </Animated.Text>
       )}
       <Header text="GALLERY" btn={false} />

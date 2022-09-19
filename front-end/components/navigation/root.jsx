@@ -14,7 +14,7 @@ function RootStack() {
       try {
         if (user === null) {
           const response = await axios.get(
-            "http://192.168.1.102:8888/check-auth"
+            "http://192.168.0.177:8888/check-auth"
           );
           const { data } = response;
           if (data.success === true) {
