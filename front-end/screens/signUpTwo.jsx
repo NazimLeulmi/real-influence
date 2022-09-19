@@ -6,14 +6,14 @@ import {
   Platform,
 } from "react-native";
 import { useForm } from "react-hook-form";
-import { useRoute } from "@react-navigation/native";
 import Label from "../components/auth/label";
 import Input from "../components/auth/input";
 import Error from "../components/auth/error";
 import Btn from "../components/auth/button";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import AuthBrand from "../components/auth/brand";
 import PicturePicker from "../components/auth/imagePicker";
+import mime from "mime";
 
 function SignUpTwo({ navigation }) {
   const route = useRoute();
@@ -29,11 +29,37 @@ function SignUpTwo({ navigation }) {
   const password = React.useRef({});
   password.current = watch("password", "");
   const [disabled, setDisabled] = React.useState(false);
-  const scrollViewRef = React.useRef();
+  const [img, setImg] = React.useState(false);
+
+  console.log(route.params);
 
   async function submitForm(formData) {
     try {
-      console.log(formData);
+      const uri = img.uri;
+      const data = new FormData();
+      data.append("email", route.params.email);
+      data.append("name", route.params.name);
+      data.append("dialCode", route.params.dialCode);
+      data.append("isoCode", route.params.isoCode);
+      data.append("number", route.params.number);
+      data.append("password", formData.password);
+      data.append("passwordc", formData.passwordc);
+
+      const newImageUri = "file:///" + uri.split("file:/").join("");
+      data.append("file", {
+        uri: newImageUri,
+        type: "image/jpeg",
+        name: "image.jpg",
+      });
+      const url = "http://192.168.0.177:8888/signup";
+      const headers = { "Content-Type": "multipart/form-data" };
+      let response = await fetch(url, {
+        method: "post",
+        body: data,
+        headers: headers,
+      });
+      let res = response.json();
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +82,7 @@ function SignUpTwo({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <AuthBrand text="SIGN UP" />
         {/* UPLOAD PROFILE IMAGE */}
-        <PicturePicker />
+        <PicturePicker setImg={setImg} />
         {/* PASSWORD INPUT */}
         <Label text="Password" />
         <Input control={control} name="password" error={errors.password} />
@@ -75,7 +101,7 @@ function SignUpTwo({ navigation }) {
           handleSubmit={handleSubmit}
           submitForm={submitForm}
           text="SUBMIT"
-          disabled={disabled}
+          errors={errors}
         />
       </ScrollView>
     </KeyboardAvoidingView>

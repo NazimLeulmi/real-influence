@@ -14,13 +14,13 @@ import countries from "../../countries";
 import { Flag } from "react-native-svg-flagkit";
 import Search from "../search";
 
-const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 class Country extends React.PureComponent {
   pickCode = () => {
     this.props.set;
     this.props.setCode(this.props.dialCode);
+    this.props.setCountry(this.props.isoCode);
     this.props.setOpen(false);
   };
 
@@ -35,7 +35,7 @@ class Country extends React.PureComponent {
   }
 }
 
-function Countries({ open, setOpen, setCode }) {
+function Countries({ open, setOpen, setCode, setCountry }) {
   const [filtered, setFiltered] = useState(countries);
   const filteredValue = React.useMemo(
     () => ({ filtered, setFiltered }),
@@ -50,6 +50,7 @@ function Countries({ open, setOpen, setCode }) {
         isoCode={item.isoCode}
         setOpen={setOpen}
         setCode={setCode}
+        setCountry={setCountry}
       />
     );
   }

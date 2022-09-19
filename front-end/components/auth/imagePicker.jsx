@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import AuthLabel from "./label";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-function PicturePicker() {
+function PicturePicker({ setImg }) {
   const [image, setImage] = useState(null);
   0;
   const pickImage = async () => {
@@ -16,10 +16,10 @@ function PicturePicker() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
+      setImg(result);
+      console.log(result);
     }
   };
 

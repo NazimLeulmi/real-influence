@@ -5,21 +5,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
-function AuthBtn({ handleSubmit, submitForm, disabled, text }) {
-  const navigation = useNavigation();
-  function action() {
-    if (text === "NEXT") {
-      navigation.navigate("SignUpTwo");
-    } else if (text === "SUBMIT") {
-      handleSubmit(submitForm);
-    } else {
-      navigation.navigate("App");
-    }
-  }
+function AuthBtn({ handleSubmit, submitForm, disabled, text, errors }) {
   return (
-    <TouchableOpacity style={s.btn} disabled={disabled} onPress={action}>
+    <TouchableOpacity
+      style={s.btn}
+      disabled={disabled}
+      onPress={handleSubmit(submitForm)}
+    >
       {disabled ? <ActivityIndicator size="small" color="white" /> : null}
       <Text style={s.btnText}>{text}</Text>
     </TouchableOpacity>

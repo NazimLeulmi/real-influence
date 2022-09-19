@@ -29,6 +29,7 @@ function SignUpOne({ navigation }) {
   const route = useRoute();
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("+971");
+  const [country, setCountry] = useState("AE");
 
   const {
     handleSubmit,
@@ -42,8 +43,20 @@ function SignUpOne({ navigation }) {
   const password = React.useRef({});
   password.current = watch("password", "");
 
-  function submitForm(data) {
-    console.log(data);
+  async function submitForm(formData) {
+    try {
+      console.log(formData);
+      navigation.navigate("Auth", {
+        screen: "SignUpTwo",
+        params: {
+          ...formData,
+          isoCode: country,
+          dialCode: code,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useFocusEffect(
@@ -100,7 +113,12 @@ function SignUpOne({ navigation }) {
           disabled={false}
         />
         <Link route={route.name} navigate={navigation.navigate} />
-        <Countries open={open} setOpen={setOpen} setCode={setCode} />
+        <Countries
+          open={open}
+          setOpen={setOpen}
+          setCode={setCode}
+          setCountry={setCountry}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

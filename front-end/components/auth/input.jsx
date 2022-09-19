@@ -46,19 +46,15 @@ function AuthInput({ control, name, error, password, number }) {
         message: "The minimum length is 3 characters",
       },
       maxLength: {
-        value: 10,
+        value: 20,
         message: "The maximum length is 20 characters",
       },
     },
     number: {
       required: { value: true, message: "The mobile number is required" },
       minLength: {
-        value: 3,
-        message: "The minimum length is 10 characters",
-      },
-      maxLength: {
-        value: 10,
-        message: "The maximum length is 10 characters",
+        value: 7,
+        message: "The minimum length is 7 characters",
       },
     },
     password: {
@@ -93,7 +89,6 @@ function AuthInput({ control, name, error, password, number }) {
               onChangeText={onChange}
               secureTextEntry={name === "password" || name === "passwordc"}
               value={value}
-              autoComplete="password"
               keyboardType={number ? "numeric" : null}
             />
             <Icon style={s.inputIcon} name={icons[name]} size={25} />
