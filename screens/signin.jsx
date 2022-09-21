@@ -32,7 +32,7 @@ function SignIn({ navigation }) {
     setLoading(true);
     try {
       let response = await axios.post(
-        "http://192.168.1.102:8888/signin",
+        "http://194.233.163.93:8888/signin",
         formData
       );
       let data = await response.data;

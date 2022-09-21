@@ -28,7 +28,9 @@ function Infleuncer({ name, img, bio }) {
   return (
     <TouchableOpacity style={s.influencer} onPress={navigate}>
       <Image
-        source={{ uri: "http://192.168.1.102:8888/" + img }}
+        source={{
+          uri: "http://194.233.163.93:8888/" + img,
+        }}
         style={s.img}
         resizeMethod="resize"
       />

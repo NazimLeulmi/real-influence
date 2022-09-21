@@ -32,7 +32,9 @@ class Influencer extends React.PureComponent {
     return (
       <TouchableOpacity style={s.influencer} onPress={this.navigate}>
         <Image
-          source={{ uri: "http://192.168.1.102:8888/" + this.props.img }}
+          source={{
+            uri: "http://194.233.163.93:8888/" + this.props.img,
+          }}
           style={s.img}
         />
         <Text style={s.name}>{this.props.name}</Text>

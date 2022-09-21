@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
@@ -19,6 +20,7 @@ import Animated, {
 import ProfileGallery from "../components/profileGallery";
 import { AuthContext } from "../context/authContext";
 import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -27,9 +29,26 @@ function ProfileHeader() {
   const { user, setUser } = useContext(AuthContext);
   const [status, setStatus] = useState("VIEW");
   const [bio, setBio] = useState(user.bio);
+  const [img, setImg] = React.useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImg(result);
+      console.log(result);
+    }
+  };
+
   async function postBio() {
     try {
-      const response = await axios.post("http://192.168.1.102:8888/bio", {
+      const response = await axios.post("http://194.233.163.93:8888/bio", {
         bio: bio,
       });
       const { data } = response;
@@ -49,11 +68,15 @@ function ProfileHeader() {
       </View>
       <TopBar title="Profile" stack={true} />
       <View style={s.imgContainer}>
-        <Animated.Image
-          source={{ uri: "http://192.168.1.102:8888/" + user.profileImg }}
-          style={s.img}
-          entering={ZoomInLeft.duration(500)}
-        />
+        <TouchableOpacity onPress={pickImage}>
+          <Animated.Image
+            source={{
+              uri: "http://194.233.163.93:8888/" + user.profileImg,
+            }}
+            style={s.img}
+            entering={ZoomInLeft.duration(500)}
+          />
+        </TouchableOpacity>
       </View>
       <View style={s.content}>
         <Text style={s.name}>{user.name}</Text>

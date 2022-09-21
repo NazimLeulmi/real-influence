@@ -7,17 +7,14 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import MyCarousel from "../components/carousel";
 import Header from "../components/header";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import Animated, {
-  FadeInDown,
-  FadeInUp,
-  ZoomInLeft,
-} from "react-native-reanimated";
+import Animated, { ZoomInLeft } from "react-native-reanimated";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -33,11 +30,17 @@ function Profile({ route, navigation }) {
       <ScrollView>
         <TopBar title="Influencer Profile" stack={true} />
         <View style={s.imgContainer}>
-          <Animated.Image
-            source={{ uri: "http://192.168.1.102:8888/" + img }}
-            style={s.img}
-            entering={ZoomInLeft.duration(500)}
-          />
+          {img ? (
+            <Image
+              source={{
+                uri: "http://194.233.163.93:8888/" + img,
+              }}
+              style={s.img}
+              // entering={ZoomInLeft.duration(500)}
+            />
+          ) : (
+            <ActivityIndicator size="large" color="black" />
+          )}
         </View>
         <View style={s.content}>
           <Text style={s.name}>{name}</Text>

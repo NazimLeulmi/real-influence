@@ -4,9 +4,8 @@ import {
   StyleSheet,
   ScrollView,
   Platform,
-  Dimensions,
 } from "react-native";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Label from "../components/auth/label";
 import Input from "../components/auth/input";
 import Error from "../components/auth/error";
@@ -56,7 +55,7 @@ function SignUpTwo({ navigation }) {
         type: "image/" + mimeType,
         name: fileName,
       });
-      const url = "http://192.168.1.102:8888/signup";
+      const url = "http://194.233.163.93:8888/signup";
       const headers = { "Content-Type": "multipart/form-data" };
       let response = await fetch(url, {
         method: "post",

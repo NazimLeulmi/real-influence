@@ -23,6 +23,9 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 const Drawer = createDrawerNavigator();
 
 function DrawerView(props) {
+  function signOut() {
+    console.log("SignOut");
+  }
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -36,7 +39,7 @@ function DrawerView(props) {
           <Icon name="share-variant" size={22} style={s.btnIcon} />
           <Text style={s.btnText}>Share profile</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btn}>
+        <TouchableOpacity style={s.btn} onPress={signOut}>
           <Icon name="logout-variant" size={22} style={s.btnIcon} />
           <Text style={s.btnText}>Logout</Text>
         </TouchableOpacity>
