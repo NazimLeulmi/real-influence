@@ -41,7 +41,7 @@ function Home() {
   useFocusEffect(
     React.useCallback(() => {
       fetchInfluencers();
-    }, [])
+    }, [setInfluencers])
   );
 
   const onRefresh = React.useCallback(() => {

@@ -42,7 +42,24 @@ function ProfileHeader() {
 
     if (!result.cancelled) {
       setImg(result);
-      console.log(result);
+      const data = new FormData();
+      const uri = result.uri;
+      const fileName = uri.split("/").pop();
+      const mimeType = fileName.split(".").pop();
+      data.append("profileImage", {
+        uri: uri,
+        type: "image/" + mimeType,
+        name: fileName,
+      });
+      const url = "http://194.233.163.93:8888/profileImage";
+      const headers = { "Content-Type": "multipart/form-data" };
+      let response = await fetch(url, {
+        method: "post",
+        body: data,
+        headers: headers,
+      });
+      let res = await response.json();
+      console.log(res);
     }
   };
 
