@@ -17,12 +17,14 @@ import { InfluencersContext } from "../context/infContext";
 import React from "react";
 import axios from "axios";
 import { useFocusEffect } from "@react-navigation/native";
+import { AuthContext } from "../context/authContext";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Home() {
   const { influencers, setInfluencers } = React.useContext(InfluencersContext);
+  const { user, setUser } = React.useContext(AuthContext);
   const [refreshing, setRefreshing] = React.useState(false);
   async function fetchInfluencers() {
     try {
@@ -31,7 +33,6 @@ function Home() {
       if (data.success === true) {
         setInfluencers(data.influencers);
         setRefreshing(false);
-        console.log("Fetched Influencers");
       }
     } catch (error) {
       console.log(error);

@@ -25,6 +25,7 @@ class Influencer extends React.PureComponent {
         name: this.props.name,
         img: this.props.img,
         bio: this.props.bio,
+        gallery: this.props.gallery,
       },
     });
   };
@@ -55,6 +56,7 @@ function InfluencersList() {
         name={item.name}
         img={item.profileImg}
         bio={item.bio}
+        gallery={item.gallery}
         navigation={navigation}
       />
     );

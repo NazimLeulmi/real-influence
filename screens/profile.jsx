@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ScrollView,
   Text,
@@ -14,54 +14,62 @@ import Bg from "../assets/background.jpg";
 import MyCarousel from "../components/carousel";
 import Header from "../components/header";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import Animated, { ZoomInLeft } from "react-native-reanimated";
+import Empty from "../assets/empty.png";
+import { AuthContext } from "../context/authContext";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
-  const { name, img, bio } = route.params;
-  console.log(img, "from influencers");
-  return (
-    <View style={s.container}>
-      <View>
-        <Image source={Bg} style={s.bg} />
-      </View>
-      <ScrollView>
-        <TopBar title="Influencer Profile" stack={true} />
-        <View style={s.imgContainer}>
-          {img ? (
-            <Image
-              source={{
-                uri: "https://realinfluence.io/" + img,
-              }}
-              style={s.img}
-              // entering={ZoomInLeft.duration(500)}
-            />
+  const { name, img, bio, gallery } = route.params;
+  const { user, setUser } = useContext(AuthContext);
+  if (user) {
+    return (
+      <View style={s.container}>
+        <View>
+          <Image source={Bg} style={s.bg} />
+        </View>
+        <ScrollView>
+          <TopBar title="Influencer Profile" stack={true} />
+          <View style={s.imgContainer}>
+            {img ? (
+              <Image
+                source={{
+                  uri: "https://realinfluence.io/" + img,
+                }}
+                style={s.img}
+                // entering={ZoomInLeft.duration(500)}
+              />
+            ) : (
+              <ActivityIndicator size="large" color="black" />
+            )}
+          </View>
+          <View style={s.content}>
+            <Text style={s.name}>{name}</Text>
+          </View>
+          <Text style={s.header}>BIO</Text>
+          <Text style={s.text}>{bio}</Text>
+          <Header text="GALLERY" />
+
+          {!gallery || gallery.length === 0 ? (
+            <Image source={Empty} style={s.empty} />
           ) : (
-            <ActivityIndicator size="large" color="black" />
+            <MyCarousel gallery={gallery} />
           )}
-        </View>
-        <View style={s.content}>
-          <Text style={s.name}>{name}</Text>
-        </View>
-        <Text style={s.header}>BIO</Text>
-        <Text style={s.text}>{bio}</Text>
-        <Header text="GALLERY" />
-        <MyCarousel />
-        <View style={s.btnGroup}>
-          <TouchableOpacity style={s.btn} onPress={() => navigation.goBack()}>
-            <Icon name="arrow-left" size={22} />
-            <Text style={s.btnText}>BACK</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[s.btn, { backgroundColor: "#FFD700" }]}>
-            <Icon name="heart" size={22} />
-            <Text style={s.btnText}>VOTE</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
-  );
+          <View style={s.btnGroup}>
+            <TouchableOpacity style={s.btn} onPress={() => navigation.goBack()}>
+              <Icon name="arrow-left" size={22} />
+              <Text style={s.btnText}>BACK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[s.btn, { backgroundColor: "#FFD700" }]}>
+              <Icon name="heart" size={22} />
+              <Text style={s.btnText}>VOTE</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 }
 const s = StyleSheet.create({
   container: {
@@ -138,11 +146,15 @@ const s = StyleSheet.create({
   text: {
     fontFamily: "regular",
     fontSize: 16,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 16,
+    marginRight: 16,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,.1)",
     paddingBottom: 15,
+  },
+  empty: {
+    width: width,
+    height: 300,
   },
 });
 

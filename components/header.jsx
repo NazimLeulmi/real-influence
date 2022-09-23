@@ -22,7 +22,7 @@ function Header({ text, btn, status, setStatus, postBio, uploadImage }) {
   return (
     <View style={s.container}>
       <Text style={s.header}>{text}</Text>
-      {btn ? (
+      {text === "INFLUENCERS" || text === "SPONSORS" ? (
         <TouchableOpacity style={s.btn} onPress={action}>
           <Text style={s.btnText}>VIEW ALL</Text>
         </TouchableOpacity>
@@ -36,7 +36,7 @@ function Header({ text, btn, status, setStatus, postBio, uploadImage }) {
           )}
         </TouchableOpacity>
       ) : null}
-      {text === "GALLERY" ? (
+      {text === "GALLERY" && btn ? (
         <TouchableOpacity style={s.btn} onPress={uploadImage}>
           <Icon name="image-plus" size={20} />
         </TouchableOpacity>

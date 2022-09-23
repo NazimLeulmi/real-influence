@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ name, img, bio }) {
+function Infleuncer({ name, img, bio, gallery }) {
   const navigation = useNavigation();
 
   function navigate() {
@@ -22,6 +22,7 @@ function Infleuncer({ name, img, bio }) {
         name: name,
         img: img,
         bio: bio,
+        gallery: gallery,
       },
     });
   }
@@ -41,7 +42,12 @@ function Infleuncer({ name, img, bio }) {
 
 const Infleuncers = ({ data }) => {
   const renderItem = ({ item }) => (
-    <Infleuncer name={item.name} img={item.profileImg} bio={item.bio} />
+    <Infleuncer
+      name={item.name}
+      img={item.profileImg}
+      bio={item.bio}
+      gallery={item.gallery}
+    />
   );
   return (
     <View style={s.container}>

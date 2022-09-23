@@ -1,17 +1,13 @@
 import React, { useContext, useState } from "react";
 import {
-  ScrollView,
   Text,
   View,
   StyleSheet,
   Dimensions,
-  Image,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
-import Bg from "../assets/background.jpg";
 import Header from "../components/header";
 import Animated, {
   FadeOutLeft,
@@ -22,6 +18,7 @@ import ProfileGallery from "../components/profileGallery";
 import { AuthContext } from "../context/authContext";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+import SnackBar from "../components/snackbar";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -30,6 +27,7 @@ function ProfileHeader({}) {
   const { user, setUser } = useContext(AuthContext);
   const [status, setStatus] = useState("VIEW");
   const [bio, setBio] = useState(user ? user.bio : null);
+  const [snack, setSnack] = useState(false);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -42,6 +40,10 @@ function ProfileHeader({}) {
       });
 
       if (!result.cancelled) {
+        if (result.type !== "image") {
+          setSnack(true);
+          return;
+        }
         const uri = result.uri;
         const data = new FormData();
         const fileName = uri.split("/").pop();
@@ -77,6 +79,10 @@ function ProfileHeader({}) {
     });
 
     if (!result.cancelled) {
+      if (result.type !== "image") {
+        setSnack(true);
+        return;
+      }
       const uri = result.uri;
       const data = new FormData();
       const fileName = uri.split("/").pop();
@@ -132,6 +138,9 @@ function ProfileHeader({}) {
         <View style={s.content}>
           <Text style={s.name}>{user.name}</Text>
         </View>
+        {snack ? (
+          <SnackBar text="Only images are permitted" setSnack={setSnack} />
+        ) : null}
         <Header
           text="BIO"
           status={status}
@@ -163,7 +172,8 @@ function ProfileHeader({}) {
             {user ? user.bio : null}
           </Animated.Text>
         )}
-        <Header text="GALLERY" uploadImage={uploadImage} />
+
+        <Header text="GALLERY" btn={true} uploadImage={uploadImage} />
       </View>
     );
   }
@@ -212,8 +222,8 @@ const s = StyleSheet.create({
   text: {
     fontFamily: "regular",
     fontSize: 15,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 16,
+    marginRight: 16,
   },
   input: {
     width: width - 30,

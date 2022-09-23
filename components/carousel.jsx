@@ -1,10 +1,29 @@
 import * as React from "react";
-import { Dimensions, Text, View, Image, StyleSheet } from "react-native";
+import {
+  Dimensions,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { carousel } from "../data";
+import { useNavigation } from "@react-navigation/native";
 
-function MyCarousel({ margin }) {
+function MyCarousel({ margin, gallery }) {
+  const data = gallery ? gallery : carousel;
   const width = Dimensions.get("window").width;
+  const navigation = useNavigation();
+
+  function navigate(props) {
+    navigation.navigate("Influencers", {
+      screen: "Image",
+      params: {
+        img: props,
+      },
+    });
+  }
   return (
     <View style={{ flex: 1, marginTop: margin ? 20 : 0, position: "relative" }}>
       <Carousel
@@ -12,24 +31,28 @@ function MyCarousel({ margin }) {
         width={width}
         height={300}
         autoPlay={true}
-        data={carousel}
-        scrollAnimationDuration={1000}
+        data={data}
+        scrollAnimationDuration={5000}
         mode="horizontal-stack"
-        modeConfig={{ showLength: carousel.length - 1 }}
+        modeConfig={{ showLength: data.length - 1 }}
         renderItem={({ index, item }) => (
-          <View style={s.container}>
+          <Pressable style={s.container} onPress={() => navigate(item.path)}>
             <Image
-              source={item.img}
+              source={
+                gallery
+                  ? { uri: "https://realinfluence.io/" + item.path }
+                  : item.img
+              }
               resizeMode="cover"
               resizeMethod="auto"
               style={s.image}
             />
             <View style={s.counter}>
               <Text style={s.text}>
-                {index + 1} / {carousel.length}
+                {index + 1} / {data.length}
               </Text>
             </View>
-          </View>
+          </Pressable>
         )}
       />
     </View>
