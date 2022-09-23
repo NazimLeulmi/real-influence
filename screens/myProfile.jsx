@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
@@ -25,47 +26,81 @@ import * as ImagePicker from "expo-image-picker";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-function ProfileHeader() {
+function ProfileHeader({}) {
   const { user, setUser } = useContext(AuthContext);
   const [status, setStatus] = useState("VIEW");
-  const [bio, setBio] = useState(user.bio);
-  const [img, setImg] = React.useState(null);
+  const [bio, setBio] = useState(user ? user.bio : null);
 
   const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5,
+      });
+
+      if (!result.cancelled) {
+        const uri = result.uri;
+        const data = new FormData();
+        const fileName = uri.split("/").pop();
+        const mimeType = fileName.split(".").pop();
+        data.append("profileImage", {
+          uri: uri,
+          type: "image/" + mimeType,
+          name: fileName,
+        });
+        const url = "https://realinfluence.io/profileImage";
+        const headers = { "Content-Type": "multipart/form-data" };
+        let response = await fetch(url, {
+          method: "post",
+          body: data,
+          headers: headers,
+          credentials: "include",
+        });
+        let res = await response.json();
+        if (res.success === true) setUser(res.user);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const uploadImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.cancelled) {
-      setImg(result);
-      const data = new FormData();
       const uri = result.uri;
+      const data = new FormData();
       const fileName = uri.split("/").pop();
       const mimeType = fileName.split(".").pop();
-      data.append("profileImage", {
+      data.append("galleryImage", {
         uri: uri,
         type: "image/" + mimeType,
         name: fileName,
       });
-      const url = "http://194.233.163.93:8888/profileImage";
+      const url = "https://realinfluence.io/galleryImage";
       const headers = { "Content-Type": "multipart/form-data" };
       let response = await fetch(url, {
         method: "post",
         body: data,
         headers: headers,
+        credentials: "include",
       });
       let res = await response.json();
-      console.log(res);
+      if (res.success === true) setUser(res.user);
     }
   };
-
   async function postBio() {
     try {
-      const response = await axios.post("http://194.233.163.93:8888/bio", {
+      const response = await axios.post("https://realinfluence.io/bio", {
         bio: bio,
       });
       const { data } = response;
@@ -78,64 +113,67 @@ function ProfileHeader() {
       console.error(error);
     }
   }
-  return (
-    <ScrollView style={s.container}>
-      <View>
-        <Image source={Bg} style={s.bg} />
+
+  if (user) {
+    return (
+      <View style={s.container}>
+        <TopBar title="Profile" stack={true} />
+        <View style={s.imgContainer}>
+          <TouchableOpacity onPress={pickImage}>
+            <Animated.Image
+              source={{
+                uri: "https://realinfluence.io/" + user.profileImg,
+              }}
+              style={s.img}
+              entering={ZoomInLeft.duration(500)}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={s.content}>
+          <Text style={s.name}>{user.name}</Text>
+        </View>
+        <Header
+          text="BIO"
+          status={status}
+          setStatus={setStatus}
+          postBio={postBio}
+        />
+        {status === "EDIT" ? (
+          <Animated.View
+            entering={SlideInLeft.duration(800)}
+            exiting={FadeOutLeft.duration(100)}
+          >
+            <TextInput
+              style={s.input}
+              multiline={true}
+              textAlignVertical="top"
+              maxLength={300}
+              placeholder="Your biography in less than 300 characters"
+              cursorColor="black"
+              value={bio}
+              onChangeText={setBio}
+            />
+          </Animated.View>
+        ) : (
+          <Animated.Text
+            style={s.text}
+            entering={SlideInLeft.duration(800)}
+            exiting={FadeOutLeft.duration(100)}
+          >
+            {user ? user.bio : null}
+          </Animated.Text>
+        )}
+        <Header text="GALLERY" uploadImage={uploadImage} />
       </View>
-      <TopBar title="Profile" stack={true} />
-      <View style={s.imgContainer}>
-        <TouchableOpacity onPress={pickImage}>
-          <Animated.Image
-            source={{
-              uri: "http://194.233.163.93:8888/" + user.profileImg,
-            }}
-            style={s.img}
-            entering={ZoomInLeft.duration(500)}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={s.content}>
-        <Text style={s.name}>{user.name}</Text>
-      </View>
-      <Header
-        text="BIO"
-        status={status}
-        setStatus={setStatus}
-        postBio={postBio}
-      />
-      {status === "EDIT" ? (
-        <Animated.View
-          entering={SlideInLeft.duration(800)}
-          exiting={FadeOutLeft.duration(100)}
-        >
-          <TextInput
-            style={s.input}
-            multiline={true}
-            textAlignVertical="top"
-            maxLength={300}
-            placeholder="Your biography in less than 300 characters"
-            cursorColor="black"
-            value={bio}
-            onChangeText={setBio}
-          />
-        </Animated.View>
-      ) : (
-        <Animated.Text
-          style={s.text}
-          entering={SlideInLeft.duration(800)}
-          exiting={FadeOutLeft.duration(100)}
-        >
-          {user.bio}
-        </Animated.Text>
-      )}
-      <Header text="GALLERY" btn={false} />
-    </ScrollView>
-  );
+    );
+  }
 }
 
 function MyProfile() {
-  return <ProfileGallery header={ProfileHeader} />;
+  const { user, setUser } = useContext(AuthContext);
+  return (
+    <ProfileGallery header={ProfileHeader} data={user ? user.gallery : []} />
+  );
 }
 
 const s = StyleSheet.create({
@@ -143,13 +181,6 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
     position: "relative",
-  },
-  bg: {
-    height: height,
-    width: width,
-    position: "absolute",
-    top: 0,
-    left: 0,
   },
   imgContainer: {
     width: width / 1.75,

@@ -33,7 +33,7 @@ function Profile({ route, navigation }) {
           {img ? (
             <Image
               source={{
-                uri: "http://194.233.163.93:8888/" + img,
+                uri: "https://realinfluence.io/" + img,
               }}
               style={s.img}
               // entering={ZoomInLeft.duration(500)}

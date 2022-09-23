@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-function Header({ text, btn, status, setStatus, postBio }) {
+function Header({ text, btn, status, setStatus, postBio, uploadImage }) {
   const navigation = useNavigation();
 
   function action() {
@@ -34,6 +34,11 @@ function Header({ text, btn, status, setStatus, postBio }) {
           ) : (
             <Text style={s.btnText}>SUBMIT</Text>
           )}
+        </TouchableOpacity>
+      ) : null}
+      {text === "GALLERY" ? (
+        <TouchableOpacity style={s.btn} onPress={uploadImage}>
+          <Icon name="image-plus" size={20} />
         </TouchableOpacity>
       ) : null}
     </View>

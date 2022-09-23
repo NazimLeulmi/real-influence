@@ -13,42 +13,31 @@ import Pic1 from "../assets/sponsors/pic1.jpg";
 import Pic2 from "../assets/sponsors/pic2.jpg";
 import Pic3 from "../assets/sponsors/pic3.jpg";
 
-const data = [
-  { img: Pic0, id: "0" },
-  { img: Pic1, id: "1" },
-  { img: Pic2, id: "2" },
-  { img: Pic3, id: "3" },
-  { img: Pic3, id: "4" },
-  { img: Pic3, id: "5" },
-  { img: Pic3, id: "6" },
-  { img: Pic3, id: "7" },
-  { img: Pic3, id: "8" },
-  { img: Pic3, id: "9" },
-  { img: Pic3, id: "10" },
-];
-
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 class Img extends React.PureComponent {
   render() {
     return (
       <TouchableOpacity style={s.galleryItem}>
-        <Image source={this.props.img} style={s.galleryImg} />
+        <Image
+          source={{ uri: "https://realinfluence.io/" + this.props.img }}
+          style={s.galleryImg}
+        />
       </TouchableOpacity>
     );
   }
 }
 
-function ProfileGallery({ header }) {
+function ProfileGallery({ header, data }) {
   function renderItem({ item }) {
-    return <Img img={item.img} />;
+    return <Img img={item.path} />;
   }
   return (
     <SafeAreaView style={s.container}>
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         numColumns={3}
         ListHeaderComponent={header}
         showsVerticalScrollIndicator={false}

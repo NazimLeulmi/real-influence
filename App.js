@@ -17,7 +17,6 @@ function App() {
     regular: require("./assets/fonts/OpenSans-Regular.ttf"),
     medium: require("./assets/fonts/OpenSans-Medium.ttf"),
     bold: require("./assets/fonts/OpenSans-Bold.ttf"),
-    brand: require("./assets/fonts/Pacifico-Regular.ttf"),
   });
 
   useEffect(() => {

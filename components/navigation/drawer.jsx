@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -19,12 +19,19 @@ import {
 import Bg from "../../assets/background.jpg";
 import Logo from "../../assets/logo.png";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import axios from "axios";
+import { AuthContext } from "../../context/authContext";
 
 const Drawer = createDrawerNavigator();
 
 function DrawerView(props) {
-  function signOut() {
+  const { user, setUser } = useContext(AuthContext);
+  async function signOut() {
     console.log("SignOut");
+    const response = await axios.post("https://realinfluence.io/signout");
+    const data = response.data;
+    console.log(data);
+    if (data.success === true) setUser(null);
   }
   return (
     <View style={{ flex: 1 }}>

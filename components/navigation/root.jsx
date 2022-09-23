@@ -14,7 +14,7 @@ function RootStack() {
       try {
         if (user === null) {
           const response = await axios.get(
-            "http://194.233.163.93:8888/check-auth"
+            "https://realinfluence.io/check-auth"
           );
           const { data } = response;
           if (data.success === true) {

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "miss-influencer",
-    "slug": "miss-influencer",
-    "version": "1.0.0",
+    "name": "Real Influence",
+    "slug": "real-influence",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
