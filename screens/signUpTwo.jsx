@@ -79,7 +79,7 @@ function SignUpTwo({ navigation }) {
         type: "image/" + mimeType,
         name: fileName,
       });
-      const url = "http://3.28.21.245/signup";
+      const url = "https://realinfluence.io/signup";
       const headers = { "Content-Type": "multipart/form-data" };
       let response = await fetch(url, {
         method: "post",

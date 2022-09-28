@@ -52,7 +52,7 @@ function ProfileHeader({}) {
           type: "image/" + mimeType,
           name: fileName,
         });
-        const url = "http://3.28.21.245/profileImage";
+        const url = "https://realinfluence.io/profileImage";
         const headers = { "Content-Type": "multipart/form-data" };
         let response = await fetch(url, {
           method: "post",
@@ -91,7 +91,7 @@ function ProfileHeader({}) {
         type: "image/" + mimeType,
         name: fileName,
       });
-      const url = "http://3.28.21.245/galleryImage";
+      const url = "https://realinfluence.io/galleryImage";
       const headers = { "Content-Type": "multipart/form-data" };
       let response = await fetch(url, {
         method: "post",
@@ -105,7 +105,7 @@ function ProfileHeader({}) {
   };
   async function postBio() {
     try {
-      const response = await axios.post("http://3.28.21.245/bio", {
+      const response = await axios.post("https://realinfluence.io/bio", {
         bio: bio,
       });
       const { data } = response;
@@ -127,7 +127,7 @@ function ProfileHeader({}) {
           <TouchableOpacity onPress={pickImage}>
             <Animated.Image
               source={{
-                uri: "http://3.28.21.245/" + user.profileImg,
+                uri: "https://realinfluence.io/" + user.profileImg,
               }}
               style={s.img}
               entering={ZoomInLeft.duration(500)}

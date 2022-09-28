@@ -42,7 +42,9 @@ function MyCarousel({ margin, gallery }) {
           >
             <Image
               source={
-                gallery ? { uri: "http://3.28.21.245/" + item.path } : item.img
+                gallery
+                  ? { uri: "https://realinfluence.io/" + item.path }
+                  : item.img
               }
               resizeMode="contain"
               resizeMethod="auto"

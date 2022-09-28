@@ -34,7 +34,7 @@ class Influencer extends React.PureComponent {
       <TouchableOpacity style={s.influencer} onPress={this.navigate}>
         <Image
           source={{
-            uri: "http://3.28.21.245/" + this.props.img,
+            uri: "https://realinfluence.io/" + this.props.img,
           }}
           style={s.img}
         />

@@ -25,7 +25,7 @@ function ImageScreen() {
     <View style={s.container}>
       <TopBar stack title="GALLERY IMAGE" />
       <Animated.Image
-        source={{ uri: "http://3.28.21.245/" + img }}
+        source={{ uri: "https://realinfluence.io/" + img }}
         style={s.img}
         entering={ZoomIn.duration(200).delay(100)}
       />

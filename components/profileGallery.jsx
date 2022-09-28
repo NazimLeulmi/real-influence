@@ -15,7 +15,7 @@ class Img extends React.PureComponent {
       <Animated.View entering={ZoomIn.delay(this.props.index * 150)}>
         <TouchableOpacity style={s.galleryItem}>
           <Image
-            source={{ uri: "http://3.28.21.245/" + this.props.img }}
+            source={{ uri: "https://realinfluence.io/" + this.props.img }}
             style={s.galleryImg}
           />
         </TouchableOpacity>

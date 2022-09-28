@@ -9,10 +9,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Animated, { SlideInLeft, Layout, ZoomIn } from "react-native-reanimated";
 
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ name, img, bio, gallery }) {
+function Infleuncer({ name, img, bio, gallery, index }) {
   const navigation = useNavigation();
 
   function navigate() {
@@ -27,26 +28,29 @@ function Infleuncer({ name, img, bio, gallery }) {
     });
   }
   return (
-    <TouchableOpacity style={s.influencer} onPress={navigate}>
-      <Image
-        source={{
-          uri: "http://3.28.21.245/" + img,
-        }}
-        style={s.img}
-        resizeMethod="resize"
-      />
-      <Text style={s.name}>{name}</Text>
-    </TouchableOpacity>
+    <Animated.View entering={ZoomIn.delay(index * 150)}>
+      <TouchableOpacity style={s.influencer} onPress={navigate}>
+        <Image
+          source={{
+            uri: "https://realinfluence.io/" + img,
+          }}
+          style={s.img}
+          resizeMethod="resize"
+        />
+        <Text style={s.name}>{name}</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 }
 
 const Infleuncers = ({ data }) => {
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <Infleuncer
       name={item.name}
       img={item.profileImg}
       bio={item.bio}
       gallery={item.gallery}
+      index={index}
     />
   );
   return (

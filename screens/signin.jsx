@@ -31,7 +31,10 @@ function SignIn({ navigation }) {
   async function submitForm(formData) {
     setLoading(true);
     try {
-      let response = await axios.post("http://3.28.21.245/signin", formData);
+      let response = await axios.post(
+        "https://realinfluence.io/signin",
+        formData
+      );
       let data = await response.data;
       if (data.isValid === false) {
         console.log(data.error);

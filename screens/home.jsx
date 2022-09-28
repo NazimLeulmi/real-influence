@@ -28,7 +28,7 @@ function Home() {
   const [refreshing, setRefreshing] = React.useState(false);
   async function fetchInfluencers() {
     try {
-      let response = await axios.get("http://3.28.21.245/users");
+      let response = await axios.get("https://realinfluence.io/users");
       let data = response.data;
       if (data.success === true) {
         setInfluencers(data.influencers);
