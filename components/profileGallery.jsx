@@ -6,34 +6,30 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  SafeAreaView,
 } from "react-native";
-import Pic0 from "../assets/sponsors/pic0.jpg";
-import Pic1 from "../assets/sponsors/pic1.jpg";
-import Pic2 from "../assets/sponsors/pic2.jpg";
-import Pic3 from "../assets/sponsors/pic3.jpg";
-
-const height = Dimensions.get("window").height;
+import Animated, { SlideInLeft, Layout, ZoomIn } from "react-native-reanimated";
 const width = Dimensions.get("window").width;
 class Img extends React.PureComponent {
   render() {
     return (
-      <TouchableOpacity style={s.galleryItem}>
-        <Image
-          source={{ uri: "https://realinfluence.io/" + this.props.img }}
-          style={s.galleryImg}
-        />
-      </TouchableOpacity>
+      <Animated.View entering={ZoomIn.delay(this.props.index * 150)}>
+        <TouchableOpacity style={s.galleryItem}>
+          <Image
+            source={{ uri: "http://3.28.21.245/" + this.props.img }}
+            style={s.galleryImg}
+          />
+        </TouchableOpacity>
+      </Animated.View>
     );
   }
 }
 
 function ProfileGallery({ header, data }) {
-  function renderItem({ item }) {
-    return <Img img={item.path} />;
+  function renderItem({ item, index }) {
+    return <Img img={item.path} index={index} />;
   }
   return (
-    <SafeAreaView style={s.container}>
+    <View style={s.container}>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -42,13 +38,14 @@ function ProfileGallery({ header, data }) {
         ListHeaderComponent={header}
         showsVerticalScrollIndicator={false}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 const s = StyleSheet.create({
   container: {
     width: width,
     position: "relative",
+    flex: 1,
   },
   galleryItem: {
     width: width / 3 - 10,
@@ -60,7 +57,7 @@ const s = StyleSheet.create({
   galleryImg: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
 });
 

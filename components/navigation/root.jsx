@@ -13,9 +13,7 @@ function RootStack() {
     async function checkAuth() {
       try {
         if (user === null) {
-          const response = await axios.get(
-            "https://realinfluence.io/check-auth"
-          );
+          const response = await axios.get("http://3.28.21.245/check-auth");
           const { data } = response;
           if (data.success === true) {
             setUser(data.user);

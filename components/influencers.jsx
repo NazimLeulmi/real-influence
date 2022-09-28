@@ -30,7 +30,7 @@ function Infleuncer({ name, img, bio, gallery }) {
     <TouchableOpacity style={s.influencer} onPress={navigate}>
       <Image
         source={{
-          uri: "https://realinfluence.io/" + img,
+          uri: "http://3.28.21.245/" + img,
         }}
         style={s.img}
         resizeMethod="resize"

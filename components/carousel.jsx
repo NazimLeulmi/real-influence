@@ -29,21 +29,22 @@ function MyCarousel({ margin, gallery }) {
       <Carousel
         loop
         width={width}
-        height={300}
+        height={width}
         autoPlay={true}
         data={data}
-        scrollAnimationDuration={5000}
-        mode="horizontal-stack"
+        autoPlayInterval={4500}
+        mode="pause-advanced-parallax"
         modeConfig={{ showLength: data.length - 1 }}
         renderItem={({ index, item }) => (
-          <Pressable style={s.container} onPress={() => navigate(item.path)}>
+          <Pressable
+            style={s.container}
+            onPress={gallery ? () => navigate(item.path) : null}
+          >
             <Image
               source={
-                gallery
-                  ? { uri: "https://realinfluence.io/" + item.path }
-                  : item.img
+                gallery ? { uri: "http://3.28.21.245/" + item.path } : item.img
               }
-              resizeMode="cover"
+              resizeMode="contain"
               resizeMethod="auto"
               style={s.image}
             />

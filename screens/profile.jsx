@@ -16,6 +16,7 @@ import Header from "../components/header";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Empty from "../assets/empty.png";
 import { AuthContext } from "../context/authContext";
+import Animated, { ZoomIn, ZoomInLeft } from "react-native-reanimated";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -23,7 +24,7 @@ const width = Dimensions.get("window").width;
 function Profile({ route, navigation }) {
   const { name, img, bio, gallery } = route.params;
   const { user, setUser } = useContext(AuthContext);
-  if (user) {
+  if (user && img) {
     return (
       <View style={s.container}>
         <View>
@@ -31,19 +32,17 @@ function Profile({ route, navigation }) {
         </View>
         <ScrollView>
           <TopBar title="Influencer Profile" stack={true} />
-          <View style={s.imgContainer}>
-            {img ? (
-              <Image
-                source={{
-                  uri: "https://realinfluence.io/" + img,
-                }}
-                style={s.img}
-                // entering={ZoomInLeft.duration(500)}
-              />
-            ) : (
-              <ActivityIndicator size="large" color="black" />
-            )}
-          </View>
+          <Animated.View
+            style={s.imgContainer}
+            entering={ZoomInLeft.duration(500)}
+          >
+            <Image
+              source={{
+                uri: "http://3.28.21.245/" + img,
+              }}
+              style={s.img}
+            />
+          </Animated.View>
           <View style={s.content}>
             <Text style={s.name}>{name}</Text>
           </View>

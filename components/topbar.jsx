@@ -15,7 +15,7 @@ function TopBar({ stack, title }) {
 
   function action() {
     if (stack) {
-      navigation.navigate("Home");
+      navigation.goBack();
     } else {
       navigation.openDrawer();
     }
@@ -39,7 +39,7 @@ const s = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     padding: 15,
     borderBottomWidth: 0.5,
     borderBottomColor: "rgba(0,0,0,.3)",
@@ -47,10 +47,10 @@ const s = StyleSheet.create({
   brand: {
     fontFamily: "light",
     fontSize: 18,
-    marginRight: "auto",
-    marginLeft: "auto",
     letterSpacing: 1,
     textTransform: "uppercase",
+    marginRight: "auto",
+    marginLeft: "auto",
   },
   menu: {
     color: "rgba(0,0,0,.45)",

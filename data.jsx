@@ -5,6 +5,7 @@ import Car2 from "./assets/carousel/pic2.jpg";
 import Car3 from "./assets/carousel/pic3.jpg";
 import Car4 from "./assets/carousel/pic4.jpg";
 import Car5 from "./assets/carousel/pic5.jpg";
+import Car6 from "./assets/carousel/pic6.jpg";
 
 const carousel = [
   { img: Car0, id: "0" },
@@ -13,5 +14,6 @@ const carousel = [
   { img: Car3, id: "3" },
   { img: Car4, id: "4" },
   { img: Car5, id: "5" },
+  { img: Car6, id: "6" },
 ];
 export { carousel };
