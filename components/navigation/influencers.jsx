@@ -3,7 +3,7 @@ import Infleuncers from "../../screens/influencers";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import Profile from "../../screens/profile";
-import ImageScreen from "../../screens/image";
+import Feed from "../../screens/feed";
 
 const Stack = createStackNavigator();
 
@@ -23,7 +23,7 @@ function InfluencersStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="InfluencersList" component={Infleuncers} />
       <Stack.Screen name="Influencer" component={Profile} />
-      <Stack.Screen name="Image" component={ImageScreen} />
+      <Stack.Screen name="Feed" component={Feed} />
     </Stack.Navigator>
   );
 }

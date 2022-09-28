@@ -6,8 +6,8 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native";
 const width = Dimensions.get("window").width;
 import Animated, {
   ZoomIn,
@@ -16,14 +16,11 @@ import Animated, {
 } from "react-native-reanimated";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import TopBar from "../components/topbar";
+import { useRoute } from "@react-navigation/native";
 
-function ImageScreen() {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const { img } = route.params;
+function GalleryImage({ img }) {
   return (
     <View style={s.container}>
-      <TopBar stack title="GALLERY IMAGE" />
       <Animated.Image
         source={{ uri: "https://realinfluence.io/" + img }}
         style={s.img}
@@ -57,6 +54,23 @@ function ImageScreen() {
     </View>
   );
 }
+function Feed() {
+  const route = useRoute();
+  const { gallery, index } = route.params;
+  function renderItem({ item }) {
+    return <GalleryImage img={item.path} index={index} />;
+  }
+  return (
+    <View style={{ flex: 1, backgroundColor: "whitesmoke" }}>
+      <FlatList
+        data={gallery}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+        ListHeaderComponent={<TopBar title="INFLUENCER FEED" stack />}
+      />
+    </View>
+  );
+}
 
 const s = StyleSheet.create({
   img: {
@@ -66,13 +80,14 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "whitesmoke",
+    marginBottom: 20,
   },
   btnGroup: {
     flexDirection: "row",
     alignSelf: "center",
     width: width,
-    marginTop: 10,
+    marginTop: 20,
   },
   icon: {
     color: "rgba(0,0,0,.3)",
@@ -98,4 +113,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default ImageScreen;
+export default Feed;

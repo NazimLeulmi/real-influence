@@ -18,9 +18,10 @@ function MyCarousel({ margin, gallery }) {
 
   function navigate(props) {
     navigation.navigate("Influencers", {
-      screen: "Image",
+      screen: "Feed",
       params: {
-        img: props,
+        gallery: props.gallery,
+        index: props.index,
       },
     });
   }
@@ -38,7 +39,7 @@ function MyCarousel({ margin, gallery }) {
         renderItem={({ index, item }) => (
           <Pressable
             style={s.container}
-            onPress={gallery ? () => navigate(item.path) : null}
+            onPress={gallery ? () => navigate({ gallery, index }) : null}
           >
             <Image
               source={
