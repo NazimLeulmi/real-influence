@@ -39,20 +39,24 @@ function SignUpTwo({ navigation }) {
   const [serverError, setServerError] = React.useState("");
 
   async function pickImage() {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [(1, 1)],
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
 
-    if (!result.cancelled) {
-      if (result.type !== "image") {
-        setImgError("The profile picture has to be a valid image");
-        setImage(null);
-        return;
+      if (!result.cancelled) {
+        if (result.type !== "image") {
+          setImgError("The profile picture has to be a valid image");
+          setImage(null);
+          return;
+        }
+        setImage(result.uri);
       }
-      setImage(result.uri);
+    } catch (error) {
+      console.log(error);
     }
   }
 

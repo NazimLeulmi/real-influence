@@ -35,7 +35,7 @@ function ProfileHeader({}) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
+        aspect: [1, 1],
       });
 
       if (!result.cancelled) {
@@ -73,8 +73,8 @@ function ProfileHeader({}) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
+      aspect: [1, 1],
+      quality: 1,
     });
 
     if (!result.cancelled) {
