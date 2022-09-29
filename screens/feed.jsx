@@ -16,7 +16,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import TopBar from "../components/topbar";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
 
 function GalleryImage({ img }) {
   return (
@@ -57,16 +57,47 @@ function GalleryImage({ img }) {
 function Feed() {
   const route = useRoute();
   const { gallery, index } = route.params;
+  const listRef = React.useRef(null);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     console.log(listRef.current);
+
+  //     console.log("Scrolled");
+  //   }, [])
+  // );
+
+  setTimeout(
+    () =>
+      listRef.current.scrollToIndex({
+        index: index,
+        viewPosition: 0.5,
+        animated: false,
+      }),
+    250
+  );
+
   function renderItem({ item }) {
-    return <GalleryImage img={item.path} index={index} />;
+    return <GalleryImage img={item.path} />;
   }
+  function getItemLayout(data, index) {
+    return {
+      length: s.container.height,
+      offset: s.container.height * index,
+      index,
+    };
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: "whitesmoke" }}>
       <FlatList
+        ref={listRef}
         data={gallery}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
+        getItemLayout={getItemLayout}
         ListHeaderComponent={<TopBar title="INFLUENCER FEED" stack />}
+        stickyHeaderIndices={[0]}
       />
     </View>
   );
@@ -79,15 +110,14 @@ const s = StyleSheet.create({
     resizeMode: "contain",
   },
   container: {
-    flex: 1,
-    backgroundColor: "whitesmoke",
-    marginBottom: 20,
+    height: width + 60,
+    width: width,
   },
   btnGroup: {
     flexDirection: "row",
-    alignSelf: "center",
+    alignItems: "center",
     width: width,
-    marginTop: 20,
+    height: 60,
   },
   icon: {
     color: "rgba(0,0,0,.3)",

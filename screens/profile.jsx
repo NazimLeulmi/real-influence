@@ -7,7 +7,6 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
@@ -48,7 +47,7 @@ function Profile({ route, navigation }) {
           </View>
           <Text style={s.header}>BIO</Text>
           <Text style={s.text}>{bio}</Text>
-          <Header text="GALLERY" />
+          <Header text="GALLERY" gallery={gallery} />
 
           {!gallery || gallery.length === 0 ? (
             <Image source={Empty} style={s.empty} />

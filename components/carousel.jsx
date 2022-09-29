@@ -12,7 +12,7 @@ import { carousel } from "../data";
 import { useNavigation } from "@react-navigation/native";
 
 function MyCarousel({ margin, gallery }) {
-  const data = gallery ? gallery : carousel;
+  const data = gallery ? gallery.slice(0, 6) : carousel;
   const width = Dimensions.get("window").width;
   const navigation = useNavigation();
 
