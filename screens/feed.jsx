@@ -22,7 +22,7 @@ function GalleryImage({ img }) {
   return (
     <View style={s.container}>
       <Animated.Image
-        source={{ uri: "https://realinfluence.io/" + img }}
+        source={{ uri: "http://localhost:8888/" + img }}
         style={s.img}
         entering={ZoomIn.duration(200).delay(100)}
       />

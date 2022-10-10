@@ -17,8 +17,8 @@ import { useFocusEffect, useRoute } from "@react-navigation/native";
 import AuthBrand from "../components/auth/brand";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+import axios from "axios";
 
 function SignUpTwo({ navigation }) {
   const route = useRoute();
@@ -27,7 +27,6 @@ function SignUpTwo({ navigation }) {
     control,
     watch,
     formState: { errors },
-    setError,
     reset,
   } = useForm();
 
@@ -62,42 +61,65 @@ function SignUpTwo({ navigation }) {
 
   async function submitForm(formData) {
     try {
-      if (!image) {
-        setImgError("The profile picture is required");
-        setImage(null);
-        return;
-      }
-      setLoading(true);
-      const data = new FormData();
-      data.append("email", route.params.email);
-      data.append("name", route.params.name);
-      data.append("dialCode", route.params.dialCode);
-      data.append("isoCode", route.params.isoCode);
-      data.append("number", route.params.number);
-      data.append("password", formData.password);
-      data.append("passwordc", formData.passwordc);
-      const fileName = image.split("/").pop();
-      const mimeType = fileName.split(".").pop();
-      data.append("profileImage", {
-        uri: image,
-        type: "image/" + mimeType,
-        name: fileName,
-      });
-      const url = "https://realinfluence.io/signup";
-      const headers = { "Content-Type": "multipart/form-data" };
-      let response = await fetch(url, {
-        method: "post",
-        body: data,
-        headers: headers,
-      });
-      let res = await response.json();
-      if (res.success === true) {
-        setLoading(false);
-        navigation.navigate("Auth", { screen: "SignIn" });
-      }
-      if (res.success === false) {
-        setLoading(false);
-        setServerError(res.error);
+      if (route.params.enabled) {
+        if (!image) {
+          setImgError("The profile picture is required");
+          setImage(null);
+          return;
+        }
+        setLoading(true);
+        const data = new FormData();
+        data.append("email", route.params.email);
+        data.append("name", route.params.name);
+        data.append("dialCode", route.params.dialCode);
+        data.append("isoCode", route.params.isoCode);
+        data.append("number", route.params.number);
+        data.append("password", formData.password);
+        data.append("passwordc", formData.passwordc);
+        const fileName = image.split("/").pop();
+        const mimeType = fileName.split(".").pop();
+        data.append("profileImage", {
+          uri: image,
+          type: "image/" + mimeType,
+          name: fileName,
+        });
+        const url = "http://localhost:8888/influencers/signup";
+        const headers = { "Content-Type": "multipart/form-data" };
+        let response = await fetch(url, {
+          method: "post",
+          body: data,
+          headers: headers,
+        });
+        let res = await response.json();
+        if (res.success === true) {
+          setLoading(false);
+          navigation.navigate("Auth", { screen: "SignIn" });
+        }
+        if (res.success === false) {
+          setLoading(false);
+          setServerError(res.error);
+        }
+      } else {
+        setLoading(true);
+        const url = "http://localhost:8888/users/signup";
+        const response = await axios.post(url, {
+          ...formData,
+          email: route.params.email,
+          number: route.params.number,
+          isoCode: route.params.isoCode,
+          dialCode: route.params.dialCode,
+          name: route.params.name,
+        });
+        console.log(response.data, "response");
+        const data = response.data;
+        if (data.success === true) {
+          setLoading(false);
+          navigation.navigate("Auth", { screen: "SignIn" });
+        }
+        if (data.success === false) {
+          setLoading(false);
+          setServerError(data.error);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -121,17 +143,23 @@ function SignUpTwo({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <AuthBrand text="SIGN UP" />
         {/* UPLOAD PROFILE IMAGE */}
-        <TouchableOpacity onPress={pickImage} style={s.placeholder}>
-          {image ? (
-            <Image
-              source={{ uri: image }}
-              style={s.img}
-              resizeMethod="resize"
-            />
-          ) : (
-            <Icon name="cloud-upload" color="rgba(255,255,255,.75)" size={45} />
-          )}
-        </TouchableOpacity>
+        {route.params.enabled && (
+          <TouchableOpacity onPress={pickImage} style={s.placeholder}>
+            {image ? (
+              <Image
+                source={{ uri: image }}
+                style={s.img}
+                resizeMethod="resize"
+              />
+            ) : (
+              <Icon
+                name="cloud-upload"
+                color="rgba(255,255,255,.75)"
+                size={45}
+              />
+            )}
+          </TouchableOpacity>
+        )}
         {/* PASSWORD INPUT */}
         <Label text="Password" />
         <Input control={control} name="password" error={errors.password} />

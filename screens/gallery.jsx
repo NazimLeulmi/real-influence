@@ -29,7 +29,7 @@ class GalleryImage extends React.PureComponent {
       <Animated.View entering={ZoomIn.delay(this.props.index * 150)}>
         <TouchableOpacity style={s.galleryItem} onPress={() => this.navigate()}>
           <Image
-            source={{ uri: "https://realinfluence.io/" + this.props.img }}
+            source={{ uri: "http://localhost:8888/" + this.props.img }}
             style={s.img}
           />
         </TouchableOpacity>

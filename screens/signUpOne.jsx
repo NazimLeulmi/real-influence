@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Dimensions,
   Platform,
 } from "react-native";
 import { useForm } from "react-hook-form";
@@ -21,41 +20,35 @@ import AuthBrand from "../components/auth/brand";
 import { s as style } from "../components/auth/input";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Countries from "../components/auth/countries";
-
-const height = Dimensions.get("window").height;
-const width = Dimensions.get("window").width;
+import SwitchInput from "../components/auth/switch";
 
 function SignUpOne({ navigation }) {
   const route = useRoute();
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState("+971");
   const [country, setCountry] = useState("AE");
+  const [enabled, setEnabled] = useState(false);
 
   const {
     handleSubmit,
     control,
     watch,
     formState: { errors },
-    setError,
-    reset,
   } = useForm();
 
   const password = React.useRef({});
   password.current = watch("password", "");
 
   async function submitForm(formData) {
-    try {
-      navigation.navigate("Auth", {
-        screen: "SignUpTwo",
-        params: {
-          ...formData,
-          isoCode: country,
-          dialCode: code,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    return navigation.navigate("Auth", {
+      screen: "SignUpTwo",
+      params: {
+        ...formData,
+        isoCode: country,
+        dialCode: code,
+        enabled: enabled,
+      },
+    });
   }
 
   useFocusEffect(
@@ -105,6 +98,7 @@ function SignUpOne({ navigation }) {
           />
         </View>
         {errors.number ? <Error text={errors.number.message} /> : null}
+        <SwitchInput enabled={enabled} setEnabled={setEnabled} />
         <Btn
           handleSubmit={handleSubmit}
           submitForm={submitForm}

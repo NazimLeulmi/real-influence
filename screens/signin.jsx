@@ -13,6 +13,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { AuthContext } from "../context/authContext";
 import AuthBrand from "../components/auth/brand";
+import SwitchInput from "../components/auth/switch";
 
 function SignIn({ navigation }) {
   // React hook form state
@@ -27,12 +28,13 @@ function SignIn({ navigation }) {
   const route = useRoute();
   const [loading, setLoading] = React.useState(false);
   const { user, setUser } = useContext(AuthContext);
+  const [enabled, setEnabled] = React.useState(false);
 
   async function submitForm(formData) {
     setLoading(true);
     try {
       let response = await axios.post(
-        "https://realinfluence.io/signin",
+        "http://localhost:8888/influencers/signin",
         formData
       );
       let data = await response.data;
@@ -69,6 +71,7 @@ function SignIn({ navigation }) {
         <Label text="Password" />
         <Input control={control} name="password" error={errors.password} />
         {errors.password ? <Error text={errors.password.message} /> : null}
+        <SwitchInput enabled={enabled} setEnabled={setEnabled} />
         <Btn
           handleSubmit={handleSubmit}
           submitForm={submitForm}

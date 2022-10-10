@@ -37,7 +37,7 @@ function Profile({ route, navigation }) {
           >
             <Image
               source={{
-                uri: "https://realinfluence.io/" + img,
+                uri: "http://localhost:8888/" + img,
               }}
               style={s.img}
             />
