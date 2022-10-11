@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import Animated, { SlideInLeft, Layout, ZoomIn } from "react-native-reanimated";
+import Animated, { ZoomIn } from "react-native-reanimated";
 const width = Dimensions.get("window").width;
 class Img extends React.PureComponent {
   render() {

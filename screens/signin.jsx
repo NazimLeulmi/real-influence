@@ -32,9 +32,11 @@ function SignIn({ navigation }) {
 
   async function submitForm(formData) {
     setLoading(true);
+    let type = enabled ? "influencers" : "users";
+    console.log(type);
     try {
       let response = await axios.post(
-        "http://localhost:8888/influencers/signin",
+        `http://localhost:8888/${type}/signin`,
         formData
       );
       let data = await response.data;

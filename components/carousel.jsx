@@ -11,7 +11,7 @@ import Carousel from "react-native-reanimated-carousel";
 import { carousel } from "../data";
 import { useNavigation } from "@react-navigation/native";
 
-function MyCarousel({ margin, gallery }) {
+function MyCarousel({ margin, gallery, id }) {
   const data = gallery ? gallery.slice(0, 6) : carousel;
   const width = Dimensions.get("window").width;
   const navigation = useNavigation();
@@ -22,6 +22,7 @@ function MyCarousel({ margin, gallery }) {
       params: {
         gallery: props.gallery,
         index: props.index,
+        id: id,
       },
     });
   }
@@ -39,7 +40,15 @@ function MyCarousel({ margin, gallery }) {
         renderItem={({ index, item }) => (
           <Pressable
             style={s.container}
-            onPress={gallery ? () => navigate({ gallery, index }) : null}
+            onPress={
+              gallery
+                ? () =>
+                    navigate({
+                      gallery,
+                      index,
+                    })
+                : null
+            }
           >
             <Image
               source={

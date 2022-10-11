@@ -5,10 +5,12 @@ import InfluencersStack from "./influencers";
 import Home from "../../screens/home";
 import Sponsors from "../../screens/sponsors";
 import MyProfile from "../../screens/myProfile";
+import { AuthContext } from "../../context/authContext";
 
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
+  const { user, setUser } = React.useContext(AuthContext);
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -54,7 +56,9 @@ function Tabs() {
       />
       <Tab.Screen name="Sponsors" component={Sponsors} />
 
-      <Tab.Screen name="Profile" component={MyProfile} />
+      {user && user.type === "influencer" && (
+        <Tab.Screen name="Profile" component={MyProfile} />
+      )}
     </Tab.Navigator>
   );
 }

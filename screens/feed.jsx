@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import axios from "axios";
 const width = Dimensions.get("window").width;
 import Animated, {
   ZoomIn,
@@ -17,19 +18,58 @@ import Animated, {
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import TopBar from "../components/topbar";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
+import { AuthContext } from "../context/authContext";
+import { InfluencersContext } from "../context/infContext";
 
-function GalleryImage({ img }) {
+function GalleryImage({ item, id }) {
+  let liked = false;
+  const { user, setUser } = React.useContext(AuthContext);
+  const { influencers, setInfluencers } = React.useContext(InfluencersContext);
+  if (item.likes.length !== 0) {
+    for (let i = 0; i < item.likes.length; i++) {
+      if (user.id === item.likes[i].from) {
+        liked = true;
+        break;
+      }
+    }
+  }
+  async function likeImage() {
+    const response = await axios.post(
+      "http://localhost:8888/influencers/like",
+      { imageId: item._id }
+    );
+    if (item._id === response.data.image._id) {
+      const newInf = await influencers.map(async (obj) => {
+        if (obj._id === id) {
+          await obj.gallery.map((image) => {
+            if (image._id === response.data.image._id) {
+              return response.data.image;
+            } else {
+              return image;
+            }
+          });
+        }
+        return obj;
+      });
+      console.log(newInf[0]);
+    }
+  }
+
   return (
     <View style={s.container}>
       <Animated.Image
-        source={{ uri: "http://localhost:8888/" + img }}
+        source={{ uri: "http://localhost:8888/" + item.path }}
         style={s.img}
         entering={ZoomIn.duration(200).delay(100)}
       />
       <View style={s.btnGroup}>
         <Animated.View entering={FadeInLeft.duration(300)}>
-          <TouchableOpacity>
-            <Icon size={30} name="heart-outline" style={s.icon} />
+          <TouchableOpacity onPress={likeImage}>
+            <Icon
+              size={30}
+              name={liked ? "heart" : "heart-outline"}
+              style={s.icon}
+            />
           </TouchableOpacity>
         </Animated.View>
         <Animated.View entering={FadeInLeft.duration(300).delay(100)}>
@@ -47,7 +87,7 @@ function GalleryImage({ img }) {
           entering={FadeInRight.duration(300).delay(300)}
         >
           <TouchableOpacity style={s.btn}>
-            <Text style={s.btnText}>Favourite</Text>
+            <Text style={s.btnText}>{item.likes.length} Likes</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -56,16 +96,8 @@ function GalleryImage({ img }) {
 }
 function Feed() {
   const route = useRoute();
-  const { gallery, index } = route.params;
+  const { gallery, index, id } = route.params;
   const listRef = React.useRef(null);
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     console.log(listRef.current);
-
-  //     console.log("Scrolled");
-  //   }, [])
-  // );
 
   setTimeout(
     () =>
@@ -78,7 +110,7 @@ function Feed() {
   );
 
   function renderItem({ item }) {
-    return <GalleryImage img={item.path} />;
+    return <GalleryImage item={item} id={id} />;
   }
   function getItemLayout(data, index) {
     return {

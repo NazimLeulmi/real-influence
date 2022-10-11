@@ -22,6 +22,7 @@ class Influencer extends React.PureComponent {
     this.props.navigation.navigate("Influencers", {
       screen: "Influencer",
       params: {
+        id: this.props.id,
         name: this.props.name,
         img: this.props.img,
         bio: this.props.bio,
@@ -53,6 +54,7 @@ function InfluencersList() {
   function renderItem({ item }) {
     return (
       <Influencer
+        id={item._id}
         name={item.name}
         img={item.profileImg}
         bio={item.bio}
@@ -80,7 +82,7 @@ function InfluencersList() {
       <FlatList
         data={filtered}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         numColumns={3}
       />
     </View>

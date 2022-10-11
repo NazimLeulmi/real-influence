@@ -21,7 +21,7 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
-  const { name, img, bio, gallery } = route.params;
+  const { name, img, bio, gallery, id } = route.params;
   const { user, setUser } = useContext(AuthContext);
   if (user && img) {
     return (
@@ -52,18 +52,8 @@ function Profile({ route, navigation }) {
           {!gallery || gallery.length === 0 ? (
             <Image source={Empty} style={s.empty} />
           ) : (
-            <MyCarousel gallery={gallery} />
+            <MyCarousel gallery={gallery} id={id} />
           )}
-          <View style={s.btnGroup}>
-            <TouchableOpacity style={s.btn} onPress={() => navigation.goBack()}>
-              <Icon name="arrow-left" size={22} />
-              <Text style={s.btnText}>BACK</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[s.btn, { backgroundColor: "#FFD700" }]}>
-              <Icon name="heart" size={22} />
-              <Text style={s.btnText}>VOTE</Text>
-            </TouchableOpacity>
-          </View>
         </ScrollView>
       </View>
     );
@@ -111,29 +101,6 @@ const s = StyleSheet.create({
     fontSize: 18,
   },
 
-  btnGroup: {
-    flexDirection: "row",
-    padding: 15,
-    marginBottom: 25,
-  },
-  btn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 45,
-    padding: 10,
-    alignSelf: "center",
-    backgroundColor: "rgba(0,0,0,.1)",
-    borderRadius: 10,
-    marginTop: 20,
-    flex: 1,
-    marginLeft: 5,
-  },
-  btnText: {
-    fontFamily: "regular",
-    fontSize: 18,
-    marginLeft: 15,
-  },
   header: {
     fontFamily: "medium",
     textTransform: "uppercase",
