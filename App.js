@@ -10,6 +10,9 @@ import RootStack from "./components/navigation/root";
 import { AuthProvider } from "./context/authContext";
 import axios from "axios";
 axios.defaults.withCredentials = true;
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   let [fontsLoaded] = useFonts({
@@ -44,11 +47,13 @@ function App() {
       >
         <StatusBar barStyle="dark-content" backgroundColor="whitesmoke" />
         <NavigationContainer>
-          <InfluencersProvider>
-            <AuthProvider>
-              <RootStack />
-            </AuthProvider>
-          </InfluencersProvider>
+          <QueryClientProvider client={queryClient}>
+            <InfluencersProvider>
+              <AuthProvider>
+                <RootStack />
+              </AuthProvider>
+            </InfluencersProvider>
+          </QueryClientProvider>
         </NavigationContainer>
       </SafeAreaView>
     </GestureHandlerRootView>

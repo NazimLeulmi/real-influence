@@ -20,7 +20,6 @@ function MyCarousel({ margin, gallery, id }) {
     navigation.navigate("Influencers", {
       screen: "Feed",
       params: {
-        gallery: props.gallery,
         index: props.index,
         id: id,
       },

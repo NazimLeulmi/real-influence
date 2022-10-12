@@ -11,8 +11,9 @@ import {
 import Bg from "../assets/background.jpg";
 import { useNavigation } from "@react-navigation/native";
 import TopBar from "../components/topbar";
-import { InfluencersContext } from "../context/infContext";
 import Search from "../components/search";
+import fetchInfluencers from "../requests/fetchInfluencers";
+import { useQuery } from "@tanstack/react-query";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -26,7 +27,6 @@ class Influencer extends React.PureComponent {
         name: this.props.name,
         img: this.props.img,
         bio: this.props.bio,
-        gallery: this.props.gallery,
       },
     });
   };
@@ -46,8 +46,11 @@ class Influencer extends React.PureComponent {
 }
 
 function InfluencersList() {
-  const { influencers } = useContext(InfluencersContext);
-  const [filtered, setFiltered] = useState(influencers);
+  const { data, isLoading, refetch } = useQuery(
+    ["influencers"],
+    fetchInfluencers
+  );
+  const [filtered, setFiltered] = useState(data?.influencers);
   const [text, setText] = useState("");
   const navigation = useNavigation();
 
@@ -58,14 +61,13 @@ function InfluencersList() {
         name={item.name}
         img={item.profileImg}
         bio={item.bio}
-        gallery={item.gallery}
         navigation={navigation}
       />
     );
   }
 
   async function filter(text) {
-    const copy = [...influencers];
+    const copy = [...data?.influencers];
     const filtered = await copy.filter((influencer) =>
       influencer.name.includes(text)
     );

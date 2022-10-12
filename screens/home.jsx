@@ -4,52 +4,43 @@ import {
   View,
   Image,
   RefreshControl,
-  ActivityIndicator,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import MyCarousel from "../components/carousel";
 import Header from "../components/header";
-import Infleuncers from "../components/influencers";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import Brands from "../components/sponsors";
-import { InfluencersContext } from "../context/infContext";
+import Influencers from "../components/influencers";
 import React from "react";
-import axios from "axios";
-import { useFocusEffect } from "@react-navigation/native";
-import { AuthContext } from "../context/authContext";
+import { useQuery } from "@tanstack/react-query";
+import fetchInfluencers from "../requests/fetchInfluencers";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Home() {
-  const { influencers, setInfluencers } = React.useContext(InfluencersContext);
-  const { user, setUser } = React.useContext(AuthContext);
   const [refreshing, setRefreshing] = React.useState(false);
-  async function fetchInfluencers() {
-    try {
-      let response = await axios.get("http://localhost:8888/influencers");
-      let data = response.data;
-      if (data.success === true) {
-        setInfluencers(data.influencers);
-        setRefreshing(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchInfluencers();
-    }, [setInfluencers])
+  const { data, isLoading, refetch } = useQuery(
+    ["influencers"],
+    fetchInfluencers
   );
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    fetchInfluencers();
+    refetch();
+    console.log("Refetched");
+    setRefreshing(false);
   }, [refreshing]);
 
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
+  }
   return (
     <View style={s.container}>
       <View>
@@ -65,26 +56,12 @@ function Home() {
           />
         }
       >
-        {influencers ? (
-          <>
-            <TopBar title="Miss Influencer" />
-            <MyCarousel />
-            <Header text="INFLUENCERS" btn />
-            <Infleuncers data={influencers.slice(0, 12)} />
-            <Header text="SPONSORS" btn />
-            <Brands />
-          </>
-        ) : (
-          <View
-            style={{
-              flex: 1,
-              minHeight: height,
-              justifyContent: "center",
-            }}
-          >
-            <ActivityIndicator size="large" color="black" />
-          </View>
-        )}
+        <TopBar title="Miss Influencer" />
+        <MyCarousel />
+        <Header text="INFLUENCERS" btn />
+        <Influencers data={data?.influencers.slice(0, 12)} />
+        <Header text="SPONSORS" btn />
+        <Brands />
       </ScrollView>
     </View>
   );

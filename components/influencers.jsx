@@ -13,7 +13,7 @@ import Animated, { SlideInLeft, Layout, ZoomIn } from "react-native-reanimated";
 
 const width = Dimensions.get("window").width;
 
-function Infleuncer({ name, img, bio, gallery, index, id }) {
+function Infleuncer({ name, img, bio, id, index }) {
   const navigation = useNavigation();
 
   function navigate() {
@@ -23,7 +23,6 @@ function Infleuncer({ name, img, bio, gallery, index, id }) {
         name: name,
         img: img,
         bio: bio,
-        gallery: gallery,
         id: id,
       },
     });
@@ -44,14 +43,13 @@ function Infleuncer({ name, img, bio, gallery, index, id }) {
   );
 }
 
-const Infleuncers = ({ data }) => {
+const Influencers = ({ data }) => {
   const renderItem = ({ item, index }) => (
     <Infleuncer
       id={item._id}
       name={item.name}
       img={item.profileImg}
       bio={item.bio}
-      gallery={item.gallery}
       index={index}
     />
   );
@@ -90,4 +88,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default Infleuncers;
+export default Influencers;

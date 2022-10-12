@@ -3,15 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
-function Header({
-  text,
-  btn,
-  status,
-  setStatus,
-  postBio,
-  uploadImage,
-  gallery,
-}) {
+function Header({ text, btn, status, setStatus, postBio, uploadImage, id }) {
   const navigation = useNavigation();
 
   function action() {
@@ -24,10 +16,12 @@ function Header({
       else {
         postBio();
       }
-    } else if (text === "GALLERY" && gallery) {
+    } else if (text === "GALLERY" && id) {
       navigation.navigate("Influencers", {
         screen: "Gallery",
-        params: { gallery: gallery },
+        params: {
+          id: id,
+        },
       });
     }
   }
@@ -54,7 +48,7 @@ function Header({
           <Icon name="image-plus" size={20} />
         </TouchableOpacity>
       ) : null}
-      {text === "GALLERY" && gallery ? (
+      {text === "GALLERY" && id ? (
         <TouchableOpacity style={s.btn} onPress={action}>
           <Text style={s.btnText}>VIEW ALL</Text>
         </TouchableOpacity>

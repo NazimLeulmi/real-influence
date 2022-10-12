@@ -19,8 +19,10 @@ import { AuthContext } from "../context/authContext";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import SnackBar from "../components/snackbar";
+import fetchGallery from "../requests/fetchGallery";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import postImage from "../requests/postImage";
 
-const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function ProfileHeader({}) {
@@ -28,6 +30,13 @@ function ProfileHeader({}) {
   const [status, setStatus] = useState("VIEW");
   const [bio, setBio] = useState(user ? user.bio : null);
   const [snack, setSnack] = useState(false);
+  const queryClient = useQueryClient();
+  const mutation = useMutation(postImage, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries(["gallery"]);
+    },
+  });
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -83,24 +92,7 @@ function ProfileHeader({}) {
         return;
       }
       const uri = result.uri;
-      const data = new FormData();
-      const fileName = uri.split("/").pop();
-      const mimeType = fileName.split(".").pop();
-      data.append("galleryImage", {
-        uri: uri,
-        type: "image/" + mimeType,
-        name: fileName,
-      });
-      const url = "http://localhost:8888/influencers/galleryImage";
-      const headers = { "Content-Type": "multipart/form-data" };
-      let response = await fetch(url, {
-        method: "post",
-        body: data,
-        headers: headers,
-        credentials: "include",
-      });
-      let res = await response.json();
-      if (res.success === true) setUser(res.user);
+      mutation.mutate(uri);
     }
   };
   async function postBio() {
@@ -183,9 +175,8 @@ function ProfileHeader({}) {
 
 function MyProfile() {
   const { user, setUser } = useContext(AuthContext);
-  return (
-    <ProfileGallery header={ProfileHeader} data={user ? user.gallery : []} />
-  );
+  const { data } = useQuery(["gallery"], () => fetchGallery(user.id));
+  return <ProfileGallery header={ProfileHeader} data={data?.gallery} />;
 }
 
 const s = StyleSheet.create({

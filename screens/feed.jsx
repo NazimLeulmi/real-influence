@@ -2,13 +2,11 @@ import React from "react";
 import {
   Text,
   StyleSheet,
-  Image,
   View,
   Dimensions,
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import axios from "axios";
 const width = Dimensions.get("window").width;
 import Animated, {
   ZoomIn,
@@ -17,44 +15,48 @@ import Animated, {
 } from "react-native-reanimated";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import TopBar from "../components/topbar";
-import { useRoute, useFocusEffect } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import fetchGallery from "../requests/fetchGallery";
+import fetchLikes from "../requests/fetchLikes";
+import likeImage from "../requests/likeImage";
 import { AuthContext } from "../context/authContext";
-import { InfluencersContext } from "../context/infContext";
 
 function GalleryImage({ item, id }) {
-  let liked = false;
   const { user, setUser } = React.useContext(AuthContext);
-  const { influencers, setInfluencers } = React.useContext(InfluencersContext);
-  if (item.likes.length !== 0) {
-    for (let i = 0; i < item.likes.length; i++) {
-      if (user.id === item.likes[i].from) {
-        liked = true;
-        break;
-      }
-    }
-  }
-  async function likeImage() {
-    const response = await axios.post(
-      "http://localhost:8888/influencers/like",
-      { imageId: item._id }
-    );
-    if (item._id === response.data.image._id) {
-      const newInf = await influencers.map(async (obj) => {
-        if (obj._id === id) {
-          await obj.gallery.map((image) => {
-            if (image._id === response.data.image._id) {
-              return response.data.image;
-            } else {
-              return image;
-            }
-          });
-        }
-        return obj;
-      });
-      console.log(newInf[0]);
-    }
+  const [likesCounter, setLikeCounter] = React.useState(0);
+  const [liked, setLiked] = React.useState(false);
+  const { data } = useQuery(["likes"], () => fetchLikes(id));
+  const queryClient = useQueryClient();
+  const mutation = useMutation(likeImage, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries(["likes"]);
+    },
+  });
+
+  function toggleLike() {
+    console.log(item._id, "imageID");
+    mutation.mutate({ imageId: item._id, influencerId: id });
   }
 
+  React.useEffect(() => {
+    let likesCounter = 0;
+    let liked = false;
+    if (data) {
+      for (let i = 0; i < data.likes.length; i++) {
+        if (data.likes[i].image === item._id) {
+          likesCounter++;
+          if (data.likes[i].from === user.id) {
+            console.log("already liked");
+            liked = true;
+          }
+        }
+      }
+    }
+    setLikeCounter(likesCounter);
+    setLiked(liked);
+  }, [data]);
   return (
     <View style={s.container}>
       <Animated.Image
@@ -64,7 +66,7 @@ function GalleryImage({ item, id }) {
       />
       <View style={s.btnGroup}>
         <Animated.View entering={FadeInLeft.duration(300)}>
-          <TouchableOpacity onPress={likeImage}>
+          <TouchableOpacity onPress={toggleLike}>
             <Icon
               size={30}
               name={liked ? "heart" : "heart-outline"}
@@ -87,7 +89,7 @@ function GalleryImage({ item, id }) {
           entering={FadeInRight.duration(300).delay(300)}
         >
           <TouchableOpacity style={s.btn}>
-            <Text style={s.btnText}>{item.likes.length} Likes</Text>
+            <Text style={s.btnText}>{likesCounter} Likes</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -96,7 +98,8 @@ function GalleryImage({ item, id }) {
 }
 function Feed() {
   const route = useRoute();
-  const { gallery, index, id } = route.params;
+  const { index, id } = route.params;
+  const { data } = useQuery(["gallery"], () => fetchGallery(id));
   const listRef = React.useRef(null);
 
   setTimeout(
@@ -124,7 +127,7 @@ function Feed() {
     <View style={{ flex: 1, backgroundColor: "whitesmoke" }}>
       <FlatList
         ref={listRef}
-        data={gallery}
+        data={data?.gallery}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         getItemLayout={getItemLayout}

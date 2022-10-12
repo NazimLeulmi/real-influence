@@ -6,50 +6,47 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  Text,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import TopBar from "../components/topbar";
-import Animated, { SlideInLeft, Layout, ZoomIn } from "react-native-reanimated";
+import Animated, { ZoomIn } from "react-native-reanimated";
+import { useQuery } from "@tanstack/react-query";
+import fetchGallery from "../requests/fetchGallery";
 
 const width = Dimensions.get("window").width;
 
-class GalleryImage extends React.PureComponent {
-  navigate() {
-    this.props.navigation.navigate("Influencers", {
+function GalleryImage({ index, img, id, navigation }) {
+  function navigate() {
+    navigation.navigate("Influencers", {
       screen: "Feed",
       params: {
-        gallery: this.props.gallery,
-        index: this.props.index,
+        index: index,
+        id: id,
       },
     });
   }
-  render() {
-    return (
-      <Animated.View entering={ZoomIn.delay(this.props.index * 150)}>
-        <TouchableOpacity style={s.galleryItem} onPress={() => this.navigate()}>
-          <Image
-            source={{ uri: "http://localhost:8888/" + this.props.img }}
-            style={s.img}
-          />
-        </TouchableOpacity>
-      </Animated.View>
-    );
-  }
+  return (
+    <Animated.View entering={ZoomIn.delay(index * 150)}>
+      <TouchableOpacity style={s.galleryItem} onPress={navigate}>
+        <Image source={{ uri: "http://localhost:8888/" + img }} style={s.img} />
+      </TouchableOpacity>
+    </Animated.View>
+  );
 }
 
 function Gallery() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { gallery } = route.params;
+  const { id } = route.params;
+  const { data } = useQuery(["gallery"], () => fetchGallery(id));
 
   function renderItem({ item, index }) {
     return (
       <GalleryImage
         img={item.path}
         index={index}
-        gallery={gallery}
         navigation={navigation}
+        id={id}
       />
     );
   }
@@ -57,7 +54,7 @@ function Gallery() {
   return (
     <View style={s.container}>
       <FlatList
-        data={gallery}
+        data={data?.gallery}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         ListHeaderComponent={<TopBar title="GALLERY" stack />}
