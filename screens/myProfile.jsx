@@ -6,6 +6,7 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Header from "../components/header";
@@ -20,8 +21,14 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import SnackBar from "../components/snackbar";
 import fetchGallery from "../requests/fetchGallery";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryCache,
+} from "@tanstack/react-query";
 import postImage from "../requests/postImage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const width = Dimensions.get("window").width;
 
@@ -114,68 +121,83 @@ function ProfileHeader({}) {
     }
   }
 
-  if (user) {
-    return (
-      <View style={s.container}>
-        <TopBar title="Profile" stack={true} />
-        <View style={s.imgContainer}>
-          <TouchableOpacity onPress={pickImage}>
-            <Animated.Image
-              source={{
-                uri: "http://localhost:8888/" + user.profileImg,
-              }}
-              style={s.img}
-              entering={ZoomInLeft.duration(500)}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={s.content}>
-          <Text style={s.name}>{user.name}</Text>
-        </View>
-        {snack ? (
-          <SnackBar text="Only images are permitted" setSnack={setSnack} />
-        ) : null}
-        <Header
-          text="BIO"
-          status={status}
-          setStatus={setStatus}
-          postBio={postBio}
-        />
-        {status === "EDIT" ? (
-          <Animated.View
-            entering={SlideInLeft.duration(800)}
-            exiting={FadeOutLeft.duration(100)}
-          >
-            <TextInput
-              style={s.input}
-              multiline={true}
-              textAlignVertical="top"
-              maxLength={300}
-              placeholder="Your biography in less than 300 characters"
-              cursorColor="black"
-              value={bio}
-              onChangeText={setBio}
-            />
-          </Animated.View>
-        ) : (
-          <Animated.Text
-            style={s.text}
-            entering={SlideInLeft.duration(800)}
-            exiting={FadeOutLeft.duration(100)}
-          >
-            {user ? user.bio : null}
-          </Animated.Text>
-        )}
-
-        <Header text="GALLERY" btn={true} uploadImage={uploadImage} />
+  return (
+    <View style={s.container}>
+      <TopBar title="Profile" stack={true} />
+      <View style={s.imgContainer}>
+        <TouchableOpacity onPress={pickImage}>
+          <Animated.Image
+            source={{
+              uri: "http://localhost:8888/" + user.profileImg,
+            }}
+            style={s.img}
+            entering={ZoomInLeft.duration(500)}
+          />
+        </TouchableOpacity>
       </View>
-    );
-  }
+      <View style={s.content}>
+        <Text style={s.name}>{user.name}</Text>
+      </View>
+      {snack ? (
+        <SnackBar text="Only images are permitted" setSnack={setSnack} />
+      ) : null}
+      <Header
+        text="BIO"
+        status={status}
+        setStatus={setStatus}
+        postBio={postBio}
+      />
+      {status === "EDIT" ? (
+        <Animated.View
+          entering={SlideInLeft.duration(800)}
+          exiting={FadeOutLeft.duration(100)}
+        >
+          <TextInput
+            style={s.input}
+            multiline={true}
+            textAlignVertical="top"
+            maxLength={300}
+            placeholder="Your biography in less than 300 characters"
+            cursorColor="black"
+            value={bio}
+            onChangeText={setBio}
+          />
+        </Animated.View>
+      ) : (
+        <Animated.Text
+          style={s.text}
+          entering={SlideInLeft.duration(800)}
+          exiting={FadeOutLeft.duration(100)}
+        >
+          {user ? user.bio : null}
+        </Animated.Text>
+      )}
+
+      <Header text="GALLERY" btn={true} uploadImage={uploadImage} />
+    </View>
+  );
 }
 
 function MyProfile() {
   const { user, setUser } = useContext(AuthContext);
-  const { data } = useQuery(["gallery"], () => fetchGallery(user.id));
+  const { data, refetch, isFetching } = useQuery(["gallery"], () =>
+    fetchGallery(user.id)
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("refetching");
+      refetch();
+    }, [])
+  );
+  if (isFetching) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
+  }
+
   return <ProfileGallery header={ProfileHeader} data={data?.gallery} />;
 }
 

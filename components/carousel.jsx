@@ -10,9 +10,13 @@ import {
 import Carousel from "react-native-reanimated-carousel";
 import { carousel } from "../data";
 import { useNavigation } from "@react-navigation/native";
+import Animated, { ZoomIn } from "react-native-reanimated";
 
 function MyCarousel({ margin, gallery, id }) {
-  const data = gallery ? gallery.slice(0, 6) : carousel;
+  const data = gallery === undefined ? carousel : gallery.slice(0, 6);
+  if (gallery) {
+    console.log(gallery.length);
+  }
   const width = Dimensions.get("window").width;
   const navigation = useNavigation();
 
@@ -49,7 +53,8 @@ function MyCarousel({ margin, gallery, id }) {
                 : null
             }
           >
-            <Image
+            <Animated.Image
+              entering={ZoomIn.duration(200)}
               source={
                 gallery
                   ? { uri: "http://localhost:8888/" + item.path }
@@ -74,7 +79,6 @@ function MyCarousel({ margin, gallery, id }) {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "gray",
   },
   image: {
     width: "100%",

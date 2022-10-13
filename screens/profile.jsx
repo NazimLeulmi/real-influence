@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
@@ -13,15 +14,41 @@ import MyCarousel from "../components/carousel";
 import Header from "../components/header";
 import Empty from "../assets/empty.png";
 import Animated, { ZoomInLeft } from "react-native-reanimated";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import fetchGallery from "../requests/fetchGallery";
+import { useFocusEffect } from "@react-navigation/native";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
   const { name, img, bio, id } = route.params;
-  const { data } = useQuery(["gallery"], () => fetchGallery(id));
+  const { data, refetch, isFetching, isLoading } = useQuery(["gallery"], () =>
+    fetchGallery(id)
+  );
+  const queryClient = useQueryClient();
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     console.log("refetching");
+  //     refetch();
+  //   }, [])
+  // );
+
+  if (isLoading) {
+    console.log("Loading");
+  }
+  if (isFetching) {
+    console.log("fetching data");
+  }
+
+  if (isFetching) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator color="black" size="large" />
+      </View>
+    );
+  }
   return (
     <View style={s.container}>
       <View>

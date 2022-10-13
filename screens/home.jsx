@@ -16,15 +16,23 @@ import Influencers from "../components/influencers";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import fetchInfluencers from "../requests/fetchInfluencers";
+import { useFocusEffect } from "@react-navigation/native";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Home() {
   const [refreshing, setRefreshing] = React.useState(false);
-  const { data, isLoading, refetch } = useQuery(
+  const { data, isLoading, refetch, isFetching } = useQuery(
     ["influencers"],
     fetchInfluencers
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("refetching");
+      refetch();
+    }, [])
   );
 
   const onRefresh = React.useCallback(() => {
@@ -34,13 +42,6 @@ function Home() {
     setRefreshing(false);
   }, [refreshing]);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="black" />
-      </View>
-    );
-  }
   return (
     <View style={s.container}>
       <View>

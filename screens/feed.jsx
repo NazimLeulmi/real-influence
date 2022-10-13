@@ -36,7 +36,6 @@ function GalleryImage({ item, id }) {
   });
 
   function toggleLike() {
-    console.log(item._id, "imageID");
     mutation.mutate({ imageId: item._id, influencerId: id });
   }
 
@@ -48,7 +47,6 @@ function GalleryImage({ item, id }) {
         if (data.likes[i].image === item._id) {
           likesCounter++;
           if (data.likes[i].from === user.id) {
-            console.log("already liked");
             liked = true;
           }
         }
