@@ -68,7 +68,7 @@ function ProfileHeader({}) {
           type: "image/" + mimeType,
           name: fileName,
         });
-        const url = "http://localhost:8888/influencers/profileImage";
+        const url = "https://realinfluence.io/influencers/profileImage";
         const headers = { "Content-Type": "multipart/form-data" };
         let response = await fetch(url, {
           method: "post",
@@ -105,7 +105,7 @@ function ProfileHeader({}) {
   async function postBio() {
     try {
       const response = await axios.post(
-        "http://localhost:8888/influencers/bio",
+        "https://realinfluence.io/influencers/bio",
         {
           bio: bio,
         }
@@ -128,7 +128,7 @@ function ProfileHeader({}) {
         <TouchableOpacity onPress={pickImage}>
           <Animated.Image
             source={{
-              uri: "http://localhost:8888/" + user.profileImg,
+              uri: "https://realinfluence.io/" + user.profileImg,
             }}
             style={s.img}
             entering={ZoomInLeft.duration(500)}
@@ -180,25 +180,18 @@ function ProfileHeader({}) {
 
 function MyProfile() {
   const { user, setUser } = useContext(AuthContext);
-  const { data, refetch, isFetching } = useQuery(["gallery"], () =>
+  const { data, refetch, isFetched } = useQuery(["gallery"], () =>
     fetchGallery(user.id)
   );
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("refetching");
       refetch();
     }, [])
   );
-  if (isFetching) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="black" />
-      </View>
-    );
+  if (isFetched) {
+    return <ProfileGallery header={ProfileHeader} data={data?.gallery} />;
   }
-
-  return <ProfileGallery header={ProfileHeader} data={data?.gallery} />;
 }
 
 const s = StyleSheet.create({

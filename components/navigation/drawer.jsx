@@ -27,7 +27,7 @@ const Drawer = createDrawerNavigator();
 function DrawerView(props) {
   const { user, setUser } = useContext(AuthContext);
   async function signOut() {
-    const response = await axios.post("http://localhost:8888/signout");
+    const response = await axios.post("https://realinfluence.io/signout");
     const data = response.data;
     if (data.success === true) setUser(null);
   }

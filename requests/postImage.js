@@ -7,7 +7,7 @@ async function postImage(uri) {
     type: "image/" + mimeType,
     name: fileName,
   });
-  const url = "http://localhost:8888/influencers/gallery";
+  const url = "https://realinfluence.io/influencers/gallery";
   const headers = { "Content-Type": "multipart/form-data" };
   let response = await fetch(url, {
     method: "post",

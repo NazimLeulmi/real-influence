@@ -6,6 +6,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import TopBar from "../components/topbar";
@@ -28,7 +29,10 @@ function GalleryImage({ index, img, id, navigation }) {
   return (
     <Animated.View entering={ZoomIn.delay(index * 150)}>
       <TouchableOpacity style={s.galleryItem} onPress={navigate}>
-        <Image source={{ uri: "http://localhost:8888/" + img }} style={s.img} />
+        <Image
+          source={{ uri: "https://realinfluence.io/" + img }}
+          style={s.img}
+        />
       </TouchableOpacity>
     </Animated.View>
   );
@@ -38,7 +42,7 @@ function Gallery() {
   const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params;
-  const { data } = useQuery(["gallery"], () => fetchGallery(id));
+  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(id));
 
   function renderItem({ item, index }) {
     return (
@@ -51,18 +55,20 @@ function Gallery() {
     );
   }
 
-  return (
-    <View style={s.container}>
-      <FlatList
-        data={data?.gallery}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-        ListHeaderComponent={<TopBar title="GALLERY" stack />}
-        stickyHeaderIndices={[0]}
-        numColumns={2}
-      />
-    </View>
-  );
+  if (isFetched) {
+    return (
+      <View style={s.container}>
+        <FlatList
+          data={data?.gallery}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          ListHeaderComponent={<TopBar title="GALLERY" stack />}
+          stickyHeaderIndices={[0]}
+          numColumns={2}
+        />
+      </View>
+    );
+  }
 }
 
 const s = StyleSheet.create({
