@@ -3,7 +3,7 @@ import axios from "axios";
 async function fetchGallery(id) {
   try {
     let response = await axios.get(
-      `https://realinfluence.io/influencers/gallery/${id}`
+      `http://localhost:8888/influencers/${id}/gallery`
     );
     return response.data;
   } catch (error) {

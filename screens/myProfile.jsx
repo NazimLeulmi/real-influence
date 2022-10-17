@@ -6,7 +6,6 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Header from "../components/header";
@@ -20,15 +19,8 @@ import { AuthContext } from "../context/authContext";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import SnackBar from "../components/snackbar";
-import fetchGallery from "../requests/fetchGallery";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryCache,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import postImage from "../requests/postImage";
-import { useFocusEffect } from "@react-navigation/native";
 
 const width = Dimensions.get("window").width;
 
@@ -68,7 +60,7 @@ function ProfileHeader({}) {
           type: "image/" + mimeType,
           name: fileName,
         });
-        const url = "https://realinfluence.io/influencers/profileImage";
+        const url = "http://localhost:8888/influencers/profileImage";
         const headers = { "Content-Type": "multipart/form-data" };
         let response = await fetch(url, {
           method: "post",
@@ -105,7 +97,7 @@ function ProfileHeader({}) {
   async function postBio() {
     try {
       const response = await axios.post(
-        "https://realinfluence.io/influencers/bio",
+        "http://localhost:8888/influencers/bio",
         {
           bio: bio,
         }
@@ -128,7 +120,7 @@ function ProfileHeader({}) {
         <TouchableOpacity onPress={pickImage}>
           <Animated.Image
             source={{
-              uri: "https://realinfluence.io/" + user.profileImg,
+              uri: "http://localhost:8888/" + user.profileImg,
             }}
             style={s.img}
             entering={ZoomInLeft.duration(500)}
@@ -179,19 +171,7 @@ function ProfileHeader({}) {
 }
 
 function MyProfile() {
-  const { user, setUser } = useContext(AuthContext);
-  const { data, refetch, isFetched } = useQuery(["gallery"], () =>
-    fetchGallery(user.id)
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
-      refetch();
-    }, [])
-  );
-  if (isFetched) {
-    return <ProfileGallery header={ProfileHeader} data={data?.gallery} />;
-  }
+  return <ProfileGallery header={ProfileHeader} />;
 }
 
 const s = StyleSheet.create({

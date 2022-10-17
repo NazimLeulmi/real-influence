@@ -1,9 +1,9 @@
 import axios from "axios";
 
-async function fetchLikes(id) {
+async function fetchVotes(id) {
   try {
     let response = await axios.get(
-      `http://localhost:8888/influencers/${id}/likes`
+      `http://localhost:8888/influencers/${id}/votes`
     );
     return response.data;
   } catch (error) {
@@ -11,4 +11,4 @@ async function fetchLikes(id) {
   }
 }
 
-export default fetchLikes;
+export default fetchVotes;

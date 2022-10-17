@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
@@ -16,15 +17,17 @@ import Empty from "../assets/empty.png";
 import Animated, { ZoomInLeft } from "react-native-reanimated";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import fetchGallery from "../requests/fetchGallery";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import fetchVotes from "../requests/fetchVotes";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
   const { name, img, bio, id } = route.params;
-  const { data, refetch, isFetched } = useQuery(["gallery"], () =>
-    fetchGallery(id)
-  );
+  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(id));
+  const { data: votes } = useQuery(["votes"], () => fetchVotes(id));
+  console.log(votes?.votes);
 
   if (isFetched) {
     return (
@@ -40,7 +43,7 @@ function Profile({ route, navigation }) {
           >
             <Image
               source={{
-                uri: "https://realinfluence.io/" + img,
+                uri: "http://localhost:8888/" + img,
               }}
               style={s.img}
             />
@@ -57,12 +60,32 @@ function Profile({ route, navigation }) {
           ) : (
             <MyCarousel gallery={data?.gallery} id={id} />
           )}
+          <TouchableOpacity style={s.btn}>
+            <Text style={s.vote}>0 votes</Text>
+            <Icon size={25} name="swap-vertical" />
+          </TouchableOpacity>
         </ScrollView>
       </View>
     );
   }
 }
 const s = StyleSheet.create({
+  btn: {
+    backgroundColor: "rgba(0,0,0,.1)",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 15,
+    margin: 15,
+    width: 135,
+    maxWidth: 200,
+    borderRadius: 10,
+  },
+  vote: {
+    fontFamily: "regular",
+    fontSize: 18,
+    marginRight: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: "transparent",

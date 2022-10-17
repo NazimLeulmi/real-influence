@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function fetchInfluencers() {
   try {
-    let response = await axios.get("https://realinfluence.io/influencers");
+    let response = await axios.get("http://localhost:8888/influencers");
     return response.data;
   } catch (error) {
     console.log(error);

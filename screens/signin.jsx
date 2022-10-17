@@ -36,7 +36,7 @@ function SignIn({ navigation }) {
     console.log(type);
     try {
       let response = await axios.post(
-        `https://realinfluence.io/${type}/signin`,
+        `http://localhost:8888/${type}/signin`,
         formData
       );
       let data = await response.data;

@@ -55,10 +55,11 @@ function GalleryImage({ item, id }) {
     setLikeCounter(likesCounter);
     setLiked(liked);
   }, [data]);
+
   return (
     <View style={s.container}>
       <Animated.Image
-        source={{ uri: "https://realinfluence.io/" + item.path }}
+        source={{ uri: "http://localhost:8888/" + item.path }}
         style={s.img}
         entering={ZoomIn.duration(200).delay(100)}
       />

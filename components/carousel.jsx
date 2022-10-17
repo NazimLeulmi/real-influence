@@ -57,7 +57,7 @@ function MyCarousel({ margin, gallery, id }) {
               entering={ZoomIn.duration(200)}
               source={
                 gallery
-                  ? { uri: "https://realinfluence.io/" + item.path }
+                  ? { uri: "http://localhost:8888/" + item.path }
                   : item.img
               }
               resizeMode="contain"
