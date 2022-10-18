@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import TopBar from "../components/topbar";
@@ -15,19 +14,45 @@ import MyCarousel from "../components/carousel";
 import Header from "../components/header";
 import Empty from "../assets/empty.png";
 import Animated, { ZoomInLeft } from "react-native-reanimated";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import fetchGallery from "../requests/fetchGallery";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import fetchVotes from "../requests/fetchVotes";
+import { AuthContext } from "../context/authContext";
+import toggleVote from "../requests/toggleVote";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route, navigation }) {
   const { name, img, bio, id } = route.params;
+  const { user } = useContext(AuthContext);
   const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(id));
   const { data: votes } = useQuery(["votes"], () => fetchVotes(id));
-  console.log(votes?.votes);
+  const [voted, setVoted] = useState(false);
+  const queryClient = useQueryClient();
+  const mutation = useMutation(toggleVote, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries(["votes"]);
+    },
+  });
+
+  useEffect(() => {
+    let voted = false;
+    if (votes) {
+      for (let i = 0; i < votes.votes.length; i++) {
+        if (votes.votes[i].user === user.id) {
+          voted = true;
+        }
+      }
+      setVoted(voted);
+    }
+  }, [votes]);
+
+  function vote() {
+    mutation.mutate(id);
+  }
 
   if (isFetched) {
     return (
@@ -60,9 +85,16 @@ function Profile({ route, navigation }) {
           ) : (
             <MyCarousel gallery={data?.gallery} id={id} />
           )}
-          <TouchableOpacity style={s.btn}>
-            <Text style={s.vote}>0 votes</Text>
-            <Icon size={25} name="swap-vertical" />
+          <TouchableOpacity
+            style={s.btn}
+            disabled={user.type === "influencer"}
+            onPress={vote}
+          >
+            <Text style={s.vote}>{votes?.votes.length} votes</Text>
+            <Icon
+              size={25}
+              name={voted ? "account-arrow-down" : "account-arrow-up"}
+            />
           </TouchableOpacity>
         </ScrollView>
       </View>

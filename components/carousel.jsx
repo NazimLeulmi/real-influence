@@ -14,9 +14,6 @@ import Animated, { ZoomIn } from "react-native-reanimated";
 
 function MyCarousel({ margin, gallery, id }) {
   const data = gallery === undefined ? carousel : gallery.slice(0, 6);
-  if (gallery) {
-    console.log(gallery.length);
-  }
   const width = Dimensions.get("window").width;
   const navigation = useNavigation();
 

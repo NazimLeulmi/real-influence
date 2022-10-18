@@ -62,7 +62,6 @@ function ProfileGallery({ header }) {
   });
 
   function deleteImg(id) {
-    console.log("Deleting", id);
     mutation.mutate(id);
   }
 
