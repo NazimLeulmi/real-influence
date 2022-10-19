@@ -1,26 +1,18 @@
 import React, { useContext, useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, Dimensions, TextInput } from "react-native";
 import TopBar from "../components/topbar";
 import Header from "../components/header";
-import Animated, {
-  FadeOutLeft,
-  SlideInLeft,
-  ZoomInLeft,
-} from "react-native-reanimated";
-import ProfileGallery from "../components/profileGallery";
+import Animated, { FadeOutLeft, SlideInLeft } from "react-native-reanimated";
+import ProfileGallery from "../components/userProfile/gallery";
 import { AuthContext } from "../context/authContext";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import SnackBar from "../components/snackbar";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import postImage from "../requests/postImage";
+import ProfileImage from "../components/shared/profileImage";
+import VoteBtn from "../components/voteBtn";
+import fetchVotes from "../requests/fetchVotes";
 
 const width = Dimensions.get("window").width;
 
@@ -30,10 +22,11 @@ function ProfileHeader({}) {
   const [bio, setBio] = useState(user ? user.bio : null);
   const [snack, setSnack] = useState(false);
   const queryClient = useQueryClient();
+  const { data, isFetched } = useQuery(["votes"], () => fetchVotes(user.id));
   const mutation = useMutation(postImage, {
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries(["gallery"]);
+      queryClient.invalidateQueries(["myGallery"]);
     },
   });
 
@@ -113,61 +106,55 @@ function ProfileHeader({}) {
     }
   }
 
-  return (
-    <View style={s.container}>
-      <TopBar title="Profile" stack={true} />
-      <View style={s.imgContainer}>
-        <TouchableOpacity onPress={pickImage}>
-          <Animated.Image
-            source={{
-              uri: "http://localhost:8888/" + user.profileImg,
-            }}
-            style={s.img}
-            entering={ZoomInLeft.duration(500)}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={s.content}>
-        <Text style={s.name}>{user.name}</Text>
-      </View>
-      {snack ? (
-        <SnackBar text="Only images are permitted" setSnack={setSnack} />
-      ) : null}
-      <Header
-        text="BIO"
-        status={status}
-        setStatus={setStatus}
-        postBio={postBio}
-      />
-      {status === "EDIT" ? (
-        <Animated.View
-          entering={SlideInLeft.duration(800)}
-          exiting={FadeOutLeft.duration(100)}
-        >
-          <TextInput
-            style={s.input}
-            multiline={true}
-            textAlignVertical="top"
-            maxLength={300}
-            placeholder="Your biography in less than 300 characters"
-            cursorColor="black"
-            value={bio}
-            onChangeText={setBio}
-          />
-        </Animated.View>
-      ) : (
-        <Animated.Text
-          style={s.text}
-          entering={SlideInLeft.duration(800)}
-          exiting={FadeOutLeft.duration(100)}
-        >
-          {user ? user.bio : null}
-        </Animated.Text>
-      )}
+  if (isFetched) {
+    return (
+      <View style={s.container}>
+        <TopBar title="Profile" stack={true} />
+        <ProfileImage img={user.profileImg} />
+        <View style={s.imgFooter}>
+          <Text style={s.name}>{user.name}</Text>
+          <VoteBtn votes={data.votes.length} type="influencer" voted={false} />
+        </View>
 
-      <Header text="GALLERY" btn={true} uploadImage={uploadImage} />
-    </View>
-  );
+        {snack ? (
+          <SnackBar text="Only images are permitted" setSnack={setSnack} />
+        ) : null}
+        <Header
+          text="BIO"
+          status={status}
+          setStatus={setStatus}
+          postBio={postBio}
+        />
+        {status === "EDIT" ? (
+          <Animated.View
+            entering={SlideInLeft.duration(800)}
+            exiting={FadeOutLeft.duration(100)}
+          >
+            <TextInput
+              style={s.input}
+              multiline={true}
+              textAlignVertical="top"
+              maxLength={300}
+              placeholder="Your biography in less than 300 characters"
+              cursorColor="black"
+              value={bio}
+              onChangeText={setBio}
+            />
+          </Animated.View>
+        ) : (
+          <Animated.Text
+            style={s.text}
+            entering={SlideInLeft.duration(800)}
+            exiting={FadeOutLeft.duration(100)}
+          >
+            {user ? user.bio : null}
+          </Animated.Text>
+        )}
+
+        <Header text="GALLERY" btn={true} uploadImage={uploadImage} />
+      </View>
+    );
+  }
 }
 
 function MyProfile() {
@@ -203,9 +190,18 @@ const s = StyleSheet.create({
     borderBottomColor: "rgba(0,0,0,.1)",
     paddingBottom: 5,
   },
+  imgFooter: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 15,
+    backgroundColor: "white",
+    borderRadius: 10,
+  },
   name: {
     fontFamily: "regular",
-    fontSize: 16,
+    fontSize: 18,
+    marginRight: "auto",
+    marginLeft: 15,
   },
   text: {
     fontFamily: "regular",

@@ -5,32 +5,32 @@ import {
   Image,
   RefreshControl,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
-import MyCarousel from "../components/carousel";
 import Header from "../components/header";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import Brands from "../components/sponsors";
-import Influencers from "../components/influencers";
+import Influencers from "../components/home/influencersList";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import fetchInfluencers from "../requests/fetchInfluencers";
 import { useFocusEffect } from "@react-navigation/native";
+import Carousel from "../components/shared/carousel";
+import { carousel } from "../data";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Home() {
   const [refreshing, setRefreshing] = React.useState(false);
-  const { data, isLoading, refetch, isFetching } = useQuery(
+  const { data, isLoading, refetch, isFetched } = useQuery(
     ["influencers"],
     fetchInfluencers
   );
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("refetching");
+      console.log("fetching influencers (Home)");
       refetch();
     }, [])
   );
@@ -38,34 +38,35 @@ function Home() {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     refetch();
-    console.log("Refetched");
     setRefreshing(false);
   }, [refreshing]);
 
-  return (
-    <View style={s.container}>
-      <View>
-        <Image source={Bg} style={s.bg} />
+  if (isFetched) {
+    return (
+      <View style={s.container}>
+        <View>
+          <Image source={Bg} style={s.bg} />
+        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              enabled={true}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          <TopBar title="Miss Influencer" />
+          <Carousel data={carousel} local />
+          <Header text="INFLUENCERS" btn />
+          <Influencers data={data?.influencers.slice(0, 12)} />
+          <Header text="SPONSORS" btn />
+          <Brands />
+        </ScrollView>
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            enabled={true}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-      >
-        <TopBar title="Miss Influencer" />
-        <MyCarousel />
-        <Header text="INFLUENCERS" btn />
-        <Influencers data={data?.influencers.slice(0, 12)} />
-        <Header text="SPONSORS" btn />
-        <Brands />
-      </ScrollView>
-    </View>
-  );
+    );
+  }
 }
 
 const s = StyleSheet.create({

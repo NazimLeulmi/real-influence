@@ -114,7 +114,7 @@ function SignUpTwo({ navigation }) {
         const data = response.data;
         if (data.success === true) {
           setLoading(false);
-          navigation.navigate("Auth", { screen: "SignIn" });
+          navigation.navigate("Auth", { screen: "Otp" });
         }
         if (data.success === false) {
           setLoading(false);

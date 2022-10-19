@@ -39,7 +39,6 @@ function Gallery() {
   const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params;
-  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(id));
 
   function renderItem({ item, index }) {
     return (
@@ -56,7 +55,7 @@ function Gallery() {
     return (
       <View style={s.container}>
         <FlatList
-          data={data?.gallery}
+          data={data?.myGallery}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           ListHeaderComponent={<TopBar title="GALLERY" stack />}
