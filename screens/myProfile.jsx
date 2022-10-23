@@ -13,10 +13,11 @@ import postImage from "../requests/postImage";
 import ProfileImage from "../components/shared/profileImage";
 import VoteBtn from "../components/voteBtn";
 import fetchVotes from "../requests/fetchVotes";
+import { ScrollView } from "react-native-gesture-handler";
 
 const width = Dimensions.get("window").width;
 
-function ProfileHeader({}) {
+function MyProfile({}) {
   const { user, setUser } = useContext(AuthContext);
   const [status, setStatus] = useState("VIEW");
   const [bio, setBio] = useState(user ? user.bio : null);
@@ -110,12 +111,11 @@ function ProfileHeader({}) {
     return (
       <View style={s.container}>
         <TopBar title="Profile" stack={true} />
-        <ProfileImage img={user.profileImg} />
+        <ProfileImage img={user.profileImg} pickImage={pickImage} />
         <View style={s.imgFooter}>
           <Text style={s.name}>{user.name}</Text>
           <VoteBtn votes={data.votes.length} type="influencer" voted={false} />
         </View>
-
         {snack ? (
           <SnackBar text="Only images are permitted" setSnack={setSnack} />
         ) : null}
@@ -150,15 +150,14 @@ function ProfileHeader({}) {
             {user ? user.bio : null}
           </Animated.Text>
         )}
-
         <Header text="GALLERY" btn={true} uploadImage={uploadImage} />
       </View>
     );
   }
 }
 
-function MyProfile() {
-  return <ProfileGallery header={ProfileHeader} />;
+function Gallery() {
+  return <ProfileGallery header={MyProfile} />;
 }
 
 const s = StyleSheet.create({
@@ -222,4 +221,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default MyProfile;
+export default Gallery;

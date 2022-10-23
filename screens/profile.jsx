@@ -22,7 +22,7 @@ import VoteBtn from "../components/voteBtn";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-function Profile({ route, navigation }) {
+function Profile({ route }) {
   const { influencer } = route.params;
   const { name, profileImg, bio, _id } = influencer;
   const { user } = useContext(AuthContext);
@@ -78,7 +78,7 @@ function Profile({ route, navigation }) {
           <Text style={s.header}>BIO</Text>
           <Text style={s.text}>{bio}</Text>
           <Header text="GALLERY" id={_id} />
-          <Carousel data={data.gallery} />
+          <Carousel data={data.gallery} id={_id} />
         </ScrollView>
       </View>
     );

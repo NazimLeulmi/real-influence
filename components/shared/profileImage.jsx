@@ -1,19 +1,24 @@
-import { Image, StyleSheet, Dimensions } from "react-native";
+import { Image, StyleSheet, Dimensions, Pressable } from "react-native";
 import Animated, { ZoomIn } from "react-native-reanimated";
+import React from "react";
 
 const width = Dimensions.get("window").width;
 
-function ProfileImage({ img }) {
-  return (
-    <Animated.View style={s.imgContainer} entering={ZoomIn.duration(250)}>
-      <Image
-        source={{
-          uri: "http://localhost:8888/" + img,
-        }}
-        style={s.img}
-      />
-    </Animated.View>
-  );
+class ProfileImage extends React.PureComponent {
+  render() {
+    return (
+      <Animated.View style={s.imgContainer} entering={ZoomIn.duration(250)}>
+        <Pressable onPress={this.props.pickImage ? this.props.pickImage : null}>
+          <Image
+            source={{
+              uri: "http://localhost:8888/" + this.props.img,
+            }}
+            style={s.img}
+          />
+        </Pressable>
+      </Animated.View>
+    );
+  }
 }
 
 const s = StyleSheet.create({

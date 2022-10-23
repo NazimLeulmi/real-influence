@@ -23,10 +23,12 @@ class Influencer extends React.PureComponent {
     this.props.navigation.navigate("Influencers", {
       screen: "Influencer",
       params: {
-        id: this.props.id,
-        name: this.props.name,
-        img: this.props.img,
-        bio: this.props.bio,
+        influencer: {
+          _id: this.props.id,
+          name: this.props.name,
+          profileImg: this.props.img,
+          bio: this.props.bio,
+        },
       },
     });
   };
