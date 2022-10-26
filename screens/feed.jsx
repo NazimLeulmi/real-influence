@@ -6,8 +6,16 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  Image
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+
+import Bg from "../assets/background.jpg";
+
+const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+
 import Animated, {
   ZoomIn,
   FadeInLeft,
@@ -38,24 +46,27 @@ function GalleryImage({ item, id }) {
   function toggleLike() {
     mutation.mutate({ imageId: item._id, influencerId: id });
   }
-
-  React.useEffect(() => {
-    let likesCounter = 0;
-    let liked = false;
-    if (data) {
-      for (let i = 0; i < data.likes.length; i++) {
-        if (data.likes[i].image === item._id) {
-          likesCounter++;
-          if (data.likes[i].from === user.id) {
-            liked = true;
+  useFocusEffect(
+    useCallback(() => {
+      console.log(user._id, "user _id")
+      console.log(user.id, "user .id")
+      let likesCounter = 0;
+      let liked = false;
+      if (data) {
+        for (let i = 0; i < data.likes.length; i++) {
+          if (data.likes[i].image === item._id) {
+            likesCounter++;
+            if (data.likes[i].from === user.id) {
+              liked = true;
+              console.log("liked")
+            }
           }
         }
       }
-    }
-    setLikeCounter(likesCounter);
-    setLiked(liked);
-  }, [data]);
-
+      setLikeCounter(likesCounter);
+      setLiked(liked);
+    }, [data])
+  );
   return (
     <View style={s.container}>
       <Animated.Image
@@ -71,11 +82,6 @@ function GalleryImage({ item, id }) {
               name={liked ? "heart" : "heart-outline"}
               style={s.icon}
             />
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View entering={FadeInLeft.duration(300).delay(100)}>
-          <TouchableOpacity>
-            <Icon size={30} name="chat-outline" style={s.icon} />
           </TouchableOpacity>
         </Animated.View>
         <Animated.View entering={FadeInLeft.duration(300).delay(200)}>
@@ -123,7 +129,10 @@ function Feed() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "whitesmoke" }}>
+    <View style={s.wrapper}>
+      <View>
+        <Image source={Bg} style={s.bg} />
+      </View>
       <FlatList
         ref={listRef}
         data={data?.gallery}
@@ -138,6 +147,18 @@ function Feed() {
 }
 
 const s = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "transparent",
+    position: "relative",
+  },
+  bg: {
+    height: height,
+    width: width,
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
   img: {
     height: width,
     width: width,
@@ -154,7 +175,7 @@ const s = StyleSheet.create({
     height: 60,
   },
   icon: {
-    color: "rgba(0,0,0,.3)",
+    color: "#FFD700",
     fontWeight: 300,
     marginLeft: 8,
   },
@@ -166,13 +187,13 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,.1)",
-    width: 150,
-    borderRadius: 50,
-    padding: 4,
+    backgroundColor: "#FFD700",
+    padding: 10,
+    borderRadius: 5,
+    width: 85
   },
   btnText: {
-    fontFamily: "light",
+    fontFamily: "regular",
     fontSize: 14,
   },
 });

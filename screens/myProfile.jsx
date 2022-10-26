@@ -17,7 +17,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 const width = Dimensions.get("window").width;
 
-function MyProfile({}) {
+function MyProfile({ }) {
   const { user, setUser } = useContext(AuthContext);
   const [status, setStatus] = useState("VIEW");
   const [bio, setBio] = useState(user ? user.bio : null);

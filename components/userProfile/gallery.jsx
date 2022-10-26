@@ -1,17 +1,17 @@
-import React, { useContext, useCallback } from "react";
-import { View, StyleSheet, Dimensions, FlatList, Alert } from "react-native";
+import React, { useContext } from "react";
+import { View, StyleSheet, Dimensions, FlatList, Alert, Image } from "react-native";
 import fetchGallery from "../../requests/fetchGallery";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 import deleteImage from "../../requests/deleteImage";
 import GalleryImage from "./galleryImage";
-import { useFocusEffect } from "@react-navigation/native";
+import Empty from "../../assets/empty.png";
 
 const width = Dimensions.get("window").width;
 
 function ProfileGallery({ header }) {
-  const { user, setUser } = useContext(AuthContext);
-  const { data, refetch, isFetched } = useQuery(["myGallery"], () =>
+  const { user, } = useContext(AuthContext);
+  const { data, isFetched } = useQuery(["myGallery"], () =>
     fetchGallery(user.id)
   );
   const queryClient = useQueryClient();
@@ -55,6 +55,7 @@ function ProfileGallery({ header }) {
           numColumns={3}
           ListHeaderComponent={header}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<Image source={Empty} style={{ width: width - 50, alignSelf: "center" }} />}
         />
       </View>
     );

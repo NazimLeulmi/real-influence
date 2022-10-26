@@ -8,19 +8,43 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from "react-native";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import Animated, { ZoomIn, FadeIn } from "react-native-reanimated";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Email from "../assets/email.png";
+import axios from "axios";
 
 const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 function Otp() {
   const [otp, setOtp] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { email } = route.params;
+  console.log(email, "otp");
   const field = useRef();
+
+  async function verify() {
+    try {
+      setLoading(true);
+      const response = await axios.post("http://localhost:8888/users/otp", { otp: otp, email: email });
+      if (response.data.success === true) {
+        setLoading(false);
+        setError("");
+        navigation.navigate("Auth", { screen: "SignIn" })
+      } else {
+        setLoading(false);
+        setError(response.data.error);
+      }
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       style={s.container}
@@ -48,9 +72,11 @@ function Otp() {
           <Text style={s.linkText}>Didn't receive the email ?</Text>
           <Text style={s.bold}>Resend</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.btn}>
-          <Text style={s.btnText}>VERIFY</Text>
+        <TouchableOpacity style={s.btn} onPress={verify} disabled={loading}>
+          {loading && <ActivityIndicator color="black" size="small" />}
+          {!loading && <Text style={s.btnText}>VERIFY</Text>}
         </TouchableOpacity>
+        {error && <Text style={s.error}>{error}</Text>}
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -127,6 +153,12 @@ const s = StyleSheet.create({
     color: "rgba(0,0,0,.7)",
     letterSpacing: 1,
   },
+  error: {
+    fontFamily: "regular",
+    color: "red",
+    fontSize: 14,
+    textAlign: "center"
+  }
 });
 
 export default Otp;

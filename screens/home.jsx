@@ -60,7 +60,7 @@ function Home() {
           <TopBar title="Miss Influencer" />
           <Carousel data={carousel} local />
           <Header text="INFLUENCERS" btn />
-          <Influencers data={data?.influencers.slice(0, 12)} />
+          <Influencers data={data?.influencers} />
           <Header text="SPONSORS" btn />
           <Brands />
         </ScrollView>

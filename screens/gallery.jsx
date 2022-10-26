@@ -6,13 +6,13 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import TopBar from "../components/topbar";
 import Animated, { ZoomIn } from "react-native-reanimated";
 import { useQuery } from "@tanstack/react-query";
 import fetchGallery from "../requests/fetchGallery";
+import Empty from "../assets/empty.png";
 
 const width = Dimensions.get("window").width;
 
@@ -39,6 +39,7 @@ function Gallery() {
   const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params;
+  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(id));
 
   function renderItem({ item, index }) {
     return (
@@ -55,12 +56,13 @@ function Gallery() {
     return (
       <View style={s.container}>
         <FlatList
-          data={data?.myGallery}
+          data={data?.gallery}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           ListHeaderComponent={<TopBar title="GALLERY" stack />}
           stickyHeaderIndices={[0]}
           numColumns={2}
+          ListEmptyComponent={<Image source={Empty} style={{ width: width - 50, alignSelf: "center" }} />}
         />
       </View>
     );

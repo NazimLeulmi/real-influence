@@ -1,15 +1,15 @@
-import { StyleSheet, Dimensions, View, Pressable } from "react-native";
+import { StyleSheet, Dimensions, View, Pressable, Image } from "react-native";
 import Animated, { ZoomIn } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
 import { useRef, useState } from "react";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import Empty from "../../assets/empty.png";
 
 const width = Dimensions.get("window").width;
 
 function Carousel({ data, local, id }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeItem, setActiveItem] = useState(data[0]);
   const navigation = useNavigation();
 
   function navigate(index) {
@@ -73,6 +73,7 @@ function Carousel({ data, local, id }) {
         estimatedItemSize={6}
         onViewableItemsChanged={onViewChanged.current}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
+        ListEmptyComponent={<Image source={Empty} style={{ width: width, alignSelf: "center" }} />}
       />
       <Pagination />
     </>
