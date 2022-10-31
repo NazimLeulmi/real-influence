@@ -15,6 +15,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Share,
 } from "react-native";
 import Bg from "../../assets/background.jpg";
 import Logo from "../../assets/logo.png";
@@ -27,10 +28,31 @@ const Drawer = createDrawerNavigator();
 function DrawerView(props) {
   const { user, setUser } = useContext(AuthContext);
   async function signOut() {
-    const response = await axios.post("http://localhost:8888/signout");
+    const response = await axios.post("https://realinfluence.io/signout");
     const data = response.data;
     if (data.success === true) setUser(null);
   }
+  const shareProfile = async () => {
+    try {
+      const link = `https://realinfluence.io/share/profile/${user.id}`;
+      const result = await Share.share({
+        message:
+          " /- Build a social media empower around your personal brand -/ \n" +
+          link,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -40,10 +62,12 @@ function DrawerView(props) {
         <DrawerItemList {...props}></DrawerItemList>
       </DrawerContentScrollView>
       <View style={s.footer}>
-        <TouchableOpacity style={s.btn}>
-          <Icon name="share-variant" size={22} style={s.btnIcon} />
-          <Text style={s.btnText}>Share profile</Text>
-        </TouchableOpacity>
+        {user?.type === "influencer" && (
+          <TouchableOpacity style={s.btn} onPress={shareProfile}>
+            <Icon name="share-variant" size={22} style={s.btnIcon} />
+            <Text style={s.btnText}>Share profile</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity style={s.btn} onPress={signOut}>
           <Icon name="logout-variant" size={22} style={s.btnIcon} />
           <Text style={s.btnText}>Logout</Text>

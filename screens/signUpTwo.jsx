@@ -83,7 +83,7 @@ function SignUpTwo({ navigation }) {
           type: "image/" + mimeType,
           name: fileName,
         });
-        const url = "http://localhost:8888/influencers/signup";
+        const url = "https://realinfluence.io/influencers/signup";
         const headers = { "Content-Type": "multipart/form-data" };
         let response = await fetch(url, {
           method: "post",
@@ -101,7 +101,7 @@ function SignUpTwo({ navigation }) {
         }
       } else {
         setLoading(true);
-        const url = "http://localhost:8888/users/signup";
+        const url = "https://realinfluence.io/users/signup";
         const response = await axios.post(url, {
           ...formData,
           email: route.params.email,
@@ -110,11 +110,13 @@ function SignUpTwo({ navigation }) {
           dialCode: route.params.dialCode,
           name: route.params.name,
         });
-        console.log(response.data, "response");
         const data = response.data;
         if (data.success === true) {
           setLoading(false);
-          navigation.navigate("Auth", { screen: "Otp", params: { email: route.params.email } });
+          navigation.navigate("Auth", {
+            screen: "Otp",
+            params: { email: route.params.email },
+          });
         }
         if (data.success === false) {
           setLoading(false);

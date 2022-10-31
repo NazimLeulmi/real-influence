@@ -53,7 +53,7 @@ function Intro() {
           )}
         </View>
         <Animated.Text style={s.text} entering={FadeIn.duration(1500)}>
-          Our primary vision of Miss Influencer is to support and strengthen
+          The primary vision of Real Influence is to support and strengthen
           those talented individuals who are ready to use their social media
           platforms to create value, generate meaningful engagement and build a
           community by empowering each other.

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "realinfluence",
     "name": "Real Influence",
     "slug": "real-influence",
     "version": "1.1.0",
@@ -14,14 +15,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "package": "com.connectopia.missinfluencer",
+      "package": "com.connectopia.realinfluence",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       }
     },

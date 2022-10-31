@@ -31,7 +31,7 @@ function Carousel({ data, local, id }) {
         <Animated.Image
           entering={ZoomIn.duration(200)}
           source={
-            local ? item.img : { uri: "http://localhost:8888/" + item.path }
+            local ? item.img : { uri: "https://realinfluence.io/" + item.path }
           }
           resizeMode="contain"
           style={s.img}
@@ -73,7 +73,9 @@ function Carousel({ data, local, id }) {
         estimatedItemSize={6}
         onViewableItemsChanged={onViewChanged.current}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
-        ListEmptyComponent={<Image source={Empty} style={{ width: width, alignSelf: "center" }} />}
+        ListEmptyComponent={
+          <Image source={Empty} style={{ width: width, alignSelf: "center" }} />
+        }
       />
       <Pagination />
     </>

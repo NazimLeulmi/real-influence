@@ -9,11 +9,14 @@ const Root = createStackNavigator();
 
 function RootStack() {
   const { user, setUser } = useContext(AuthContext);
+
   useEffect(() => {
     async function checkAuth() {
       try {
         if (user === null) {
-          const response = await axios.get("http://localhost:8888/check-auth");
+          const response = await axios.get(
+            "https://realinfluence.io/check-auth"
+          );
           const { data } = response;
           if (data.success === true) {
             setUser(data.user);

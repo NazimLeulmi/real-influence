@@ -6,7 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  Image
+  Image,
+  Share,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
@@ -30,7 +31,7 @@ import fetchLikes from "../requests/fetchLikes";
 import likeImage from "../requests/likeImage";
 import { AuthContext } from "../context/authContext";
 
-function GalleryImage({ item, id }) {
+function GalleryImage({ item, id, index }) {
   const { user, setUser } = React.useContext(AuthContext);
   const [likesCounter, setLikeCounter] = React.useState(0);
   const [liked, setLiked] = React.useState(false);
@@ -48,8 +49,6 @@ function GalleryImage({ item, id }) {
   }
   useFocusEffect(
     useCallback(() => {
-      console.log(user._id, "user _id")
-      console.log(user.id, "user .id")
       let likesCounter = 0;
       let liked = false;
       if (data) {
@@ -58,7 +57,6 @@ function GalleryImage({ item, id }) {
             likesCounter++;
             if (data.likes[i].from === user.id) {
               liked = true;
-              console.log("liked")
             }
           }
         }
@@ -67,10 +65,30 @@ function GalleryImage({ item, id }) {
       setLiked(liked);
     }, [data])
   );
+
+  const shareImage = async () => {
+    try {
+      const link = `https://realinfluence.io/share/feed/${id}/${index}`;
+      const result = await Share.share({
+        message: link,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <View style={s.container}>
       <Animated.Image
-        source={{ uri: "http://localhost:8888/" + item.path }}
+        source={{ uri: "https://realinfluence.io/" + item.path }}
         style={s.img}
         entering={ZoomIn.duration(200).delay(100)}
       />
@@ -85,7 +103,7 @@ function GalleryImage({ item, id }) {
           </TouchableOpacity>
         </Animated.View>
         <Animated.View entering={FadeInLeft.duration(300).delay(200)}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={shareImage}>
             <Icon size={30} name="share-variant-outline" style={s.icon} />
           </TouchableOpacity>
         </Animated.View>
@@ -107,19 +125,10 @@ function Feed() {
   const { data } = useQuery(["gallery"], () => fetchGallery(id));
   const listRef = React.useRef(null);
 
-  setTimeout(
-    () =>
-      listRef.current.scrollToIndex({
-        index: index,
-        viewPosition: 0.5,
-        animated: false,
-      }),
-    250
-  );
-
-  function renderItem({ item }) {
-    return <GalleryImage item={item} id={id} />;
+  function renderItem({ item, index }) {
+    return <GalleryImage item={item} id={id} index={index} />;
   }
+
   function getItemLayout(data, index) {
     return {
       length: s.container.height,
@@ -141,6 +150,7 @@ function Feed() {
         getItemLayout={getItemLayout}
         ListHeaderComponent={<TopBar title="INFLUENCER FEED" stack />}
         stickyHeaderIndices={[0]}
+        initialScrollIndex={index}
       />
     </View>
   );
@@ -175,8 +185,7 @@ const s = StyleSheet.create({
     height: 60,
   },
   icon: {
-    color: "#FFD700",
-    fontWeight: 300,
+    color: "rgba(0,0,0,.6)",
     marginLeft: 8,
   },
   last: {
@@ -190,7 +199,7 @@ const s = StyleSheet.create({
     backgroundColor: "#FFD700",
     padding: 10,
     borderRadius: 5,
-    width: 85
+    width: 85,
   },
   btnText: {
     fontFamily: "regular",

@@ -33,15 +33,13 @@ function SignIn({ navigation }) {
   async function submitForm(formData) {
     setLoading(true);
     let type = enabled ? "influencers" : "users";
-    console.log(type);
     try {
       let response = await axios.post(
-        `http://localhost:8888/${type}/signin`,
+        `https://realinfluence.io/${type}/signin`,
         formData
       );
       let data = await response.data;
       if (data.isValid === false) {
-        console.log(data.error);
         setError("password", { message: data.error });
       }
       if (data.success === true) setUser(data.user);

@@ -29,7 +29,10 @@ function GalleryImage({ index, img, id, navigation }) {
   return (
     <Animated.View entering={ZoomIn.delay(index * 150)}>
       <TouchableOpacity style={s.galleryItem} onPress={navigate}>
-        <Image source={{ uri: "http://localhost:8888/" + img }} style={s.img} />
+        <Image
+          source={{ uri: "https://realinfluence.io/" + img }}
+          style={s.img}
+        />
       </TouchableOpacity>
     </Animated.View>
   );
@@ -62,7 +65,12 @@ function Gallery() {
           ListHeaderComponent={<TopBar title="GALLERY" stack />}
           stickyHeaderIndices={[0]}
           numColumns={2}
-          ListEmptyComponent={<Image source={Empty} style={{ width: width - 50, alignSelf: "center" }} />}
+          ListEmptyComponent={
+            <Image
+              source={Empty}
+              style={{ width: width - 50, alignSelf: "center" }}
+            />
+          }
         />
       </View>
     );

@@ -12,7 +12,7 @@ class GalleryImage extends React.PureComponent {
       >
         <TouchableOpacity style={s.galleryItem} onLongPress={this.props.alert}>
           <Image
-            source={{ uri: "http://localhost:8888/" + this.props.img.path }}
+            source={{ uri: "https://realinfluence.io/" + this.props.img.path }}
             style={s.galleryImg}
           />
         </TouchableOpacity>

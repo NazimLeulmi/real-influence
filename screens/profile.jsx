@@ -18,18 +18,23 @@ import toggleVote from "../requests/toggleVote";
 import Carousel from "../components/shared/carousel";
 import ProfileImage from "../components/shared/profileImage";
 import VoteBtn from "../components/voteBtn";
+import fetchInfluencer from "../requests/fetchInfluencer";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route }) {
-  const { influencer } = route.params;
-  const { name, profileImg, bio, _id } = influencer;
+  console.log(route.params, "params");
+  const { _id } = route.params;
   const { user } = useContext(AuthContext);
-  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(_id));
+  const { data: influencer, isFetched: fetchedInfluencer } = useQuery(
+    ["influencer"],
+    () => fetchInfluencer(_id)
+  );
   const { data: votes, isFetched: fetchedVotes } = useQuery(["votes"], () =>
     fetchVotes(_id)
   );
+  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(_id));
   const [voted, setVoted] = useState(false);
 
   const queryClient = useQueryClient();
@@ -56,8 +61,7 @@ function Profile({ route }) {
     mutation.mutate(_id);
   }
 
-  if (isFetched && fetchedVotes) {
-    console.log("Fetched Votes + Images ( Profile )");
+  if (isFetched && fetchedVotes && fetchedInfluencer) {
     return (
       <View style={s.container}>
         <View>
@@ -65,9 +69,9 @@ function Profile({ route }) {
         </View>
         <ScrollView>
           <TopBar title="Influencer Profile" stack={true} />
-          <ProfileImage img={profileImg} />
+          <ProfileImage img={influencer.profileImg} />
           <View style={s.imgFooter}>
-            <Text style={s.name}>{name}</Text>
+            <Text style={s.name}>{influencer.name}</Text>
             <VoteBtn
               vote={vote}
               votes={votes.votes.length}
@@ -76,7 +80,7 @@ function Profile({ route }) {
             />
           </View>
           <Text style={s.header}>BIO</Text>
-          <Text style={s.text}>{bio}</Text>
+          <Text style={s.text}>{influencer.bio}</Text>
           <Header text="GALLERY" id={_id} />
           <Carousel data={data.gallery} id={_id} />
         </ScrollView>

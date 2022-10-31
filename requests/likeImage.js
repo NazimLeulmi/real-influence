@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function likeImage(props) {
   try {
-    let response = await axios.post("http://localhost:8888/influencers/like", {
+    let response = await axios.post("https://realinfluence.io/influencers/like", {
       imageId: props.imageId,
       influencerId: props.influencerId,
     });

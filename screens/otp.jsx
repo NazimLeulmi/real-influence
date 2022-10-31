@@ -24,17 +24,19 @@ function Otp() {
   const navigation = useNavigation();
   const route = useRoute();
   const { email } = route.params;
-  console.log(email, "otp");
   const field = useRef();
 
   async function verify() {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:8888/users/otp", { otp: otp, email: email });
+      const response = await axios.post("https://realinfluence.io/users/otp", {
+        otp: otp,
+        email: email,
+      });
       if (response.data.success === true) {
         setLoading(false);
         setError("");
-        navigation.navigate("Auth", { screen: "SignIn" })
+        navigation.navigate("Auth", { screen: "SignIn" });
       } else {
         setLoading(false);
         setError(response.data.error);
@@ -64,9 +66,6 @@ function Otp() {
           code={otp}
           onCodeChanged={setOtp}
           codeInputFieldStyle={s.otpField}
-          onCodeFilled={(code) => {
-            console.log("otp:", code);
-          }}
         />
         <TouchableOpacity style={s.link}>
           <Text style={s.linkText}>Didn't receive the email ?</Text>
@@ -157,8 +156,8 @@ const s = StyleSheet.create({
     fontFamily: "regular",
     color: "red",
     fontSize: 14,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default Otp;

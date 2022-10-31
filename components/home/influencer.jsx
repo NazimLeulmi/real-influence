@@ -14,7 +14,7 @@ class Influencer extends React.PureComponent {
   navigate = () => {
     this.props.navigate("Influencers", {
       screen: "Influencer",
-      params: { influencer: this.props.influencer },
+      params: { _id: this.props.influencer._id },
     });
   };
   render() {
@@ -24,7 +24,7 @@ class Influencer extends React.PureComponent {
         <TouchableOpacity style={s.influencer} onPress={this.navigate}>
           <Image
             source={{
-              uri: "http://localhost:8888/" + profileImg,
+              uri: "https://realinfluence.io/" + profileImg,
             }}
             style={s.img}
             resizeMethod="resize"

@@ -11,7 +11,7 @@ class ProfileImage extends React.PureComponent {
         <Pressable onPress={this.props.pickImage ? this.props.pickImage : null}>
           <Image
             source={{
-              uri: "http://localhost:8888/" + this.props.img,
+              uri: "https://realinfluence.io/" + this.props.img,
             }}
             style={s.img}
           />

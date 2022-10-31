@@ -11,7 +11,7 @@ import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
 import Brands from "../components/sponsors";
 import Influencers from "../components/home/influencersList";
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import fetchInfluencers from "../requests/fetchInfluencers";
 import { useFocusEffect } from "@react-navigation/native";
@@ -30,7 +30,6 @@ function Home() {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("fetching influencers (Home)");
       refetch();
     }, [])
   );
