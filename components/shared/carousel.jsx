@@ -1,10 +1,10 @@
 import { StyleSheet, Dimensions, View, Pressable, Image } from "react-native";
 import Animated, { ZoomIn } from "react-native-reanimated";
-import { FlashList } from "@shopify/flash-list";
 import { useRef, useState } from "react";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import Empty from "../../assets/empty.png";
+import { FlatList } from "react-native-gesture-handler";
 
 const width = Dimensions.get("window").width;
 
@@ -62,7 +62,7 @@ function Carousel({ data, local, id }) {
   }
   return (
     <>
-      <FlashList
+      <FlatList
         data={data}
         renderItem={renderItem}
         horizontal={true}
@@ -70,7 +70,6 @@ function Carousel({ data, local, id }) {
         snapToInterval={width}
         snapToAlignment="start"
         showsHorizontalScrollIndicator={false}
-        estimatedItemSize={6}
         onViewableItemsChanged={onViewChanged.current}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         ListEmptyComponent={

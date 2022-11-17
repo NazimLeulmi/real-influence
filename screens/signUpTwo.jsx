@@ -175,6 +175,18 @@ function SignUpTwo({ navigation }) {
           password={password.current}
         />
         {errors.passwordc ? <Error text={errors.passwordc.message} /> : null}
+        {/* INSTAGRAM LINK */}
+        <Label text="Instagram Link" />
+        <Input
+          control={control}
+          name="instagram"
+        />
+        {/* INSTAGRAM LINK */}
+        <Label text="TikTok Link" />
+        <Input
+          control={control}
+          name="tiktok"
+        />
         {imgError && !image ? <Error text={imgError} /> : null}
         {serverError ? <Error text={serverError} /> : null}
 

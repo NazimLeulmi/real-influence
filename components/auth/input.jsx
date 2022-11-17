@@ -14,6 +14,8 @@ function AuthInput({ control, name, error, password, number }) {
     number: "XXXXXXXXX",
     password: "Enter your password",
     passwordc: "Confirm your password",
+    instagram: "Your Instagram link",
+    tiktok: "Your TikTok link"
   };
   const icons = {
     email: "email",
@@ -22,6 +24,8 @@ function AuthInput({ control, name, error, password, number }) {
     number: "phone",
     password: "lock",
     passwordc: "lock",
+    instagram: "instagram",
+    tiktok: "web"
   };
   const rules = {
     email: {

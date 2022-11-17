@@ -23,12 +23,7 @@ class Influencer extends React.PureComponent {
     this.props.navigation.navigate("Influencers", {
       screen: "Influencer",
       params: {
-        influencer: {
-          _id: this.props.id,
-          name: this.props.name,
-          profileImg: this.props.img,
-          bio: this.props.bio,
-        },
+        _id: this.props.id,
       },
     });
   };
@@ -56,6 +51,7 @@ function InfluencersList() {
   const [text, setText] = useState("");
   const navigation = useNavigation();
 
+  console.log("Filtered", filtered);
   function renderItem({ item }) {
     return (
       <Influencer
@@ -84,7 +80,7 @@ function InfluencersList() {
       <TopBar title="influencers" />
       <Search value={text} onChange={filter} />
       <FlatList
-        data={filtered}
+        data={filtered.filter(influencer => influencer.approved ? influencer : null)}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         numColumns={3}

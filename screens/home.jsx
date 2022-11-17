@@ -59,7 +59,7 @@ function Home() {
           <TopBar title="Miss Influencer" />
           <Carousel data={carousel} local />
           <Header text="INFLUENCERS" btn />
-          <Influencers data={data?.influencers} />
+          <Influencers data={data?.influencers.filter(influencer => influencer.approved ? influencer : null)} />
           <Header text="SPONSORS" btn />
           <Brands />
         </ScrollView>
