@@ -76,6 +76,8 @@ function SignUpTwo({ navigation }) {
         data.append("number", route.params.number);
         data.append("password", formData.password);
         data.append("passwordc", formData.passwordc);
+        data.append("instagram", formData.instagram);
+        data.append("tiktok", formData.tiktok);
         const fileName = image.split("/").pop();
         const mimeType = fileName.split(".").pop();
         data.append("profileImage", {
@@ -176,13 +178,14 @@ function SignUpTwo({ navigation }) {
         />
         {errors.passwordc ? <Error text={errors.passwordc.message} /> : null}
         {/* INSTAGRAM LINK */}
-        <Label text="Instagram Link" />
+        <Label text="Instagram Handle" />
         <Input
           control={control}
           name="instagram"
         />
-        {/* INSTAGRAM LINK */}
-        <Label text="TikTok Link" />
+        {errors.instagram ? <Error text={errors.instagram.message} /> : null}
+        {/* TikTok LINK */}
+        <Label text="Tiktok Handle" />
         <Input
           control={control}
           name="tiktok"

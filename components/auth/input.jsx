@@ -76,6 +76,17 @@ function AuthInput({ control, name, error, password, number }) {
       validate: (value) =>
         value === password || "The password confirmation doesn't match",
     },
+    instagram: {
+      required: { value: true, message: "The instagram link is required" },
+      minLength: {
+        value: 3,
+        message: "The minimum length is 3 characters",
+      },
+      maxLength: {
+        value: 20,
+        message: "The maximum length is 20 characters",
+      },
+    },
   };
   return (
     <View style={s.inputContainer}>

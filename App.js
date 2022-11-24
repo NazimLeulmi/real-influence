@@ -12,9 +12,8 @@ axios.defaults.withCredentials = true;
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as Linking from 'expo-linking';
 
-const prefix = Linking.createURL('/');
 
-console.log(prefix);
+const prefix = Linking.createURL('/');
 
 const queryClient = new QueryClient();
 

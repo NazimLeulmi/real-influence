@@ -51,7 +51,6 @@ function InfluencersList() {
   const [text, setText] = useState("");
   const navigation = useNavigation();
 
-  console.log("Filtered", filtered);
   function renderItem({ item }) {
     return (
       <Influencer

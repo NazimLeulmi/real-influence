@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import TopBar from "../components/topbar";
 import Bg from "../assets/background.jpg";
@@ -24,20 +25,24 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 function Profile({ route }) {
-  console.log(route.params, "params");
   const { _id } = route.params;
   const { user } = useContext(AuthContext);
-  const { data: influencer, isFetched: fetchedInfluencer } = useQuery(
-    ["influencer"],
-    () => fetchInfluencer(_id)
+  const queryClient = useQueryClient();
+
+  // [1] Fetch Influencer's Data
+  const { data: influencer, isLoading: loadingProfile } = useQuery(["influencer"], () =>
+    fetchInfluencer(_id)
   );
-  const { data: votes, isFetched: fetchedVotes } = useQuery(["votes"], () =>
-    fetchVotes(_id)
+
+  // [2] Fetch Influencer's Votes
+  const { data: votes, isLoading: loadingVotes } = useQuery(["votes"], () => fetchVotes(_id));
+
+  // [3] Fetch Influencer's Gallery
+  const { data: gallery, isLoading: loadingGallery } = useQuery(["gallery"], () =>
+    fetchGallery(_id)
   );
-  const { data, isFetched } = useQuery(["gallery"], () => fetchGallery(_id));
   const [voted, setVoted] = useState(false);
 
-  const queryClient = useQueryClient();
   const mutation = useMutation(toggleVote, {
     onSuccess: () => {
       // Invalidate and refetch
@@ -46,14 +51,17 @@ function Profile({ route }) {
   });
 
   useEffect(() => {
-    let voted = false;
-    if (votes) {
-      for (let i = 0; i < votes.votes.length; i++) {
-        if (votes.votes[i].user === user.id) {
-          voted = true;
+    // run for normal users only
+    if (user.type === "user") {
+      let voted = false;
+      if (votes) {
+        for (let i = 0; i < votes.votes.length; i++) {
+          if (votes.votes[i].user === user.id) {
+            voted = true;
+          }
         }
+        setVoted(voted);
       }
-      setVoted(voted);
     }
   }, [votes]);
 
@@ -61,32 +69,38 @@ function Profile({ route }) {
     mutation.mutate(_id);
   }
 
-  if (isFetched && fetchedVotes && fetchedInfluencer) {
+  if (loadingProfile || loadingGallery || loadingVotes) {
     return (
-      <View style={s.container}>
-        <View>
-          <Image source={Bg} style={s.bg} />
-        </View>
-        <ScrollView>
-          <TopBar title="Influencer Profile" stack={true} />
-          <ProfileImage img={influencer.profileImg} />
-          <View style={s.imgFooter}>
-            <Text style={s.name}>{influencer.name}</Text>
-            <VoteBtn
-              vote={vote}
-              votes={votes.votes.length}
-              type={user.type}
-              voted={voted}
-            />
-          </View>
-          <Text style={s.header}>BIO</Text>
-          <Text style={s.text}>{influencer.bio}</Text>
-          <Header text="GALLERY" id={_id} />
-          <Carousel data={data.gallery} id={_id} />
-        </ScrollView>
+      <View style={{ flex: 1, backgroundColor: "white", alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator color="black" size="large" />
       </View>
-    );
+    )
   }
+
+  return (
+    <View style={s.container}>
+      <View>
+        <Image source={Bg} style={s.bg} />
+      </View>
+      <ScrollView>
+        <TopBar title="Influencer Profile" stack={true} />
+        <ProfileImage img={influencer.profileImg} />
+        <View style={s.imgFooter}>
+          <Text style={s.name}>{influencer.name}</Text>
+          <VoteBtn
+            vote={vote}
+            votes={votes.votes.length}
+            type={user.type}
+            voted={voted}
+          />
+        </View>
+        <Text style={s.header}>BIO</Text>
+        <Text style={s.text}>{influencer.bio}</Text>
+        <Header text="GALLERY" id={_id} />
+        <Carousel data={gallery.gallery} id={_id} />
+      </ScrollView>
+    </View>
+  );
 }
 const s = StyleSheet.create({
   container: {
